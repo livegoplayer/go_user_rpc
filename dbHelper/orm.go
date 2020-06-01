@@ -22,7 +22,7 @@ var _db *gorm.DB
 func init() {
 	//初始化全局sql连接
 
-	MysqlConfig = &mysqlConfig{"myuser", "myuser", "localhost", 3306, "file_store"}
+	MysqlConfig = &mysqlConfig{"myuser", "myuser", "139.224.132.234", 3306, "file_store"}
 	mysqlDsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", MysqlConfig.Username, MysqlConfig.Password, MysqlConfig.Host, MysqlConfig.Port, MysqlConfig.Dbname)
 	//连接MYSQL
 	db, err := gorm.Open("mysql", mysqlDsn)
