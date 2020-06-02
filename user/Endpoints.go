@@ -2,12 +2,13 @@ package user
 
 import (
 	"context"
-	"strings"
+
+	"github.com/go-kit/kit/endpoint"
 )
 
 // ArithmeticRequest define request struct
 type UserRequest struct {
-	RequestType string `json:"request_type"`
+	RequestType requesttype `json:"request_type"`
 	RequestBody map[string]interface{}
 }
 
@@ -18,24 +19,26 @@ type UserResponse struct {
 	Code int   `json:"error_code"`
 }
 
+type requesttype int8
+
+const (
+	ADD_USER requesttype = iota
+	DEl_USER
+	LOGIN
+	REGISTER
+	CHECK_USER_STATUS
+)
+
 // rpc_handler 这里做一个路由
 func MakeUserEndpoint(svc UserService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(UserRequest)
 
-		a = req.A
-		b = req.B
+		//第一个add user
+		switch req.RequestType {
+		//添加user
+		case ADD_USER:
 
-		if strings.EqualFold(req.RequestType, "Add") {
-			res = svc.Add(a, b)
-		} else if strings.EqualFold(req.RequestType, "Substract") {
-			res = svc.Subtract(a, b)
-		} else if strings.EqualFold(req.RequestType, "Multiply") {
-			res = svc.Multiply(a, b)
-		} else if strings.EqualFold(req.RequestType, "Divide") {
-			res, calError = svc.Divide(a, b)
-		} else {
-			return nil, ErrInvalidRequestType
 		}
 
 		return ArithmeticResponse{Result: res, Error: calError}, nil

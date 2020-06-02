@@ -12,9 +12,14 @@ type MyCustomClaims struct {
 	jwt.StandardClaims
 }
 
+//一个聚合的数据结构
 type UserSession struct {
-	Uid      int
-	UserName string
+	Uid               int
+	UserName          string
+	UserRoleList      map[int]string
+	UserAuthorityList map[int]string
+	AddDatetime       string
+	UpdateDatetime    string
 }
 
 func CreateToken(userSession *UserSession) (tokenStr string, err error) {

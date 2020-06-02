@@ -1,25 +1,32 @@
 package model
 
 import (
+	"errors"
+
 	"go_user_rpc/dbHelper"
+	"go_user_rpc/util"
 )
 
-type operation_type int
+type operationType int
 
+//操作类型
 const (
-	UNDEFINED_RET operation_type = iota
+	UNDEFINED_RET operationType = iota
 	USER_RET
 	ROLE_RET
 	AUTHORITY_RET
 )
 
+const (
+	COMMON_USER   int = 1
+	ADMINISTRATOR int = iota
+)
+
 type User struct {
 	Model
-	ID             int    `gorm:"column:uid"` //会被自动认为是主键
-	Name           string `gorm:"column:username"`
-	Password       string
-	AddDatetime    int `gorm:"column:add_datetime;-"`
-	UpdateDatetime int `gorm:"column:update_datetime;-"`
+	ID       int    `gorm:"column:uid"` //会被自动认为是主键
+	Name     string `gorm:"column:username"`
+	Password string
 }
 
 //设置表名，可以通过给struct类型定义 TableName函数，返回当前struct绑定的mysql表名是什么
@@ -80,12 +87,12 @@ func (u *RetUserRole) TableName() string {
 }
 
 type UserOperationLog struct {
-	ID          int            //会被自动认为是主键
-	Category    operation_type `gorm:"column:cat"`
-	Uid         int            `gorm:"column:uid"`
-	Message     string         `gorm:"column:message"`
-	OperatorUid int            `gorm:"column:operator_uid"`
-	AddDatetime int            `gorm:"column:add_datetime"`
+	ID          int           //会被自动认为是主键
+	Category    operationType `gorm:"column:cat"`
+	Uid         int           `gorm:"column:uid"`
+	Message     string        `gorm:"column:message"`
+	OperatorUid int           `gorm:"column:operator_uid"`
+	AddDatetime int           `gorm:"column:add_datetime"`
 }
 
 //设置表名，可以通过给struct类型定义 TableName函数，返回当前struct绑定的mysql表名是什么
@@ -171,7 +178,7 @@ func DelUserRole(uid int, roleId int, operationUid int) (success bool) {
 	return success
 }
 
-func addOperationLog(category operation_type, operationUid int, targetUid int, message string) error {
+func addOperationLog(category operationType, operationUid int, targetUid int, message string) error {
 	db := dbHelper.GetDB()
 
 	userOperationLog := &UserOperationLog{Category: category, Uid: targetUid, Message: message, OperatorUid: operationUid}
@@ -206,7 +213,14 @@ func AddNewUser(name string, password string, operationUid int) (uid int, err er
 	}
 	uid = int(id[0])
 
+	//给用户添加权限
+	db = dbHelper.GetDB()
 	_ = addOperationLog(USER_RET, operationUid, uid, "增加用户")
+
+	res := AddUserRole(uid, COMMON_USER, operationUid)
+	if !res {
+		err = errors.New("初始化用户权限失败")
+	}
 
 	return
 }
@@ -245,6 +259,66 @@ func CheckUserPassword(username string, password string) (isRecordFound bool, us
 	}
 
 	isRecordFound = !db.RecordNotFound()
+
+	return
+}
+
+//检查用户名是否存在
+func CheckUserName(username string) (isRecordFound bool, err error) {
+	db := dbHelper.GetDB()
+	user := &User{}
+
+	db = db.Where("username = ?", username).Find(&user)
+	if db.Error != nil {
+		return
+	}
+
+	isRecordFound = !db.RecordNotFound()
+
+	return
+}
+
+/**
+获取用户的权限列表
+*/
+func GetUserDetailInfo(uid int) (userSession *util.UserSession, err error) {
+	db := dbHelper.GetDB()
+
+	var res []map[string]interface{}
+	db = db.Table("user").Select("fs_user.uid as uid, fs_user.username as username, fs_user.add_datetime as add_datetime, fs_user.upt_datetime as upt_datetime, fs_role.id as role_id, fs_role.role_name as role_name, fs_authority.id as authority_id, fs_authority.authority_name as authority_name").Joins("LEFT JOIN fs_ret_user_role as a ON fs_ret_user_role.uid = users.id").Joins("LEFT JOIN fs_role as c ON b.role_id = c.id").Joins("LEFT JOIN fs_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN fs_authority as e ON d.authority_id = e.id").Where("user.uid = ?", uid).Scan(&res)
+	if db.Error != nil {
+		return
+	}
+
+	roleList := make(map[int]string)
+	authorityList := make(map[int]string)
+	userSession = &util.UserSession{}
+
+	userInitFlg := false
+	for _, info := range res {
+		roleId := util.Int(info["role_id"])
+		roleName := util.String(info["role_name"])
+		authorityId := util.Int(info["authority_id"])
+		authorityName := util.String(info["authority_name"])
+
+		if !userInitFlg {
+			uid := util.Int(info["uid"])
+			username := util.String(info["username"])
+			addDatetime := util.String(info["add_datetime"])
+			uptDatetime := util.String(info["upt_datetime"])
+			userSession.Uid = uid
+			userSession.UserName = username
+			userSession.AddDatetime = addDatetime
+			userSession.UpdateDatetime = uptDatetime
+			userInitFlg = true
+		}
+
+		roleList[roleId] = roleName
+		authorityList[authorityId] = authorityName
+	}
+
+	userSession.UserRoleList = roleList
+	userSession.UserAuthorityList = authorityList
 
 	return
 }

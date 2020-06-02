@@ -11,7 +11,7 @@ import (
 //定义一个接口，service包含的方法
 type UserServiceInterFace interface {
 	Login(userName string, password string) (uid int, token string, err error)
-	CheckLoginStatus(uid int) bool
+	CheckLoginStatus(uid int) (isLogin bool, err error)
 	Register(userName string, password string) (uid int, err error)
 
 	CheckUserAuthority(uid int, authorityId int) bool
@@ -42,18 +42,25 @@ func getUserSession(uid int) (val int) {
 
 //用户注册逻辑
 func (userService *UserService) Register(userName string, password string) (uid int, err error) {
+	isRecordFound, err := model.CheckUserName(userName)
+	if isRecordFound {
+		err = errors.New("该用户名已经存在")
+		return
+	}
+
 	return model.AddNewUser(userName, password, 0)
 }
 
-func (userService *UserService) CheckLoginStatus(s string) bool {
-	//return model.DelUserRole(uid, roleId, operationUid)
-	return false
+//管理员添加用户逻辑
+func (userService *UserService) AddUser(userName string, password string, operationUid int) (uid int, err error) {
+	return model.AddNewUser(userName, password, operationUid)
 }
 
 func AddUserRole(uid int, roleId int, operationUid int) bool {
 	return model.AddUserRole(uid, roleId, operationUid)
 }
 
+//不给用
 func DelUserRole(uid int, roleId int, operationUid int) bool {
 	return model.DelUserRole(uid, roleId, operationUid)
 }
@@ -80,11 +87,13 @@ func (userService *UserService) Login(userName string, password string) (uid int
 		return
 	}
 
-	// 设置新的session给客户端派发token
-	userSession := &util.UserSession{
-		UserName: user.Name,
-		Uid:      user.ID,
+	//获取detail信息
+	userSession, err := model.GetUserDetailInfo(user.ID)
+	if err != nil {
+		return
 	}
+
+	// 设置新的session给客户端派发token
 	tokenStr, err = util.CreateToken(userSession)
 
 	return
@@ -96,7 +105,7 @@ func (userService *UserService) CheckLoginStatus(token string) (isLogin bool, er
 		return
 	}
 
-	//todo 可能需要在这里增加过期token补全逻辑
+	//todo 可能需要在这里增加过期token续期逻辑
 	isLogin = true
 
 	return
