@@ -226,7 +226,7 @@ func AddNewUser(name string, password string, operationUid int) (uid int, err er
 }
 
 //删除用户操作
-func DelUser(uid int, operationUid int) (success bool) {
+func DelUser(uid int, operationUid int) (success bool, err error) {
 	db := dbHelper.GetDB()
 
 	success = false
@@ -235,17 +235,26 @@ func DelUser(uid int, operationUid int) (success bool) {
 
 	db = db.Delete(User)
 	if db.Error != nil {
-		//todo
+		err = db.Error
 		return
 	}
 
-	if db.RowsAffected > 0 {
-		success = true
+	if db.RowsAffected == 0 {
+		err = errors.New("删除用户失败")
+		return
+	}
+
+	//删除用户相关的role
+	retUserRole := &RetUserRole{UserId: uid}
+	db = db.Delete(retUserRole)
+	if db.RowsAffected == 0 {
+		err = errors.New("删除用户失败")
+		return
 	}
 
 	_ = addOperationLog(ROLE_RET, operationUid, uid, "删除用户")
 
-	return success
+	return
 }
 
 //检查用户名密码

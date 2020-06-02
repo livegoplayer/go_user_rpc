@@ -28,6 +28,6 @@ func GetRedisKey(key string) *redis.StringCmd {
 	return redisClient.Get(prefix + key)
 }
 
-func SetRedisKey(key string, value string, expire time.Duration) *redis.StatusCmd {
+func SetRedisKey(key string, value []byte, expire time.Duration) *redis.StatusCmd {
 	return redisClient.Set(prefix+key, value, expire)
 }
