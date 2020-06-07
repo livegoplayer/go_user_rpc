@@ -1,0 +1,246 @@
+syntax = "proto3";
+
+package user;
+option go_package = "user/grpc";
+
+service User{
+    //用户登录
+    rpc Login(LoginRequest) returns (LoginResponse);
+    //管理员增加用户
+    rpc AddUser(AddUserRequest) returns (AddUserResponse);
+    //管理员删除用户
+    rpc DelUser(DelUserRequest) returns (DelUserResponse);
+    //检查用户登陆状态
+    rpc	CheckLoginStatus(CheckUserStatusRequest) returns (CheckUserStatusResponse);
+    //注册
+    rpc	Register(RegisterRequest) returns (RegisterRequest);
+    //检查用户操作权限
+    rpc	CheckUserAuthority(CheckUserAuthorityRequest) returns (CheckUserAuthorityResponse);
+    //获取用户操作权限列表
+    rpc	GetUserAuthorityList(GetUserAuthorityListRequest) returns (GetUserAuthorityListResponse);
+    //获取所有操作权限
+    rpc	GetAuthorityList(GetAuthorityListRequest) returns (GetAuthorityListResponse);
+    //增加用户权限
+    rpc	AddUserRole(AddUserRoleRequest) returns (AddUserRoleResponse);
+    //删除用户权限
+    rpc	DelUserRole(DelUserRoleRequest) returns (DelUserRoleResponse);
+    //获取所有角色列表
+    rpc	GetRoleList(GetRoleListRequest) returns (GetRoleListResponse);
+    //获取用户角色列表
+    rpc	GetUserRoleList(GetUserRoleListRequest) returns (GetUserRoleListResponse);
+}
+
+//用户session信息数组
+message UserSessions {
+	int32                 uid = 1;
+	string              username = 2;
+	map<int32, string>    userRoleList = 3;
+	map<int32, string>    userAuthorityList = 4;
+	string              addDatetime = 5;
+	string              updateDatetime = 6;
+}
+
+//login
+message LoginRequest {
+    string          userName = 1;
+    string          password = 2;
+    string          host = 3;
+}
+
+message LoginData{
+    int32            uid = 1;
+    string          token = 2;
+    UserSessions    userSession = 3;
+    string          error = 4;
+}
+
+message LoginResponse{
+    int32           errorCode = 1;
+    LoginData       data = 2;
+    string          msg = 3;
+}
+
+//addUser
+message AddUserRequest {
+    string          userName = 1;
+    string          password = 2;
+    int32          operationUid = 3;
+}
+
+message AddUserData{
+    int32           uid = 1;
+    string          error = 2;
+}
+
+message AddUserResponse{
+    int32           errorCode = 1;
+    AddUserData       data = 2;
+    string          msg = 3;
+}
+
+//deluser
+message DelUserRequest{
+    int32             uid = 1;
+    int32             operationUid = 3;
+}
+
+message DelUserData{
+    bool            success =1;
+    string          error = 2;
+}
+
+message DelUserResponse{
+    int32           errorCode = 1;
+    DelUserData       data = 2;
+    string          msg = 3;
+}
+
+//检查用户登录状态
+message CheckUserStatusRequest {
+    string          token = 1;
+    string          host = 2;
+}
+
+message CheckUserStatusData{
+    bool           isLogin = 1;
+    string          token = 2;
+    string          error = 3;
+}
+
+message CheckUserStatusResponse{
+    int32           errorCode = 1;
+    CheckUserStatusData       data = 2;
+    string          msg = 3;
+}
+
+
+//注册
+message RegisterRequest {
+    string          token = 1;
+    string          host = 2;
+}
+
+message RegisterData{
+    int32             uid = 1;
+    string          error = 2;
+}
+
+message RegisterResponse{
+    int32           errorCode = 1;
+    RegisterData       data = 2;
+    string          msg = 3;
+}
+
+//检查用户操作权限
+message CheckUserAuthorityRequest {
+    int32             uid= 1;
+    int32             authorityId = 2;
+}
+
+message CheckUserAuthorityData{
+    bool            exist = 1;
+}
+
+message CheckUserAuthorityResponse{
+    int32           errorCode = 1;
+    CheckUserAuthorityData       data = 2;
+    string          msg = 3;
+}
+
+//获取用户操作权限列表
+message GetUserAuthorityListRequest{
+    int32             uid = 1;
+}
+
+message GetUserAuthorityListData{
+    map<int32, string> userAuthorityList = 1;
+}
+
+message GetUserAuthorityListResponse{
+    int32           errorCode= 1;
+    GetUserAuthorityListData       data = 2;
+    string          msg = 3;
+}
+
+//获取所有操作权限列表
+message GetAuthorityListRequest{
+}
+
+message GetAuthorityListData{
+    map<int32, string> userAuthorityList = 1;
+}
+
+message GetAuthorityListResponse{
+    int32           errorCode= 1;
+    GetAuthorityListData       data = 2;
+    string          msg = 3;
+}
+
+//增加用户权限
+message AddUserRoleRequest{
+    int32             uid = 1;
+    int32             roleId = 2;
+    int32             operationUid =3;
+}
+
+message AddUserRoleData{
+    bool            success = 1;
+}
+
+message AddUserRoleResponse{
+    int32           errorCode = 1;
+    AddUserRoleData       data = 2;
+    string          msg = 3;
+}
+
+//删除用户权限
+message DelUserRoleRequest{
+    int32             uid = 1;
+    int32             roleId = 2;
+    int32             operationUid = 3;
+}
+
+message DelUserRoleData{
+    bool            success =1;
+}
+
+message DelUserRoleResponse{
+    int32           errorCode = 1;
+    DelUserRoleData       data = 2;
+    string          msg = 3;
+}
+
+//获取所有角色列表
+message GetRoleListRequest{
+}
+
+message GetRoleListData{
+    map<int32, string> userRoleList =1;
+}
+
+message GetRoleListResponse{
+    int32           errorCode = 1;
+    GetRoleListData       data = 2;
+    string          msg = 3;
+}
+
+//获取用户角色列表
+message GetUserRoleListRequest{
+    int32              uid =1;
+}
+
+message GetUserRoleListData{
+    map<int32, string> userRoleList =1;
+}
+
+message GetUserRoleListResponse{
+    int32           errorCode = 1;
+    GetUserRoleListData       data = 2;
+    string          msg = 3;
+}
+
+
+
+
+
+
