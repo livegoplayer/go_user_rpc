@@ -4,7 +4,7 @@ import (
 	"reflect"
 )
 
-func InArray(val interface{}, array interface{}) (exists bool, index int) {
+func InArray(val interface{}, array interface{}) (exists bool, index int32) {
 	exists = false
 	index = -1
 

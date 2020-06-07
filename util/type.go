@@ -13,8 +13,18 @@ func String(unknownVal interface{}) string {
 	return ""
 }
 
-func Int(unknownVal interface{}) int {
-	intVal, ok := unknownVal.(int)
+func Int32(unknownVal interface{}) int32 {
+	intVal, ok := unknownVal.(int32)
+
+	if ok {
+		return intVal
+	}
+
+	return 0
+}
+
+func Int32(unknownVal interface{}) int32 {
+	intVal, ok := unknownVal.(int32)
 
 	if ok {
 		return intVal

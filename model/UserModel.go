@@ -18,13 +18,13 @@ const (
 )
 
 const (
-	COMMON_USER   int = 1
-	ADMINISTRATOR int = iota
+	COMMON_USER   int32 = 1
+	ADMINISTRATOR int32 = iota
 )
 
 type User struct {
 	Model
-	ID       int    `gorm:"column:uid"` //会被自动认为是主键
+	ID       int32  `gorm:"column:uid"` //会被自动认为是主键
 	Name     string `gorm:"column:username"`
 	Password string
 }
@@ -37,11 +37,11 @@ func (u *User) TableName() string {
 
 type Role struct {
 	Model
-	ID             int    //会被自动认为是主键
+	ID             int32  //会被自动认为是主键
 	Name           string `gorm:"column:role_name"`
-	Level          int    `gorm:"column:role_level"`
-	AddDatetime    int    `gorm:"column:add_datetime"`
-	UpdateDatetime int    `gorm:"column:update_datetime"`
+	Level          int32  `gorm:"column:role_level"`
+	AddDatetime    int32  `gorm:"column:add_datetime"`
+	UpdateDatetime int32  `gorm:"column:update_datetime"`
 }
 
 //设置表名，可以通过给struct类型定义 TableName函数，返回当前struct绑定的mysql表名是什么
@@ -52,7 +52,7 @@ func (u *Role) TableName() string {
 
 type Authority struct {
 	Model
-	ID   int    //会被自动认为是主键
+	ID   int32  //会被自动认为是主键
 	Name string `gorm:"column:authority_name"`
 }
 
@@ -63,9 +63,9 @@ func (u *Authority) TableName() string {
 }
 
 type RetRoleAuthority struct {
-	ID          int //会被自动认为是主键
-	RoleId      int `gorm:"column:role_id"`
-	AuthorityId int `gorm:"column:authority_id"`
+	ID          int32 //会被自动认为是主键
+	RoleId      int32 `gorm:"column:role_id"`
+	AuthorityId int32 `gorm:"column:authority_id"`
 }
 
 //设置表名，可以通过给struct类型定义 TableName函数，返回当前struct绑定的mysql表名是什么
@@ -75,9 +75,9 @@ func (u *RetRoleAuthority) TableName() string {
 }
 
 type RetUserRole struct {
-	ID     int //会被自动认为是主键
-	UserId int `gorm:"column:uid"`
-	RoleId int `gorm:"column:role_id"`
+	ID     int32 //会被自动认为是主键
+	UserId int32 `gorm:"column:uid"`
+	RoleId int32 `gorm:"column:role_id"`
 }
 
 //设置表名，可以通过给struct类型定义 TableName函数，返回当前struct绑定的mysql表名是什么
@@ -87,12 +87,12 @@ func (u *RetUserRole) TableName() string {
 }
 
 type UserOperationLog struct {
-	ID          int           //会被自动认为是主键
+	ID          int32         //会被自动认为是主键
 	Category    operationType `gorm:"column:cat"`
-	Uid         int           `gorm:"column:uid"`
+	Uid         int32         `gorm:"column:uid"`
 	Message     string        `gorm:"column:message"`
-	OperatorUid int           `gorm:"column:operator_uid"`
-	AddDatetime int           `gorm:"column:add_datetime"`
+	OperatorUid int32         `gorm:"column:operator_uid"`
+	AddDatetime int32         `gorm:"column:add_datetime"`
 }
 
 //设置表名，可以通过给struct类型定义 TableName函数，返回当前struct绑定的mysql表名是什么
@@ -119,7 +119,7 @@ func GetRoleList() (roles []*Role) {
 	return
 }
 
-func GetUserRoleList(uid int) (roles []*Role) {
+func GetUserRoleList(uid int32) (roles []*Role) {
 	var userRoles []*RetUserRole
 	db := dbHelper.GetDB()
 
@@ -129,7 +129,7 @@ func GetUserRoleList(uid int) (roles []*Role) {
 		return
 	}
 
-	var roleIdList []int
+	var roleIdList []int32
 	for _, userRole := range userRoles {
 		roleIdList = append(roleIdList, userRole.RoleId)
 	}
@@ -142,7 +142,7 @@ func GetUserRoleList(uid int) (roles []*Role) {
 	return
 }
 
-func AddUserRole(uid int, roleId int, operationUid int) (success bool) {
+func AddUserRole(uid int32, roleId int32, operationUid int32) (success bool) {
 	db := dbHelper.GetDB()
 
 	//todo 加入事务操作
@@ -160,7 +160,7 @@ func AddUserRole(uid int, roleId int, operationUid int) (success bool) {
 	return success
 }
 
-func DelUserRole(uid int, roleId int, operationUid int) (success bool) {
+func DelUserRole(uid int32, roleId int32, operationUid int32) (success bool) {
 	db := dbHelper.GetDB()
 
 	//todo 加入事务操作
@@ -178,7 +178,7 @@ func DelUserRole(uid int, roleId int, operationUid int) (success bool) {
 	return success
 }
 
-func addOperationLog(category operationType, operationUid int, targetUid int, message string) error {
+func addOperationLog(category operationType, operationUid int32, targetUid int32, message string) error {
 	db := dbHelper.GetDB()
 
 	userOperationLog := &UserOperationLog{Category: category, Uid: targetUid, Message: message, OperatorUid: operationUid}
@@ -193,7 +193,7 @@ func addOperationLog(category operationType, operationUid int, targetUid int, me
 }
 
 //添加用户操作
-func AddNewUser(name string, password string, operationUid int) (uid int, err error) {
+func AddNewUser(name string, password string, operationUid int32) (uid int32, err error) {
 	db := dbHelper.GetDB()
 
 	//todo 加入事务操作
@@ -211,7 +211,7 @@ func AddNewUser(name string, password string, operationUid int) (uid int, err er
 		err = db.Error
 		return
 	}
-	uid = int(id[0])
+	uid = int32(id[0])
 
 	//给用户添加权限
 	db = dbHelper.GetDB()
@@ -226,7 +226,7 @@ func AddNewUser(name string, password string, operationUid int) (uid int, err er
 }
 
 //删除用户操作
-func DelUser(uid int, operationUid int) (success bool, err error) {
+func DelUser(uid int32, operationUid int32) (success bool, err error) {
 	db := dbHelper.GetDB()
 
 	success = false
@@ -290,7 +290,7 @@ func CheckUserName(username string) (isRecordFound bool, err error) {
 /**
 获取用户的权限列表
 */
-func GetUserDetailInfo(uid int) (userSession *util.UserSession, err error) {
+func GetUserDetailInfo(uid int32) (userSession *util.UserSession, err error) {
 	db := dbHelper.GetDB()
 
 	var res []map[string]interface{}
@@ -299,19 +299,19 @@ func GetUserDetailInfo(uid int) (userSession *util.UserSession, err error) {
 		return
 	}
 
-	roleList := make(map[int]string)
-	authorityList := make(map[int]string)
+	roleList := make(map[int32]string)
+	authorityList := make(map[int32]string)
 	userSession = &util.UserSession{}
 
 	userInitFlg := false
 	for _, info := range res {
-		roleId := util.Int(info["role_id"])
+		roleId := util.Int32(info["role_id"])
 		roleName := util.String(info["role_name"])
-		authorityId := util.Int(info["authority_id"])
+		authorityId := util.Int32(info["authority_id"])
 		authorityName := util.String(info["authority_name"])
 
 		if !userInitFlg {
-			uid := util.Int(info["uid"])
+			uid := util.Int32(info["uid"])
 			username := util.String(info["username"])
 			addDatetime := util.String(info["add_datetime"])
 			uptDatetime := util.String(info["upt_datetime"])
@@ -328,6 +328,69 @@ func GetUserDetailInfo(uid int) (userSession *util.UserSession, err error) {
 
 	userSession.UserRoleList = roleList
 	userSession.UserAuthorityList = authorityList
+
+	return
+}
+
+//检查是否用户是否有相关权限
+func CheckUserAuthority(uid int32, authorityId int32) (exist bool, err error) {
+	db := dbHelper.GetDB()
+
+	var res []map[string]interface{}
+	db = db.Table("user").Select("fs_user.uid as uid, fs_ret_role_authority.authority_id as authority_id").Joins("LEFT JOIN fs_ret_user_role as a ON fs_ret_user_role.uid = users.id").Joins("LEFT JOIN fs_role as c ON b.role_id = c.id").Joins("LEFT JOIN fs_ret_role_authority as d ON c.id = d.role_id").Where("user.uid = ?", uid).Where("authorityId = ?", authorityId).Find(&res)
+	if db.Error != nil {
+		err = db.Error
+		return
+	}
+
+	if !db.RecordNotFound() {
+		exist = true
+		return
+	}
+
+	return
+}
+
+//检查是否用户是否有相关权限
+func GetUserAuthorityList(uid int32) (authorityList map[int32]string, err error) {
+	db := dbHelper.GetDB()
+
+	var res []map[string]interface{}
+	db = db.Table("user").Select("fs_authority.id as authority_id, fs_authority.authority_name as authority_name").Joins("LEFT JOIN fs_ret_user_role as a ON fs_ret_user_role.uid = users.id").Joins("LEFT JOIN fs_role as c ON b.role_id = c.id").Joins("LEFT JOIN fs_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN fs_authority as e ON d.authority_id = e.id").Where("user.uid = ?", uid).Scan(&res)
+	if db.Error != nil {
+		err = db.Error
+		return
+	}
+
+	authorityList = make(map[int32]string)
+
+	for _, info := range res {
+		authorityId := util.Int32(info["authority_id"])
+		authorityName := util.String(info["authority_name"])
+		authorityList[authorityId] = authorityName
+	}
+
+	return
+}
+
+//检查是否用户是否有相关权限
+func GetAuthorityList() (authorityList map[int32]string, err error) {
+	db := dbHelper.GetDB()
+
+	var res []map[string]interface{}
+	db = db.Select("fs_authority.id as authority_id, fs_authority.authority_name as authority_name").Scan(&res)
+	if db.Error != nil {
+		err = db.Error
+		return
+	}
+
+	authorityList = make(map[int32]string)
+
+	for _, info := range res {
+		authorityId := util.Int32(info["authority_id"])
+		authorityName := util.String(info["authority_name"])
+		authorityList[authorityId] = authorityName
+	}
 
 	return
 }

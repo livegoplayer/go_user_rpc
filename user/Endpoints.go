@@ -8,23 +8,25 @@ import (
 	"go_user_rpc/util"
 )
 
+//handler
+
 // ArithmeticRequest define request struct
 type UserRequest struct {
-	RequestType requesttype `json:"request_type"`
-	RequestBody interface{} `json:"request_body"`
+	RequestType string            `json:"request_type"`
+	RequestBody map[string]string `json:"request_body"`
 }
 
 // ArithmeticResponse define response struct
 type UserResponse struct {
 	Data interface{} `json:"data"`
 	Msg  string      `json:"msg"`
-	Code int         `json:"error_code"`
+	Code int32       `json:"error_code"`
 }
 
-type requesttype int8
+type Requesttype int8
 
 const (
-	ADD_USER requesttype = iota
+	ADD_USER int32 = iota
 	DEl_USER
 	LOGIN
 	REGISTER
@@ -32,10 +34,10 @@ const (
 )
 
 // rpc_handler 这里做一个路由
-func MakeUserEndpoint(svc UserService) endpoint.Endpoint {
+func MakeUserEndpoInt32(svc UserService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(UserRequest)
-		requestBody := req.RequestBody.(map[string]interface{})
+		requestBody := req.RequestBody
 
 		res := UserResponse{
 			Msg:  "ok",
@@ -43,12 +45,12 @@ func MakeUserEndpoint(svc UserService) endpoint.Endpoint {
 		}
 
 		//第一个add user
-		switch req.RequestType {
+		switch util.Int32(req.RequestType) {
 		//添加user
 		case ADD_USER:
 			userName := util.String(requestBody["username"])
 			password := util.String(requestBody["password"])
-			operationUid := util.Int(requestBody["operation_uid"])
+			operationUid := util.Int32(requestBody["operation_uid"])
 			uid, err := svc.AddUser(userName, password, operationUid)
 			if err != nil {
 				res.Msg = err.Error()
@@ -56,13 +58,13 @@ func MakeUserEndpoint(svc UserService) endpoint.Endpoint {
 				break
 			}
 
-			res.Data = map[string]int{
+			res.Data = map[string]int32{
 				"uid": uid,
 			}
 			//todo
 		case DEl_USER:
-			uid := util.Int(requestBody["uid"])
-			operationUid := util.Int(requestBody["operation_uid"])
+			uid := util.Int32(requestBody["uid"])
+			operationUid := util.Int32(requestBody["operation_uid"])
 			success, err := svc.DelUser(uid, operationUid)
 			if err != nil {
 				res.Msg = err.Error()
@@ -97,7 +99,7 @@ func MakeUserEndpoint(svc UserService) endpoint.Endpoint {
 				break
 			}
 
-			res.Data = map[string]int{
+			res.Data = map[string]int32{
 				"uid": uid,
 			}
 		case CHECK_USER_STATUS:
