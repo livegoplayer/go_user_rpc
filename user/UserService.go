@@ -10,7 +10,7 @@ import (
 )
 
 //定义一个接口，service包含的方法
-type UserServiceInterFace interface {
+type UserServiceInterface interface {
 	Login(userName string, password string, host string) (uid int32, userSession *util.UserSession, tokenStr string, err error)
 	CheckLoginStatus(token string, host string) (isLogin bool, tokenStr string, err error)
 	Register(userName string, password string) (uid int32, err error)

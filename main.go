@@ -1,17 +1,15 @@
 package go_user_rpc
 
 import (
-	"fmt"
 	"net"
-	"net/http"
-	"net/rpc"
-	"net/rpc/jsonrpc"
-	"os"
-	"strconv"
 
 	"github.com/go-kit/kit/log"
-
+	"github.com/go-kit/kit/transport"
+	grpctransport "github.com/go-kit/kit/transport/grpc"
+	"github.com/oklog/oklog/pkg/group"
 	"go_user_rpc/user"
+	userpb "go_user_rpc/user/grpc"
+	realgrpc "google.golang.org/grpc"
 )
 
 const rateBucketNum = 20
@@ -24,31 +22,43 @@ var (
 )
 
 func Run() {
-	initHttpHandler()
+	//initHttpHandler()
+	g := &group.Group{}
+
+	initUserRpcHandler(g)
 }
 
-func initHttpHandler() {
-	svc := user.UserService{}
+//func initHttpHandler() {
+//	svc := user.UserService{}
+//
+//	r := user.MakeHTTPHandler(user.MakeUserEndpoints(svc))
+//	err := http.ListenAndServe(":8080", r)
+//	if err != nil {
+//		fmt.Printf("server start error : " + err.Error())
+//		return
+//	}
+//}
 
-	r := user.MakeHTTPHandler(user.MakeUserEndpoInt32(svc))
-	err := http.ListenAndServe(":8080", r)
-	if err != nil {
-		fmt.Printf("server start error : " + err.Error())
-		return
+func initUserRpcHandler(g *group.Group) {
+
+	grpcOpts := []grpctransport.ServerOption{
+		grpctransport.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
 	}
-}
 
-func initRpcHandler() {
+	grpcListener, err := net.Listen("tcp", ":8888")
+	if err != nil {
+		//todo log
+	}
 
-	// Publish our Handler methods
-	rpc.Register(user.MakeRpcHandle(user.MakeUserEndpoInt32(svc)))
+	endpoints := user.MakeUserEndpoints(&user.UserServiceServer{}, nil)
+	baseServer := realgrpc.NewServer()
 
-	// Create a TCP listener that will listen on `Port`
-	listener, _ = net.Listen("tcp", ":8083")
-
-	// Close the listener whenever we stop
-	defer listener.Close()
-
-	// Wait for incoming connections
-	rpc.Accept(listener)
+	g.Add(func() error {
+		//这里是执行函数
+		userpb.RegisterUserServer(baseServer, user.MakeGRPCHandler(*endpoints, grpcOpts...))
+		return baseServer.Serve(grpcListener)
+	}, func(error) {
+		//这里是遇到错误的中断处理函数
+		baseServer.Stop()
+	})
 }

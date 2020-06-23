@@ -11,9 +11,9 @@ service User{
     //管理员删除用户
     rpc DelUser(DelUserRequest) returns (DelUserResponse);
     //检查用户登陆状态
-    rpc	CheckLoginStatus(CheckUserStatusRequest) returns (CheckUserStatusResponse);
+    rpc	CheckUserStatus(CheckUserStatusRequest) returns (CheckUserStatusResponse);
     //注册
-    rpc	Register(RegisterRequest) returns (RegisterRequest);
+    rpc	Register(RegisterRequest) returns (RegisterResponse);
     //检查用户操作权限
     rpc	CheckUserAuthority(CheckUserAuthorityRequest) returns (CheckUserAuthorityResponse);
     //获取用户操作权限列表

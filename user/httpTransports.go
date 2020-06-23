@@ -19,7 +19,7 @@ func MakeHTTPHandler(Endpoint endpoint.Endpoint, opts ...kithttp.ServerOption) h
 	r.Handle("/get/{key}", kithttp.NewServer(
 		Endpoint,
 		decodeRequest,
-		encodeResponse, //暂且借用一下rpc封装好的方法
+		encodeHttpResponse, //暂且借用一下rpc封装好的方法
 		opts...,
 	)).Methods(http.MethodGet)
 	return r
@@ -47,10 +47,6 @@ func decodeRequestRpc(_ context.Context, req interface{}) (interface{}, error) {
 	return req, nil
 }
 
-func encodeResponseRpc(_ context.Context, Resp interface{}) (interface{}, error) {
-	return Resp, nil
-}
-
 func decodeRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
 	vars := mux.Vars(r)
 	requestType := vars["request_type"]
@@ -69,7 +65,7 @@ func decodeRequest(_ context.Context, r *http.Request) (request interface{}, err
 	return userRequest, nil
 }
 
-func encodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) (err error) {
+func encodeHttpResponse(ctx context.Context, w http.ResponseWriter, response interface{}) (err error) {
 	res := &UserResponse{}
 	ok := false
 
