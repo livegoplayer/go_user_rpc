@@ -8,7 +8,7 @@ import (
 	"github.com/go-kit/kit/endpoint"
 	"github.com/sirupsen/logrus"
 
-	"go_user_rpc/helper"
+	myHelper "github.com/livegoplayer/go_helper"
 )
 
 //全局中间件日志组件
@@ -35,11 +35,11 @@ func loggingMiddleware(logger *logrus.Logger) Middleware {
 			s := reflect.ValueOf(&request).Elem()
 			typeOfT := s.Type()
 			typStr := typeOfT.Kind().String()
-			requestbody := helper.JsonEncode(request)
+			requestbody := myHelper.JsonEncode(request)
 			errStr := ""
 
 			response, err := next(ctx, request)
-			responseBody := helper.JsonEncode(response)
+			responseBody := myHelper.JsonEncode(response)
 			if err != nil {
 				errStr = err.Error()
 				logger.Error(errStr)
@@ -49,13 +49,13 @@ func loggingMiddleware(logger *logrus.Logger) Middleware {
 				NowTimeStr:   nowTimeStr,
 				nowTimeUnix:  nowTimeUnix,
 				RequestName:  typStr,
-				RequestBody:  helper.BytesToString(requestbody),
-				ResponseBody: helper.BytesToString(responseBody),
+				RequestBody:  myHelper.BytesToString(requestbody),
+				ResponseBody: myHelper.BytesToString(responseBody),
 				Error:        errStr,
 			}
 
 			//定位是访问日志
-			logger.Info(helper.BytesToString(helper.JsonEncode(logInfo)))
+			logger.Info(myHelper.BytesToString(myHelper.JsonEncode(logInfo)))
 
 			return response, err
 		}

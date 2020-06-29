@@ -3,8 +3,8 @@ package model
 import (
 	"errors"
 
+	myHelper "github.com/livegoplayer/go_helper"
 	"go_user_rpc/dbHelper"
-	"go_user_rpc/helper"
 )
 
 type operationType int
@@ -291,7 +291,7 @@ func CheckUserName(username string) (isRecordFound bool, err error) {
 /**
 获取用户的权限列表
 */
-func GetUserDetailInfo(uid int32) (userSession *helper.UserSession, err error) {
+func GetUserDetailInfo(uid int32) (userSession *myHelper.UserSession, err error) {
 	db := dbHelper.GetDB()
 
 	var res []map[string]interface{}
@@ -302,20 +302,20 @@ func GetUserDetailInfo(uid int32) (userSession *helper.UserSession, err error) {
 
 	roleList := make(map[int32]string)
 	authorityList := make(map[int32]string)
-	userSession = &helper.UserSession{}
+	userSession = &myHelper.UserSession{}
 
 	userInitFlg := false
 	for _, info := range res {
-		roleId := helper.Int32(info["role_id"])
-		roleName := helper.String(info["role_name"])
-		authorityId := helper.Int32(info["authority_id"])
-		authorityName := helper.String(info["authority_name"])
+		roleId := myHelper.Int32(info["role_id"])
+		roleName := myHelper.String(info["role_name"])
+		authorityId := myHelper.Int32(info["authority_id"])
+		authorityName := myHelper.String(info["authority_name"])
 
 		if !userInitFlg {
-			uid := helper.Int32(info["uid"])
-			username := helper.String(info["username"])
-			addDatetime := helper.String(info["add_datetime"])
-			uptDatetime := helper.String(info["upt_datetime"])
+			uid := myHelper.Int32(info["uid"])
+			username := myHelper.String(info["username"])
+			addDatetime := myHelper.String(info["add_datetime"])
+			uptDatetime := myHelper.String(info["upt_datetime"])
 			userSession.Uid = uid
 			userSession.UserName = username
 			userSession.AddDatetime = addDatetime
@@ -366,8 +366,8 @@ func GetUserAuthorityList(uid int32) (authorityList map[int32]string, err error)
 	authorityList = make(map[int32]string)
 
 	for _, info := range res {
-		authorityId := helper.Int32(info["authority_id"])
-		authorityName := helper.String(info["authority_name"])
+		authorityId := myHelper.Int32(info["authority_id"])
+		authorityName := myHelper.String(info["authority_name"])
 		authorityList[authorityId] = authorityName
 	}
 
@@ -388,8 +388,8 @@ func GetAuthorityList() (authorityList map[int32]string, err error) {
 	authorityList = make(map[int32]string)
 
 	for _, info := range res {
-		authorityId := helper.Int32(info["authority_id"])
-		authorityName := helper.String(info["authority_name"])
+		authorityId := myHelper.Int32(info["authority_id"])
+		authorityName := myHelper.String(info["authority_name"])
 		authorityList[authorityId] = authorityName
 	}
 

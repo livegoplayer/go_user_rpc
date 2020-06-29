@@ -7,7 +7,8 @@ import (
 
 	"github.com/go-kit/kit/endpoint"
 
-	mylogger "go_user_rpc/logger"
+	myLogger "github.com/livegoplayer/go_logger"
+
 	user "go_user_rpc/user/grpc"
 )
 
@@ -275,8 +276,9 @@ func MakeUserEndpoints(svc *UserServiceServer) *UserEndpoints {
 	//	eps.GetUserRoleList = m(eps.GetUserRoleList)
 	//}
 
-	//全局访问日志中间件
-	logger := mylogger.GetLogger()
+	logger := myLogger.GetLogger()
+	commandName := "my_endpoint"
+
 	s := reflect.ValueOf(eps).Elem()
 	typeOfT := s.Type()
 	for i := 0; i < s.NumField(); i++ {
@@ -286,7 +288,6 @@ func MakeUserEndpoints(svc *UserServiceServer) *UserEndpoints {
 		loggerEP := loggingMiddleware(logger)(f)
 
 		//全局微服务熔断器中间件
-		commandName := "my_endpoint"
 		breakerMw := HystrixMiddleware(commandName)
 		hystrixEP := breakerMw(loggerEP)
 

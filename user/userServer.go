@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	"go_user_rpc/helper"
+	myHelper "github.com/livegoplayer/go_helper"
 	user "go_user_rpc/user/grpc"
 )
 
@@ -172,7 +172,7 @@ func (u *UserServiceServer) GetRoleList(_ context.Context, _ *user.GetRoleListRe
 	return
 }
 
-func utilUserSessionToResponse(session *helper.UserSession) *user.UserSessions {
+func utilUserSessionToResponse(session *myHelper.UserSession) *user.UserSessions {
 	responseUserSession := &user.UserSessions{
 		Uid:               int32(session.Uid),
 		Username:          session.UserName,
@@ -185,8 +185,8 @@ func utilUserSessionToResponse(session *helper.UserSession) *user.UserSessions {
 	return responseUserSession
 }
 
-func responseToUtilUserSession(session *user.UserSessions) *helper.UserSession {
-	responseUserSession := &helper.UserSession{
+func responseToUtilUserSession(session *user.UserSessions) *myHelper.UserSession {
+	responseUserSession := &myHelper.UserSession{
 		Uid:               session.Uid,
 		UserName:          session.Username,
 		UserRoleList:      session.UserRoleList,
