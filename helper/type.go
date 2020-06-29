@@ -1,4 +1,4 @@
-package util
+package helper
 
 import (
 	"unsafe"
@@ -11,16 +11,6 @@ func String(unknownVal interface{}) string {
 		return stringVal
 	}
 	return ""
-}
-
-func Int32(unknownVal interface{}) int32 {
-	intVal, ok := unknownVal.(int32)
-
-	if ok {
-		return intVal
-	}
-
-	return 0
 }
 
 func Int32(unknownVal interface{}) int32 {

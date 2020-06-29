@@ -4,14 +4,14 @@ import (
 	"errors"
 	"time"
 
+	"go_user_rpc/helper"
 	"go_user_rpc/model"
 	sessionHelper "go_user_rpc/redisHelper"
-	"go_user_rpc/util"
 )
 
 //定义一个接口，service包含的方法
 type UserServiceInterface interface {
-	Login(userName string, password string, host string) (uid int32, userSession *util.UserSession, tokenStr string, err error)
+	Login(userName string, password string, host string) (uid int32, userSession *helper.UserSession, tokenStr string, err error)
 	CheckLoginStatus(token string, host string) (isLogin bool, tokenStr string, err error)
 	Register(userName string, password string) (uid int32, err error)
 	AddUser(userName string, password string, operationUid int32) (uid int32, err error)
@@ -35,21 +35,21 @@ func init() {
 	UserServiceInstance = &UserService{}
 }
 
-func getUserSession(uid int32) (session *util.UserSession, exist bool) {
+func getUserSession(uid int32) (session *helper.UserSession, exist bool) {
 	key := getUserLoginStatusSessionKey(uid)
 	res := sessionHelper.GetRedisKey(key)
 	val := res.String()
 	if val != "" {
 		exist = true
-		util.JsonDecode(util.StringToBytes(val), session)
+		helper.JsonDecode(helper.StringToBytes(val), session)
 	}
 
 	return
 }
 
-func setUserSession(uid int32, session *util.UserSession) bool {
+func setUserSession(uid int32, session *helper.UserSession) bool {
 	key := getUserLoginStatusSessionKey(uid)
-	_ = sessionHelper.SetRedisKey(key, util.JsonEncode(session), time.Hour*24)
+	_ = sessionHelper.SetRedisKey(key, helper.JsonEncode(session), time.Hour*24)
 	return true
 }
 
@@ -107,7 +107,7 @@ func (userService *UserService) GetUserRoleList(uid int32) (userRoleList map[int
 	return userRoleList
 }
 
-func (userService *UserService) Login(userName string, password string, host string) (uid int32, userSession *util.UserSession, tokenStr string, err error) {
+func (userService *UserService) Login(userName string, password string, host string) (uid int32, userSession *helper.UserSession, tokenStr string, err error) {
 	exists := checkHost(host)
 	if !exists {
 		err = errors.New("非法域名")
@@ -135,7 +135,7 @@ func (userService *UserService) Login(userName string, password string, host str
 	setUserSession(uid, userSession)
 
 	//生成新的token
-	tokenStr, err = util.CreateToken(userSession, host)
+	tokenStr, err = helper.CreateToken(userSession, host)
 
 	return
 }
@@ -149,7 +149,7 @@ func (userService *UserService) CheckLoginStatus(token string, host string) (isL
 		return
 	}
 
-	claims, err := util.ParseToken(token, host)
+	claims, err := helper.ParseToken(token, host)
 	if err != nil {
 		//如果token过期了
 		if err.Error() == "jwt过期" || err.Error() == "host错误" {
@@ -160,7 +160,7 @@ func (userService *UserService) CheckLoginStatus(token string, host string) (isL
 				// 重新根据当前的session生成token
 				// 生成新的token
 				isLogin = true
-				tokenStr, err = util.CreateToken(userSessionNew, host)
+				tokenStr, err = helper.CreateToken(userSessionNew, host)
 			}
 		}
 
@@ -189,7 +189,7 @@ func (userService *UserService) GetAuthorityList() (authorityList map[int32]stri
 
 func checkHost(host string) (exists bool) {
 	validHostList := []string{"127.0.0.1"}
-	exists, _ = util.InArray(host, validHostList)
+	exists, _ = helper.InArray(host, validHostList)
 
 	return
 }

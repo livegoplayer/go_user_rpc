@@ -3,8 +3,8 @@ package user
 import (
 	"context"
 
+	"go_user_rpc/helper"
 	user "go_user_rpc/user/grpc"
-	"go_user_rpc/util"
 )
 
 //专门的go rpc server代码，为了和基础的service代码解耦，主要是避免输入输出的对象化，那样写很难受
@@ -140,7 +140,7 @@ func (u *UserServiceServer) AddUserRole(_ context.Context, request *user.AddUser
 }
 
 func (u *UserServiceServer) DelUserRole(_ context.Context, request *user.DelUserRoleRequest) (delUserRoleResponse *user.DelUserRoleResponse, err error) {
-	delUserRoleRequest = &user.DelUserRoleRequest{}
+	delUserRoleResponse = &user.DelUserRoleResponse{}
 	success := UserServiceInstance.AddUserRole(request.GetUid(), request.GetRoleId(), request.GetOperationUid())
 
 	delUserRoleData := &user.DelUserRoleData{}
@@ -172,7 +172,7 @@ func (u *UserServiceServer) GetRoleList(_ context.Context, _ *user.GetRoleListRe
 	return
 }
 
-func utilUserSessionToResponse(session *util.UserSession) *user.UserSessions {
+func utilUserSessionToResponse(session *helper.UserSession) *user.UserSessions {
 	responseUserSession := &user.UserSessions{
 		Uid:               int32(session.Uid),
 		Username:          session.UserName,
@@ -185,8 +185,8 @@ func utilUserSessionToResponse(session *util.UserSession) *user.UserSessions {
 	return responseUserSession
 }
 
-func responseToUtilUserSession(session *user.UserSessions) *util.UserSession {
-	responseUserSession := &util.UserSession{
+func responseToUtilUserSession(session *user.UserSessions) *helper.UserSession {
+	responseUserSession := &helper.UserSession{
 		Uid:               session.Uid,
 		UserName:          session.Username,
 		UserRoleList:      session.UserRoleList,
@@ -197,3 +197,20 @@ func responseToUtilUserSession(session *user.UserSessions) *util.UserSession {
 
 	return responseUserSession
 }
+
+////以下是中间件部分
+//type ServiceMiddleware func(UserServiceServer) UserServiceServer
+//
+//// loggingMiddleware Make a new type
+//// that contains Service interface and logger instance
+//type loggingMiddleware struct {
+//	UserServiceServer
+//	logger logrus.Logger
+//}
+//
+//// LoggingMiddleware make logging middleware
+//func LoggingMiddleware(logger logrus.Logger) ServiceMiddleware {
+//	return func(next UserServiceServer) UserServiceServer {
+//		return loggingMiddleware{next, logger}
+//	}
+//}

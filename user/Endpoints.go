@@ -3,9 +3,11 @@ package user
 import (
 	"context"
 	"errors"
+	"reflect"
 
 	"github.com/go-kit/kit/endpoint"
 
+	mylogger "go_user_rpc/logger"
 	user "go_user_rpc/user/grpc"
 )
 
@@ -62,7 +64,7 @@ type UserEndpoints struct {
 }
 
 // rpc_handler 这里做一个路由
-func MakeUserEndpoints(svc *UserServiceServer, mdw map[string][]endpoint.Middleware) *UserEndpoints {
+func MakeUserEndpoints(svc *UserServiceServer) *UserEndpoints {
 	eps := &UserEndpoints{
 		Login: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.LoginRequest)
@@ -234,42 +236,62 @@ func MakeUserEndpoints(svc *UserServiceServer, mdw map[string][]endpoint.Middlew
 		},
 	}
 
-	//增加中间件
-	for _, m := range mdw["Login"] {
-		eps.Login = m(eps.Login)
-	}
-	for _, m := range mdw["AddUser"] {
-		eps.AddUser = m(eps.AddUser)
-	}
-	for _, m := range mdw["DelUser"] {
-		eps.DelUser = m(eps.DelUser)
-	}
-	for _, m := range mdw["CheckLoginStatus"] {
-		eps.CheckLoginStatus = m(eps.CheckLoginStatus)
-	}
-	for _, m := range mdw["Register"] {
-		eps.Register = m(eps.Register)
-	}
-	for _, m := range mdw["CheckUserAuthority"] {
-		eps.CheckUserAuthority = m(eps.CheckUserAuthority)
-	}
-	for _, m := range mdw["GetUserAuthorityList"] {
-		eps.GetUserAuthorityList = m(eps.GetUserAuthorityList)
-	}
-	for _, m := range mdw["GetAuthorityList"] {
-		eps.GetAuthorityList = m(eps.GetAuthorityList)
-	}
-	for _, m := range mdw["AddUserRole"] {
-		eps.AddUserRole = m(eps.AddUserRole)
-	}
-	for _, m := range mdw["DelUserRole"] {
-		eps.DelUserRole = m(eps.DelUserRole)
-	}
-	for _, m := range mdw["GetRoleList"] {
-		eps.GetRoleList = m(eps.GetRoleList)
-	}
-	for _, m := range mdw["GetUserRoleList"] {
-		eps.GetUserRoleList = m(eps.GetUserRoleList)
+	//貌似这种中间件的写法贴别局限性
+	////增加中间件
+	//for _, m := range mdw["Login"] {
+	//	eps.Login = m(eps.Login)
+	//}
+	//for _, m := range mdw["AddUser"] {
+	//	eps.AddUser = m(eps.AddUser)
+	//}
+	//for _, m := range mdw["DelUser"] {
+	//	eps.DelUser = m(eps.DelUser)
+	//}
+	//for _, m := range mdw["CheckLoginStatus"] {
+	//	eps.CheckLoginStatus = m(eps.CheckLoginStatus)
+	//}
+	//for _, m := range mdw["Register"] {
+	//	eps.Register = m(eps.Register)
+	//}
+	//for _, m := range mdw["CheckUserAuthority"] {
+	//	eps.CheckUserAuthority = m(eps.CheckUserAuthority)
+	//}
+	//for _, m := range mdw["GetUserAuthorityList"] {
+	//	eps.GetUserAuthorityList = m(eps.GetUserAuthorityList)
+	//}
+	//for _, m := range mdw["GetAuthorityList"] {
+	//	eps.GetAuthorityList = m(eps.GetAuthorityList)
+	//}
+	//for _, m := range mdw["AddUserRole"] {
+	//	eps.AddUserRole = m(eps.AddUserRole)
+	//}
+	//for _, m := range mdw["DelUserRole"] {
+	//	eps.DelUserRole = m(eps.DelUserRole)
+	//}
+	//for _, m := range mdw["GetRoleList"] {
+	//	eps.GetRoleList = m(eps.GetRoleList)
+	//}
+	//for _, m := range mdw["GetUserRoleList"] {
+	//	eps.GetUserRoleList = m(eps.GetUserRoleList)
+	//}
+
+	//全局访问日志中间件
+	logger := mylogger.GetLogger()
+	s := reflect.ValueOf(eps).Elem()
+	typeOfT := s.Type()
+	for i := 0; i < s.NumField(); i++ {
+		name := typeOfT.Field(i).Name
+		f := s.Field(i).Interface().(endpoint.Endpoint)
+		//全局日志中间件
+		loggerEP := loggingMiddleware(logger)(f)
+
+		//全局微服务熔断器中间件
+		commandName := "my_endpoint"
+		breakerMw := HystrixMiddleware(commandName)
+		hystrixEP := breakerMw(loggerEP)
+
+		s.FieldByName(name).Set(reflect.ValueOf(hystrixEP))
+
 	}
 
 	return eps

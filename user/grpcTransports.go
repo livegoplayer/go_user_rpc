@@ -7,6 +7,7 @@ import (
 	grpc_transport "github.com/go-kit/kit/transport/grpc"
 )
 
+//使用tcp协议做的grpc
 type userGrpcService struct {
 	UserServiceServer
 	login                grpc.Handler
