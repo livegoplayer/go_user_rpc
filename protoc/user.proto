@@ -116,8 +116,8 @@ message CheckUserStatusResponse{
 
 //注册
 message RegisterRequest {
-    string          token = 1;
-    string          host = 2;
+    string          username = 1;
+    string          password = 2;
 }
 
 message RegisterData{

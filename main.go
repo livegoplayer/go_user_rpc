@@ -18,9 +18,6 @@ const rateBucketNum = 20
 
 var (
 	logger log.Logger
-	//fs       = flag.NewFlagSet("world", flag.ExitOnError)
-	//httpAddr = fs.String("http-addr", ":8082", "HTTP listen address")
-	//grpcAddr = fs.String("grpc-addr", ":8083", "gRPC listen address")
 )
 
 func main() {
@@ -34,17 +31,6 @@ func Run() {
 	initUserRpcHandler(g)
 	_ = g.Run()
 }
-
-//func initHttpHandler() {
-//	svc := user.UserService{}
-//
-//	r := user.MakeHTTPHandler(user.MakeUserEndpoints(svc))
-//	err := http.ListenAndServe(":8080", r)
-//	if err != nil {
-//		fmt.Printf("server start error : " + err.Error())
-//		return
-//	}
-//}
 
 func initUserRpcHandler(g *group.Group) {
 
