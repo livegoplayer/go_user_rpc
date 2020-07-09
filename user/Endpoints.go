@@ -9,7 +9,7 @@ import (
 
 	myLogger "github.com/livegoplayer/go_logger"
 
-	user "go_user_rpc/user/grpc"
+	user "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
 
 //handler

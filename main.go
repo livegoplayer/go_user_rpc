@@ -10,8 +10,8 @@ import (
 	"github.com/oklog/oklog/pkg/group"
 	realgrpc "google.golang.org/grpc"
 
-	"go_user_rpc/user"
-	userpb "go_user_rpc/user/grpc"
+	"github.com/livegoplayer/go_user_rpc/user"
+	userpb "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
 
 const rateBucketNum = 20

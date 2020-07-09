@@ -1,4 +1,4 @@
-module go_user_rpc
+module github.com/livegoplayer/go_user_rpc
 
 go 1.14
 

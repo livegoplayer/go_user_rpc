@@ -4,7 +4,7 @@ import (
 	"context"
 
 	myHelper "github.com/livegoplayer/go_helper"
-	user "go_user_rpc/user/grpc"
+	user "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
 
 //专门的go rpc server代码，为了和基础的service代码解耦，主要是避免输入输出的对象化，那样写很难受

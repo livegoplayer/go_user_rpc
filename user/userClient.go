@@ -1,7 +1,7 @@
 package user
 
 import (
-	userpb "go_user_rpc/user/grpc"
+	userpb "github.com/livegoplayer/go_user_rpc/user/grpc"
 	"log"
 
 	"google.golang.org/grpc"
