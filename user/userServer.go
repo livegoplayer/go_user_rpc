@@ -50,7 +50,7 @@ func (u *UserServiceServer) CheckUserStatus(_ context.Context, checkUserStatusRe
 
 func (u *UserServiceServer) Register(_ context.Context, request *user.RegisterRequest) (registerResponse *user.RegisterResponse, err error) {
 	registerResponse = &user.RegisterResponse{}
-	uid, err := UserServiceInstance.Register(request.GetToken(), request.GetHost())
+	uid, err := UserServiceInstance.Register(request.GetUsername(), request.GetPassword())
 	if err != nil {
 		registerResponse.Msg = err.Error()
 		registerResponse.ErrorCode = 1
