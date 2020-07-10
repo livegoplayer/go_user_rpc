@@ -15,10 +15,6 @@ func initUserClient() {
 		log.Fatalf("did not connect: %v", err)
 	}
 
-	defer func() {
-		_ = conn.Close()
-	}()
-
 	userClientInstance = userpb.NewUserClient(conn)
 }
 
