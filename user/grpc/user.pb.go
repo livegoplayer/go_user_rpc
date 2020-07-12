@@ -860,7 +860,7 @@ type RegisterRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Username string `protobuf:"bytes,1,opt,name=username,proto3" form:"username" validate:"required,lowercase|uppercase,max=5,min=15,numeric" json:"username,omitempty"`
+	Username string `protobuf:"bytes,1,opt,name=username,proto3" form:"username" validate:"required,lowercase|uppercase,max=15,min=5,numeric" json:"username,omitempty"`
 	Password string `protobuf:"bytes,2,opt,name=password,proto3" form:"password" validate:"required,lowercase|uppercase,max=6,numeric" json:"password,omitempty"`
 }
 
