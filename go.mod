@@ -10,15 +10,16 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.4.2
 	github.com/jinzhu/gorm v1.9.14
-	github.com/livegoplayer/go_helper v0.0.0-20200629061256-7c48ccb9f7bc
+	github.com/livegoplayer/go_helper v1.0.23
 	github.com/livegoplayer/go_logger v0.0.0-20200629083457-44ddad95dd7c
 	github.com/oklog/oklog v0.3.2
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/sirupsen/logrus v1.6.0
+	golang.org/x/image v0.0.0-20200618115811-c13761719519 // indirect
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect
 	golang.org/x/text v0.3.3 // indirect
-	google.golang.org/genproto v0.0.0-20200709005830-7a2ca40e9dc3 // indirect
+	google.golang.org/genproto v0.0.0-20200711021454-869866162049 // indirect
 	google.golang.org/grpc v1.30.0
 	google.golang.org/protobuf v1.25.0
 	gopkg.in/yaml.v2 v2.3.0 // indirect

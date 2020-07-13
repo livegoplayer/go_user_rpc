@@ -11,7 +11,7 @@ import (
 
 //定义一个接口，service包含的方法
 type UserServiceInterface interface {
-	Login(userName string, password string, host string) (uid int32, userSession *myHelper.UserSession, tokenStr string, err error)
+	Login(userName string, password string) (uid int32, userSession *myHelper.UserSession, tokenStr string, err error)
 	CheckLoginStatus(token string, host string) (isLogin bool, tokenStr string, err error)
 	Register(userName string, password string) (uid int32, err error)
 	AddUser(userName string, password string, operationUid int32) (uid int32, err error)
@@ -38,7 +38,7 @@ func init() {
 func getUserSession(uid int32) (session *myHelper.UserSession, exist bool) {
 	key := getUserLoginStatusSessionKey(uid)
 	res := sessionHelper.GetRedisKey(key)
-	val := res.String()
+	val := res.Val()
 	if val != "" {
 		exist = true
 		myHelper.JsonDecode(myHelper.StringToBytes(val), session)
@@ -107,13 +107,7 @@ func (userService *UserService) GetUserRoleList(uid int32) (userRoleList map[int
 	return userRoleList
 }
 
-func (userService *UserService) Login(userName string, password string, host string) (uid int32, userSession *myHelper.UserSession, tokenStr string, err error) {
-	exists := checkHost(host)
-	if !exists {
-		err = errors.New("非法域名")
-		return
-	}
-
+func (userService *UserService) Login(userName string, password string) (uid int32, userSession *myHelper.UserSession, tokenStr string, err error) {
 	//第一步获取用户信息
 	isRecordFound, user, err := model.CheckUserPassword(userName, password)
 	if err != nil {
@@ -135,20 +129,12 @@ func (userService *UserService) Login(userName string, password string, host str
 	setUserSession(uid, userSession)
 
 	//生成新的token
-	tokenStr, err = myHelper.CreateToken(userSession, host)
+	tokenStr, err = myHelper.CreateToken(userSession)
 
 	return
 }
 
 func (userService *UserService) CheckLoginStatus(token string, host string) (isLogin bool, tokenStr string, err error) {
-	//todo 分离出去
-
-	exists := checkHost(host)
-	if !exists {
-		err = errors.New("非法域名")
-		return
-	}
-
 	claims, err := myHelper.ParseToken(token, host)
 	if err != nil {
 		//如果token过期了
@@ -160,7 +146,7 @@ func (userService *UserService) CheckLoginStatus(token string, host string) (isL
 				// 重新根据当前的session生成token
 				// 生成新的token
 				isLogin = true
-				tokenStr, err = myHelper.CreateToken(userSessionNew, host)
+				tokenStr, err = myHelper.CreateToken(userSessionNew)
 			}
 		}
 
@@ -184,12 +170,5 @@ func (userService *UserService) GetUserAuthorityList(uid int32) (userAuthorityLi
 
 func (userService *UserService) GetAuthorityList() (authorityList map[int32]string) {
 	authorityList, _ = model.GetAuthorityList()
-	return
-}
-
-func checkHost(host string) (exists bool) {
-	validHostList := []string{"127.0.0.1"}
-	exists, _ = myHelper.InArray(host, validHostList)
-
 	return
 }

@@ -15,7 +15,7 @@ type UserServiceServer struct {
 //以下函数是给endpoints调用的，最后会被安装到对应的成员变量上，所以一定要是grpc.Handler 类型的
 func (u *UserServiceServer) Login(_ context.Context, request *user.LoginRequest) (loginResponse *user.LoginResponse, err error) {
 	loginResponse = &user.LoginResponse{}
-	uid, userSession, token, err := UserServiceInstance.Login(request.GetUserName(), request.GetPassword(), request.GetHost())
+	uid, userSession, token, err := UserServiceInstance.Login(request.GetUserName(), request.GetPassword())
 	if err != nil {
 		loginResponse.Msg = err.Error()
 		loginResponse.ErrorCode = 1
