@@ -125,6 +125,7 @@ func (userService *UserService) Login(userName string, password string) (uid int
 		return
 	}
 
+	uid = user.ID
 	//设置session
 	setUserSession(uid, userSession)
 
