@@ -33,7 +33,7 @@ func (u *UserServiceServer) Login(_ context.Context, request *user.LoginRequest)
 
 func (u *UserServiceServer) CheckUserStatus(_ context.Context, checkUserStatusRequest *user.CheckUserStatusRequest) (checkUserStatusResponse *user.CheckUserStatusResponse, err error) {
 	checkUserStatusResponse = &user.CheckUserStatusResponse{}
-	isLogin, tokenStr, err := UserServiceInstance.CheckLoginStatus(checkUserStatusRequest.GetToken(), checkUserStatusRequest.GetHost())
+	isLogin, tokenStr, err := UserServiceInstance.CheckLoginStatus(checkUserStatusRequest.GetToken())
 	if err != nil {
 		checkUserStatusResponse.Msg = err.Error()
 		checkUserStatusResponse.ErrorCode = 1
