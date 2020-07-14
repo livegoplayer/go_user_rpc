@@ -123,8 +123,8 @@ type LoginRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserName string `protobuf:"bytes,1,opt,name=userName,proto3" json:"userName,omitempty"`
-	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Username string `protobuf:"bytes,1,opt,name=username,proto3" form:"username" validate:"required,lowercase|uppercase,max=15,min=5" json:"username,omitempty"`
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" form:"password" validate:"required,lowercase|uppercase,min=6" json:"password,omitempty"`
 }
 
 func (x *LoginRequest) Reset() {
