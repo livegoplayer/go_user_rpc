@@ -41,7 +41,7 @@ type Role struct {
 	Name           string `gorm:"column:role_name"`
 	Level          int32  `gorm:"column:role_level"`
 	AddDatetime    int32  `gorm:"column:add_datetime"`
-	UpdateDatetime int32  `gorm:"column:update_datetime"`
+	UpdateDatetime int32  `gorm:"column:upt_datetime"`
 }
 
 //设置表名，可以通过给struct类型定义 TableName函数，返回当前struct绑定的mysql表名是什么
@@ -288,14 +288,26 @@ func CheckUserName(username string) (isRecordFound bool, err error) {
 	return
 }
 
+type UserDetail struct {
+	Uid            int32  `json:"uid"`
+	UserName       string `json:"username"`
+	AddDatetime    string `json:"add_datetime"`
+	UpdateDatetime string `json:"upt_datetime"`
+	RoleId         int32  `json:"role_id"`
+	RoleName       string `json:"role_name"`
+	AuthorityId    int32  `json:"authority_id"`
+	AuthorityName  string `json:"authority_name"`
+}
+
 /**
 获取用户的权限列表
 */
 func GetUserDetailInfo(uid int32) (userSession *myHelper.UserSession, err error) {
 	db := dbHelper.GetDB()
 
-	var res []map[string]interface{}
-	db = db.Table("fs_user").Select("fs_user.id as uid, fs_user.username as username, fs_user.add_datetime as add_datetime, fs_user.upt_datetime as upt_datetime, fs_role.id as role_id, fs_role.role_name as role_name, fs_authority.id as authority_id, fs_authority.authority_name as authority_name").Joins("LEFT JOIN fs_ret_user_role as a ON fs_ret_user_role.uid = fs_users.id").Joins("LEFT JOIN fs_role as c ON b.role_id = c.id").Joins("LEFT JOIN fs_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN fs_authority as e ON d.authority_id = e.id").Where(prefix+"user.uid = ?", uid).Scan(&res)
+	var userDetailList []UserDetail
+	db = db.Table("fs_user").Select("fs_user.id as uid, fs_user.username as username, fs_user.add_datetime as add_datetime, fs_user.upt_datetime as upt_datetime, c.id as role_id, c.role_name as role_name, e.id as authority_id, e.authority_name as authority_name").Joins("LEFT JOIN fs_ret_user_role as a ON a.uid = fs_user.id").Joins("LEFT JOIN fs_role as c ON a.role_id = c.id").Joins("LEFT JOIN fs_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN fs_authority as e ON d.authority_id = e.id").Where(
+		"fs_user.id = ?", uid).Find(&userDetailList)
 	if db.Error != nil {
 		return
 	}
@@ -305,26 +317,18 @@ func GetUserDetailInfo(uid int32) (userSession *myHelper.UserSession, err error)
 	userSession = &myHelper.UserSession{}
 
 	userInitFlg := false
-	for _, info := range res {
-		roleId := myHelper.Int32(info["role_id"])
-		roleName := myHelper.String(info["role_name"])
-		authorityId := myHelper.Int32(info["authority_id"])
-		authorityName := myHelper.String(info["authority_name"])
+	for _, userDetail := range userDetailList {
 
 		if !userInitFlg {
-			uid := myHelper.Int32(info["uid"])
-			username := myHelper.String(info["username"])
-			addDatetime := myHelper.String(info["add_datetime"])
-			uptDatetime := myHelper.String(info["upt_datetime"])
-			userSession.Uid = uid
-			userSession.UserName = username
-			userSession.AddDatetime = addDatetime
-			userSession.UpdateDatetime = uptDatetime
+			userSession.Uid = userDetail.Uid
+			userSession.UserName = userDetail.UserName
+			userSession.AddDatetime = userDetail.AddDatetime
+			userSession.UpdateDatetime = userDetail.UpdateDatetime
 			userInitFlg = true
 		}
 
-		roleList[roleId] = roleName
-		authorityList[authorityId] = authorityName
+		roleList[userDetail.RoleId] = userDetail.RoleName
+		authorityList[userDetail.AuthorityId] = userDetail.AuthorityName
 	}
 
 	userSession.UserRoleList = roleList
