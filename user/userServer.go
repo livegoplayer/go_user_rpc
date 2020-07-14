@@ -33,14 +33,24 @@ func (u *UserServiceServer) Login(_ context.Context, request *user.LoginRequest)
 
 func (u *UserServiceServer) CheckUserStatus(_ context.Context, checkUserStatusRequest *user.CheckUserStatusRequest) (checkUserStatusResponse *user.CheckUserStatusResponse, err error) {
 	checkUserStatusResponse = &user.CheckUserStatusResponse{}
-	isLogin, tokenStr, err := UserServiceInstance.CheckLoginStatus(checkUserStatusRequest.GetToken())
+	isLogin, userSession, tokenStr, err := UserServiceInstance.CheckLoginStatus(checkUserStatusRequest.GetToken())
 	if err != nil {
 		checkUserStatusResponse.Msg = err.Error()
 		checkUserStatusResponse.ErrorCode = 1
 		return
 	}
+
+	mySession := user.UserSessions{}
+	mySession.Uid = userSession.Uid
+	mySession.Username = userSession.UserName
+	mySession.UserRoleList = userSession.UserRoleList
+	mySession.UserAuthorityList = userSession.UserAuthorityList
+	mySession.AddDatetime = userSession.AddDatetime
+	mySession.UpdateDatetime = userSession.UpdateDatetime
+
 	checkUserStatusData := &user.CheckUserStatusData{}
 	checkUserStatusData.IsLogin = isLogin
+	checkUserStatusData.UserSession = &mySession
 	checkUserStatusData.Token = tokenStr
 
 	checkUserStatusResponse.Data = checkUserStatusData

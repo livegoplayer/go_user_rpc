@@ -102,7 +102,8 @@ message CheckUserStatusRequest {
 message CheckUserStatusData{
     bool           isLogin = 1;
     string          token = 2;
-    string          error = 3;
+    UserSessions    userSession = 3;
+    string          error = 4;
 }
 
 message CheckUserStatusResponse{
