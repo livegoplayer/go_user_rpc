@@ -97,7 +97,6 @@ message DelUserResponse{
 //检查用户登录状态
 message CheckUserStatusRequest {
     string          token = 1;
-    string          host = 2;
 }
 
 message CheckUserStatusData{

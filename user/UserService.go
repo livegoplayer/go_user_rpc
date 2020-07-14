@@ -135,8 +135,8 @@ func (userService *UserService) Login(userName string, password string) (uid int
 	return
 }
 
-func (userService *UserService) CheckLoginStatus(token string, host string) (isLogin bool, tokenStr string, err error) {
-	claims, err := myHelper.ParseToken(token, host)
+func (userService *UserService) CheckLoginStatus(token string) (isLogin bool, tokenStr string, err error) {
+	claims, err := myHelper.ParseToken(token)
 	if err != nil {
 		//如果token过期了
 		if err.Error() == "jwt过期" || err.Error() == "host错误" {
