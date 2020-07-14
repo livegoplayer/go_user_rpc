@@ -295,7 +295,7 @@ func GetUserDetailInfo(uid int32) (userSession *myHelper.UserSession, err error)
 	db := dbHelper.GetDB()
 
 	var res []map[string]interface{}
-	db = db.Table("user").Select("fs_user.id as uid, fs_user.username as username, fs_user.add_datetime as add_datetime, fs_user.upt_datetime as upt_datetime, fs_role.id as role_id, fs_role.role_name as role_name, fs_authority.id as authority_id, fs_authority.authority_name as authority_name").Joins("LEFT JOIN fs_ret_user_role as a ON fs_ret_user_role.uid = users.id").Joins("LEFT JOIN fs_role as c ON b.role_id = c.id").Joins("LEFT JOIN fs_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN fs_authority as e ON d.authority_id = e.id").Where("user.uid = ?", uid).Scan(&res)
+	db = db.Table("fs_user").Select("fs_user.id as uid, fs_user.username as username, fs_user.add_datetime as add_datetime, fs_user.upt_datetime as upt_datetime, fs_role.id as role_id, fs_role.role_name as role_name, fs_authority.id as authority_id, fs_authority.authority_name as authority_name").Joins("LEFT JOIN fs_ret_user_role as a ON fs_ret_user_role.uid = fs_users.id").Joins("LEFT JOIN fs_role as c ON b.role_id = c.id").Joins("LEFT JOIN fs_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN fs_authority as e ON d.authority_id = e.id").Where(prefix+"user.uid = ?", uid).Scan(&res)
 	if db.Error != nil {
 		return
 	}
