@@ -290,7 +290,7 @@ func CheckUserName(username string) (isRecordFound bool, err error) {
 
 type UserDetail struct {
 	Uid           int32  `json:"uid"`
-	UserName      string `json:"username"`
+	Username      string `json:"username"`
 	AddDatetime   string `json:"add_datetime"`
 	UptDatetime   string `json:"upt_datetime"`
 	RoleId        int32  `json:"role_id"`
@@ -321,7 +321,7 @@ func GetUserDetailInfo(uid int32) (userSession *myHelper.UserSession, err error)
 
 		if !userInitFlg {
 			userSession.Uid = userDetail.Uid
-			userSession.UserName = userDetail.UserName
+			userSession.UserName = userDetail.Username
 			userSession.AddDatetime = userDetail.AddDatetime
 			userSession.UpdateDatetime = userDetail.UptDatetime
 			userInitFlg = true
