@@ -4,6 +4,7 @@ import (
 	"context"
 
 	myHelper "github.com/livegoplayer/go_helper"
+	"github.com/livegoplayer/go_user_rpc/model"
 	user "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
 
@@ -40,17 +41,11 @@ func (u *UserServiceServer) CheckUserStatus(_ context.Context, checkUserStatusRe
 		return
 	}
 
-	mySession := user.UserSessions{}
-	mySession.Uid = userSession.Uid
-	mySession.Username = userSession.UserName
-	mySession.UserRoleList = userSession.UserRoleList
-	mySession.UserAuthorityList = userSession.UserAuthorityList
-	mySession.AddDatetime = userSession.AddDatetime
-	mySession.UpdateDatetime = userSession.UpdateDatetime
+	mySession := utilUserSessionToResponse(&userSession)
 
 	checkUserStatusData := &user.CheckUserStatusData{}
 	checkUserStatusData.IsLogin = isLogin
-	checkUserStatusData.UserSession = &mySession
+	checkUserStatusData.UserSession = mySession
 	checkUserStatusData.Token = tokenStr
 
 	checkUserStatusResponse.Data = checkUserStatusData
@@ -182,6 +177,17 @@ func (u *UserServiceServer) GetRoleList(_ context.Context, _ *user.GetRoleListRe
 	return
 }
 
+func (u *UserServiceServer) GetUserList(_ context.Context, _ *user.GetUserListRequest) (getUserListResponse *user.GetUserListResponse, err error) {
+	userList := UserServiceInstance.GetUserList()
+	getUserListResponse = &user.GetUserListResponse{}
+
+	getUserListData := &user.GetUserListData{}
+	getUserListData.UserList = UtilUserModelListToResponse(userList)
+
+	getUserListResponse.Data = getUserListData
+	return
+}
+
 func utilUserSessionToResponse(session *myHelper.UserSession) *user.UserSessions {
 	responseUserSession := &user.UserSessions{
 		Uid:               int32(session.Uid),
@@ -193,6 +199,18 @@ func utilUserSessionToResponse(session *myHelper.UserSession) *user.UserSessions
 	}
 
 	return responseUserSession
+}
+
+func UtilUserModelListToResponse(userModelList []*model.User) (userInfoList []*user.UserInfo) {
+	for _, val := range userModelList {
+		userInfo := user.UserInfo{}
+		userInfo.Id = val.ID
+		userInfo.Username = val.Name
+		userInfo.AddDataTime = val.AddDatetime
+		userInfo.UptDatetime = val.UpdateDatetime
+		userInfoList = append(userInfoList, &userInfo)
+	}
+	return
 }
 
 func responseToUtilUserSession(session *user.UserSessions) *myHelper.UserSession {

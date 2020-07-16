@@ -10,7 +10,7 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.4.2
 	github.com/jinzhu/gorm v1.9.14
-	github.com/livegoplayer/go_helper v1.0.29
+	github.com/livegoplayer/go_helper v1.0.30
 	github.com/livegoplayer/go_logger v0.0.0-20200629083457-44ddad95dd7c
 	github.com/mitchellh/mapstructure v1.3.2 // indirect
 	github.com/oklog/oklog v0.3.2
@@ -25,7 +25,7 @@ require (
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect
 	golang.org/x/text v0.3.3 // indirect
-	google.golang.org/genproto v0.0.0-20200711021454-869866162049 // indirect
+	google.golang.org/genproto v0.0.0-20200715011427-11fb19a81f2c // indirect
 	google.golang.org/grpc v1.30.0
 	google.golang.org/protobuf v1.25.0
 	gopkg.in/ini.v1 v1.57.0 // indirect

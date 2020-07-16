@@ -10,6 +10,8 @@ service User{
     rpc AddUser(AddUserRequest) returns (AddUserResponse);
     //管理员删除用户
     rpc DelUser(DelUserRequest) returns (DelUserResponse);
+    //获取用户列表
+    rpc GetUserList(GetUserListRequest) returns (GetUserListResponse);
     //检查用户登陆状态
     rpc	CheckUserStatus(CheckUserStatusRequest) returns (CheckUserStatusResponse);
     //注册
@@ -92,6 +94,26 @@ message DelUserResponse{
     int32           errorCode = 1;
     DelUserData       data = 2;
     string          msg = 3;
+}
+
+message GetUserListRequest{
+}
+
+message GetUserListResponse{
+    int32           errorCode = 1;
+    GetUserListData data = 2;
+    string          msg = 3;
+}
+
+message GetUserListData{
+    repeated UserInfo userList= 1;
+}
+
+message UserInfo{
+    int32 id = 1;
+    string username = 2;
+    string addDataTime = 3;
+    string uptDatetime = 4;
 }
 
 //检查用户登录状态

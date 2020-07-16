@@ -240,6 +240,8 @@ github.com/livegoplayer/go_helper v1.0.23/go.mod h1:m2uWISfc/CEQra4NZOfYq7XwwYu5
 github.com/livegoplayer/go_helper v1.0.28/go.mod h1:LGRakEGtvEiNzEl29mNVsr2U0Is9v+x2bvru75WUazk=
 github.com/livegoplayer/go_helper v1.0.29 h1:uXLlBdo1NUGcRuoazQ9cKENs83Cz2A9lgbZ3TlPWXwE=
 github.com/livegoplayer/go_helper v1.0.29/go.mod h1:LGRakEGtvEiNzEl29mNVsr2U0Is9v+x2bvru75WUazk=
+github.com/livegoplayer/go_helper v1.0.30 h1:a0j29ZoZfcX7ykBGMzBmOFKjF25XMQ6BUf3onFr/EXI=
+github.com/livegoplayer/go_helper v1.0.30/go.mod h1:LGRakEGtvEiNzEl29mNVsr2U0Is9v+x2bvru75WUazk=
 github.com/livegoplayer/go_logger v0.0.0-20200629083457-44ddad95dd7c h1:psBEIL403tTjenmj1yXuYLie0aOXmZPAWrhbhmCU6UQ=
 github.com/livegoplayer/go_logger v0.0.0-20200629083457-44ddad95dd7c/go.mod h1:M4wW1TEEDDRg68rfv+KJBL++l0mgWUDBPP6RhuzMnDA=
 github.com/lyft/protoc-gen-validate v0.0.13/go.mod h1:XbGvPuh87YZc5TdIa2/I4pLk0QoUACkjt2znoq26NVQ=
@@ -576,6 +578,8 @@ google.golang.org/genproto v0.0.0-20200709005830-7a2ca40e9dc3 h1:JwLN1jVnmIsfE4H
 google.golang.org/genproto v0.0.0-20200709005830-7a2ca40e9dc3/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/genproto v0.0.0-20200711021454-869866162049 h1:YFTFpQhgvrLrmxtiIncJxFXeCyq84ixuKWVCaCAi9Oc=
 google.golang.org/genproto v0.0.0-20200711021454-869866162049/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
+google.golang.org/genproto v0.0.0-20200715011427-11fb19a81f2c h1:6DWnZZ6EY/59QRRQttZKiktVL23UuQYs7uy75MhhLRM=
+google.golang.org/genproto v0.0.0-20200715011427-11fb19a81f2c/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/grpc v1.17.0/go.mod h1:6QZJwpn2B+Zp71q/5VxRsJ6NXXVCE5NRUHRo+f3cWCs=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.20.0/go.mod h1:chYK+tFQF0nDUGJgXMSgLCQk3phJEuONr2DCgLDdAQM=

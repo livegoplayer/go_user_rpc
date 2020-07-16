@@ -258,6 +258,16 @@ func DelUser(uid int32, operationUid int32) (success bool, err error) {
 	return
 }
 
+func GetUserList() (userList []*User) {
+	db := dbHelper.GetDB()
+
+	User := &User{}
+
+	db = db.Scan(User)
+
+	return
+}
+
 //检查用户名密码
 func CheckUserPassword(username string, password string) (isRecordFound bool, user *User, err error) {
 	db := dbHelper.GetDB()

@@ -15,6 +15,7 @@ type userGrpcService struct {
 	register             grpc.Handler
 	addUser              grpc.Handler
 	delUser              grpc.Handler
+	getUserList          grpc.Handler
 	checkUserAuthority   grpc.Handler
 	getUserAuthorityList grpc.Handler
 	getAuthorityList     grpc.Handler
@@ -52,6 +53,12 @@ func MakeGRPCHandler(eps UserEndpoints, opts ...grpc_transport.ServerOption) *us
 		),
 		delUser: grpc.NewServer(
 			eps.DelUser,
+			decodeGetRequest,
+			encodeRpcResponse,
+			opts...,
+		),
+		getUserList: grpc.NewServer(
+			eps.GetUserList,
 			decodeGetRequest,
 			encodeRpcResponse,
 			opts...,

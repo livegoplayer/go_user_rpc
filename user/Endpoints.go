@@ -44,6 +44,8 @@ type UserEndpoints struct {
 	AddUser endpoint.Endpoint
 	//管理员删除用户
 	DelUser endpoint.Endpoint
+	//获取用户列表
+	GetUserList endpoint.Endpoint
 	//检查用户登陆状态
 	CheckLoginStatus endpoint.Endpoint
 	//注册

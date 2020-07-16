@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"strconv"
 	"time"
 
 	myHelper "github.com/livegoplayer/go_helper"
@@ -16,6 +17,7 @@ type UserServiceInterface interface {
 	Register(userName string, password string) (uid int32, err error)
 	AddUser(userName string, password string, operationUid int32) (uid int32, err error)
 	DelUser(uid int32, operationUid int32) (success bool, err error)
+	GetUserList() (userList []model.User)
 
 	CheckUserAuthority(uid int32, authorityId int32) bool
 	GetUserAuthorityList(uid int32) map[int32]string
@@ -54,7 +56,7 @@ func setUserSession(uid int32, session *myHelper.UserSession) bool {
 }
 
 func getUserLoginStatusSessionKey(uid int32) string {
-	key := "user_login_status_session_uid_" + string(uid)
+	key := "user_login_status_session_uid_" + strconv.Itoa(int(uid))
 	return key
 }
 
@@ -137,10 +139,11 @@ func (userService *UserService) Login(userName string, password string) (uid int
 
 func (userService *UserService) CheckLoginStatus(token string) (isLogin bool, userSession myHelper.UserSession, tokenStr string, err error) {
 	claims, err := myHelper.ParseToken(token)
+	tokenStr = token
+	userSession = claims.UserSession
 	if err != nil {
 		//如果token过期了
 		if err.Error() == "jwt过期" || err.Error() == "host错误" {
-			userSession := claims.UserSession
 			//检查session是否过期
 			userSession, exsit := getUserSession(userSession.Uid)
 			if exsit {
@@ -171,5 +174,10 @@ func (userService *UserService) GetUserAuthorityList(uid int32) (userAuthorityLi
 
 func (userService *UserService) GetAuthorityList() (authorityList map[int32]string) {
 	authorityList, _ = model.GetAuthorityList()
+	return
+}
+
+func (userService *UserService) GetUserList() (userList []*model.User) {
+	userList = model.GetUserList()
 	return
 }
