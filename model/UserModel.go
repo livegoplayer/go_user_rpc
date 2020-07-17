@@ -93,7 +93,7 @@ type UserOperationLog struct {
 	Uid         int32         `gorm:"column:uid"`
 	Message     string        `gorm:"column:message"`
 	OperatorUid int32         `gorm:"column:operator_uid"`
-	AddDatetime int32         `gorm:"column:add_datetime"`
+	AddDatetime int32         `gorm:"column:add_datetime;-"`
 }
 
 //设置表名，可以通过给struct类型定义 TableName函数，返回当前struct绑定的mysql表名是什么
@@ -156,7 +156,7 @@ func AddUserRole(uid int32, roleId int32, operationUid int32) (success bool) {
 		return
 	}
 
-	_ = addOperationLog(ROLE_RET, operationUid, uid, "删除用户角色")
+	_ = addOperationLog(ROLE_RET, operationUid, uid, "添加用户角色")
 
 	success = true
 	return success
