@@ -162,6 +162,22 @@ func AddUserRole(uid int32, roleId int32, operationUid int32) (success bool) {
 	return success
 }
 
+func CheckUserRole(uid int32, roleId int32) bool {
+	db := dbHelper.GetDB()
+
+	//todo 加入事务操作
+	retUserRole := &RetUserRole{}
+
+	//查出任意一条
+	db = db.Where("uid = ? and role_id = ?", uid, roleId).Take(retUserRole)
+
+	if retUserRole.ID != 0 {
+		return true
+	}
+
+	return false
+}
+
 func DelUserRole(uid int32, roleId int32, operationUid int32) (success bool) {
 	db := dbHelper.GetDB()
 

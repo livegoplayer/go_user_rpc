@@ -146,7 +146,7 @@ func (u *UserServiceServer) AddUserRole(_ context.Context, request *user.AddUser
 
 func (u *UserServiceServer) DelUserRole(_ context.Context, request *user.DelUserRoleRequest) (delUserRoleResponse *user.DelUserRoleResponse, err error) {
 	delUserRoleResponse = &user.DelUserRoleResponse{}
-	success := UserServiceInstance.AddUserRole(request.GetUid(), request.GetRoleId(), request.GetOperationUid())
+	success := UserServiceInstance.DelUserRole(request.GetUid(), request.GetRoleId(), request.GetOperationUid())
 
 	delUserRoleData := &user.DelUserRoleData{}
 	delUserRoleData.Success = success

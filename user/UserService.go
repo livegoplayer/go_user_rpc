@@ -82,12 +82,17 @@ func (userService *UserService) DelUser(uid int32, operationUid int32) (success 
 }
 
 func (userService *UserService) AddUserRole(uid int32, roleId int32, operationUid int32) bool {
-	return model.AddUserRole(uid, roleId, operationUid)
+	if !model.CheckUserRole(uid, roleId) {
+		return model.AddUserRole(uid, roleId, operationUid)
+	}
+	return true
 }
 
-//不给用
 func (userService *UserService) DelUserRole(uid int32, roleId int32, operationUid int32) bool {
-	return model.DelUserRole(uid, roleId, operationUid)
+	if model.CheckUserRole(uid, roleId) {
+		return model.DelUserRole(uid, roleId, operationUid)
+	}
+	return true
 }
 
 func (userService *UserService) GetRoleList() (roleList map[int32]string) {

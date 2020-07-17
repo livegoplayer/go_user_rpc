@@ -1717,9 +1717,9 @@ type AddUserRoleRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uid          int32 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
-	RoleId       int32 `protobuf:"varint,2,opt,name=roleId,proto3" json:"roleId,omitempty"`
-	OperationUid int32 `protobuf:"varint,3,opt,name=operationUid,proto3" json:"operationUid,omitempty"`
+	Uid          int32 `protobuf:"varint,1,opt,name=uid,proto3" form:"uid" validate:"required,number,gt=0" json:"uid,omitempty"`
+	RoleId       int32 `protobuf:"varint,2,opt,name=roleId,proto3" form:"role_id" validate:"required,number,gt=0" json:"roleId,omitempty"`
+	OperationUid int32 `protobuf:"varint,3,opt,name=operationUid,proto3" form:"operation_uid" validate:"required,number,gt=0" json:"operationUid,omitempty"`
 }
 
 func (x *AddUserRoleRequest) Reset() {
