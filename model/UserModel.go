@@ -124,7 +124,7 @@ func GetUserRoleList(uid int32) (roles []*Role) {
 	var userRoles []*RetUserRole
 	db := dbHelper.GetDB()
 
-	db = db.Where("uid=?", uid).Limit(10).Take(&userRoles)
+	db = db.Where("uid=?", uid).Limit(10).Find(&userRoles)
 	if db.Error != nil {
 		//todo
 		return
