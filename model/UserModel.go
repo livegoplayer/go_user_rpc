@@ -135,7 +135,8 @@ func GetUserRoleList(uid int32) (roles []*Role) {
 		roleIdList = append(roleIdList, userRole.RoleId)
 	}
 
-	db = db.Where("role_id in (?)", roleIdList).Limit(10).Take(&roles)
+	db = dbHelper.GetDB()
+	db = db.Where("id in (?)", roleIdList).Limit(10).Find(&roles)
 	if db.Error != nil {
 		//todo
 		return
