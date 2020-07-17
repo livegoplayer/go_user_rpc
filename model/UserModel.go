@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	myHelper "github.com/livegoplayer/go_helper"
+
 	"github.com/livegoplayer/go_user_rpc/dbHelper"
 )
 
@@ -26,7 +27,7 @@ type User struct {
 	Model
 	ID       int32  `gorm:"column:id"` //会被自动认为是主键
 	Name     string `gorm:"column:username"`
-	Password string
+	Password string `gorm:"column:password"`
 }
 
 //设置表名，可以通过给struct类型定义 TableName函数，返回当前struct绑定的mysql表名是什么
@@ -110,7 +111,7 @@ func GetRoleList() (roles []*Role) {
 
 	db := dbHelper.GetDB()
 
-	db = db.Limit(10).Take(&roles)
+	db = db.Limit(10).Find(&roles)
 
 	if db.Error != nil {
 		//todo
@@ -261,9 +262,7 @@ func DelUser(uid int32, operationUid int32) (success bool, err error) {
 func GetUserList() (userList []*User) {
 	db := dbHelper.GetDB()
 
-	User := &User{}
-
-	db = db.Scan(User)
+	db = db.Find(&userList)
 
 	return
 }

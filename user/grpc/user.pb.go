@@ -2214,7 +2214,7 @@ type GetUserRoleListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uid int32 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	Uid int32 `protobuf:"varint,1,opt,name=uid,proto3" form:"uid" validate:"required,number,gte=0" json:"uid,omitempty"`
 }
 
 func (x *GetUserRoleListRequest) Reset() {
