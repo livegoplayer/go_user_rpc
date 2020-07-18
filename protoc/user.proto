@@ -109,6 +109,7 @@ message GetUserListResponse{
 
 message GetUserListData{
     repeated UserInfo userList= 1;
+    int32 total=2;
 }
 
 message UserInfo{
