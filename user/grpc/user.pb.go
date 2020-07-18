@@ -668,8 +668,8 @@ type GetUserListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Page int32 `protobuf:"varint,1,opt,name=page,proto3" form:"page" json:"page,omitempty"`
-	Size int32 `protobuf:"varint,2,opt,name=size,proto3" form:"size" json:"size,omitempty"`
+	Page int32 `protobuf:"varint,1,opt,name=page,proto3" form:"page" validate:"number" json:"page,omitempty"`
+	Size int32 `protobuf:"varint,2,opt,name=size,proto3" form:"size" validate:"number" json:"size,omitempty"`
 }
 
 func (x *GetUserListRequest) Reset() {
