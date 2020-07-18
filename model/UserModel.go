@@ -248,9 +248,9 @@ func DelUser(uid int32, operationUid int32) (success bool, err error) {
 
 	success = false
 	//todo 加入事务操作
-	User := &User{ID: uid}
+	User := &User{}
 
-	db = db.Delete(User)
+	db = db.Where("id=?", uid).Delete(User)
 	if db.Error != nil {
 		err = db.Error
 		return
