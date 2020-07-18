@@ -177,8 +177,8 @@ func (u *UserServiceServer) GetRoleList(_ context.Context, _ *user.GetRoleListRe
 	return
 }
 
-func (u *UserServiceServer) GetUserList(_ context.Context, _ *user.GetUserListRequest) (getUserListResponse *user.GetUserListResponse, err error) {
-	userList := UserServiceInstance.GetUserList()
+func (u *UserServiceServer) GetUserList(_ context.Context, getUserListRequest *user.GetUserListRequest) (getUserListResponse *user.GetUserListResponse, err error) {
+	userList := UserServiceInstance.GetUserList(getUserListRequest.GetPage(), getUserListRequest.GetSize())
 	getUserListResponse = &user.GetUserListResponse{}
 
 	getUserListData := &user.GetUserListData{}

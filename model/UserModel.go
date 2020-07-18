@@ -274,10 +274,19 @@ func DelUser(uid int32, operationUid int32) (success bool, err error) {
 	return
 }
 
-func GetUserList() (userList []*User) {
-	db := dbHelper.GetDB()
+func GetUserList(page int32, size int32) (userList []*User) {
+	if size == 0 {
+		size = 10
+	}
 
-	db = db.Find(&userList)
+	if page == 0 {
+		page = 1
+	}
+
+	offset := (page - 1) * size
+
+	db := dbHelper.GetDB()
+	db = db.Limit(size).Offset(offset).Find(&userList)
 
 	return
 }
