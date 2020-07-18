@@ -97,6 +97,8 @@ message DelUserResponse{
 }
 
 message GetUserListRequest{
+    int32 page=1;
+    int32 size=2;
 }
 
 message GetUserListResponse{
