@@ -291,6 +291,13 @@ func GetUserList(page int32, size int32) (userList []*User) {
 	return
 }
 
+func GetUserTotal() (total int32) {
+	db := dbHelper.GetDB()
+	db = db.Model(&User{}).Count(&total)
+
+	return
+}
+
 //检查用户名密码
 func CheckUserPassword(username string, password string) (isRecordFound bool, user *User, err error) {
 	db := dbHelper.GetDB()

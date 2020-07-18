@@ -178,11 +178,12 @@ func (u *UserServiceServer) GetRoleList(_ context.Context, _ *user.GetRoleListRe
 }
 
 func (u *UserServiceServer) GetUserList(_ context.Context, getUserListRequest *user.GetUserListRequest) (getUserListResponse *user.GetUserListResponse, err error) {
-	userList := UserServiceInstance.GetUserList(getUserListRequest.GetPage(), getUserListRequest.GetSize())
+	userList, total := UserServiceInstance.GetUserList(getUserListRequest.GetPage(), getUserListRequest.GetSize())
 	getUserListResponse = &user.GetUserListResponse{}
 
 	getUserListData := &user.GetUserListData{}
 	getUserListData.UserList = UtilUserModelListToResponse(userList)
+	getUserListData.Total = total
 
 	getUserListResponse.Data = getUserListData
 	return

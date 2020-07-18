@@ -17,7 +17,7 @@ type UserServiceInterface interface {
 	Register(userName string, password string) (uid int32, err error)
 	AddUser(userName string, password string, operationUid int32) (uid int32, err error)
 	DelUser(uid int32, operationUid int32) (success bool, err error)
-	GetUserList(page int32, size int32) (userList []model.User)
+	GetUserList(page int32, size int32) (userList []model.User, total int32)
 
 	CheckUserAuthority(uid int32, authorityId int32) bool
 	GetUserAuthorityList(uid int32) map[int32]string
@@ -182,7 +182,8 @@ func (userService *UserService) GetAuthorityList() (authorityList map[int32]stri
 	return
 }
 
-func (userService *UserService) GetUserList(page int32, size int32) (userList []*model.User) {
+func (userService *UserService) GetUserList(page int32, size int32) (userList []*model.User, total int32) {
 	userList = model.GetUserList(page, size)
+	total = model.GetUserTotal()
 	return
 }
