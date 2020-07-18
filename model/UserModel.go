@@ -38,11 +38,9 @@ func (u *User) TableName() string {
 
 type Role struct {
 	Model
-	ID             int32  //会被自动认为是主键
-	Name           string `gorm:"column:role_name"`
-	Level          int32  `gorm:"column:role_level"`
-	AddDatetime    int32  `gorm:"column:add_datetime"`
-	UpdateDatetime int32  `gorm:"column:upt_datetime"`
+	ID    int32  //会被自动认为是主键
+	Name  string `gorm:"column:role_name"`
+	Level int32  `gorm:"column:role_level"`
 }
 
 //设置表名，可以通过给struct类型定义 TableName函数，返回当前struct绑定的mysql表名是什么
@@ -182,9 +180,9 @@ func DelUserRole(uid int32, roleId int32, operationUid int32) (success bool) {
 	db := dbHelper.GetDB()
 
 	//todo 加入事务操作
-	retUserRole := &RetUserRole{UserId: uid, RoleId: roleId}
+	retUserRole := &RetUserRole{}
 
-	db.Delete(retUserRole)
+	db.Where("uid = ? and role_id = ?", uid, roleId).Delete(retUserRole)
 	if db.Error != nil {
 		//todo
 		return
