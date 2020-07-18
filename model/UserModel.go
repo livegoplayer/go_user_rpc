@@ -101,7 +101,7 @@ func (u *UserOperationLog) TableName() string {
 }
 
 func init() {
-	// 需要在init中注册定义的model fs_user
+	// 需要在init中注册定义的model us_user
 }
 
 //role 相关
@@ -346,8 +346,8 @@ func GetUserDetailInfo(uid int32) (userSession *myHelper.UserSession, err error)
 	db := dbHelper.GetDB()
 
 	var userDetailList []UserDetail
-	db = db.Table("fs_user").Select("fs_user.id as uid, fs_user.username as username, fs_user.add_datetime as add_datetime, fs_user.upt_datetime as upt_datetime, c.id as role_id, c.role_name as role_name, e.id as authority_id, e.authority_name as authority_name").Joins("LEFT JOIN fs_ret_user_role as a ON a.uid = fs_user.id").Joins("LEFT JOIN fs_role as c ON a.role_id = c.id").Joins("LEFT JOIN fs_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN fs_authority as e ON d.authority_id = e.id").Where(
-		"fs_user.id = ?", uid).Find(&userDetailList)
+	db = db.Table("us_user").Select("us_user.id as uid, us_user.username as username, us_user.add_datetime as add_datetime, us_user.upt_datetime as upt_datetime, c.id as role_id, c.role_name as role_name, e.id as authority_id, e.authority_name as authority_name").Joins("LEFT JOIN us_ret_user_role as a ON a.uid = us_user.id").Joins("LEFT JOIN us_role as c ON a.role_id = c.id").Joins("LEFT JOIN us_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN us_authority as e ON d.authority_id = e.id").Where(
+		"us_user.id = ?", uid).Find(&userDetailList)
 	if db.Error != nil {
 		return
 	}
@@ -382,7 +382,7 @@ func CheckUserAuthority(uid int32, authorityId int32) (exist bool, err error) {
 	db := dbHelper.GetDB()
 
 	var res []map[string]interface{}
-	db = db.Table("user").Select("fs_user.id as uid, fs_ret_role_authority.authority_id as authority_id").Joins("LEFT JOIN fs_ret_user_role as a ON fs_ret_user_role.uid = users.id").Joins("LEFT JOIN fs_role as c ON b.role_id = c.id").Joins("LEFT JOIN fs_ret_role_authority as d ON c.id = d.role_id").Where("user.uid = ?", uid).Where("authorityId = ?", authorityId).Find(&res)
+	db = db.Table("user").Select("us_user.id as uid, us_ret_role_authority.authority_id as authority_id").Joins("LEFT JOIN us_ret_user_role as a ON us_ret_user_role.uid = users.id").Joins("LEFT JOIN us_role as c ON b.role_id = c.id").Joins("LEFT JOIN us_ret_role_authority as d ON c.id = d.role_id").Where("user.uid = ?", uid).Where("authorityId = ?", authorityId).Find(&res)
 	if db.Error != nil {
 		err = db.Error
 		return
@@ -401,7 +401,7 @@ func GetUserAuthorityList(uid int32) (authorityList map[int32]string, err error)
 	db := dbHelper.GetDB()
 
 	var res []map[string]interface{}
-	db = db.Table("user").Select("fs_authority.id as authority_id, fs_authority.authority_name as authority_name").Joins("LEFT JOIN fs_ret_user_role as a ON fs_ret_user_role.uid = users.id").Joins("LEFT JOIN fs_role as c ON b.role_id = c.id").Joins("LEFT JOIN fs_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN fs_authority as e ON d.authority_id = e.id").Where("user.uid = ?", uid).Scan(&res)
+	db = db.Table("user").Select("us_authority.id as authority_id, us_authority.authority_name as authority_name").Joins("LEFT JOIN us_ret_user_role as a ON us_ret_user_role.uid = users.id").Joins("LEFT JOIN us_role as c ON b.role_id = c.id").Joins("LEFT JOIN us_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN us_authority as e ON d.authority_id = e.id").Where("user.uid = ?", uid).Scan(&res)
 	if db.Error != nil {
 		err = db.Error
 		return
@@ -423,7 +423,7 @@ func GetAuthorityList() (authorityList map[int32]string, err error) {
 	db := dbHelper.GetDB()
 
 	var res []map[string]interface{}
-	db = db.Select("fs_authority.id as authority_id, fs_authority.authority_name as authority_name").Scan(&res)
+	db = db.Select("us_authority.id as authority_id, us_authority.authority_name as authority_name").Scan(&res)
 	if db.Error != nil {
 		err = db.Error
 		return

@@ -17,7 +17,7 @@ func init() {
 		DB:       0,                      // 默认数据库，默认是0
 	})
 
-	prefix = "fs_redis_"
+	prefix = "us_redis_"
 }
 
 func GetRedisClient() *redis.Client {
