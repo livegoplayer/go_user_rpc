@@ -496,7 +496,7 @@ type DelUserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	Uid          int32 `protobuf:"varint,1,opt,name=uid,proto3" form:"uid" validate:"required,gt=0"  json:"uid,omitempty"`
-	OperationUid int32 `protobuf:"varint,3,opt,name=operationUid,proto3" form:"uid" validate:"required,gt=0" json:"operationUid,omitempty"`
+	OperationUid int32 `protobuf:"varint,3,opt,name=operationUid,proto3" form:"operation_uid" validate:"required,gt=0" json:"operationUid,omitempty"`
 }
 
 func (x *DelUserRequest) Reset() {
