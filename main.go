@@ -10,6 +10,8 @@ import (
 	"github.com/oklog/oklog/pkg/group"
 	realgrpc "google.golang.org/grpc"
 
+	redisHelper "github.com/livegoplayer/go_redis_helper"
+
 	"github.com/livegoplayer/go_user_rpc/user"
 	userpb "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
@@ -36,6 +38,7 @@ func initUserRpcHandler(g *group.Group) {
 
 	//报错日志
 	grpcOpts := []grpctransport.ServerOption{
+		//不是处理器，只是一个错误打印器
 		grpctransport.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
 	}
 
@@ -47,6 +50,8 @@ func initUserRpcHandler(g *group.Group) {
 	//定义中间件
 	endpoints := user.MakeUserEndpoints(&user.UserServiceServer{})
 	baseServer := realgrpc.NewServer()
+
+	redisHelper.InitRedisHelper("139.224.132.234", "6379", "myredis", 0, "us_redis_")
 
 	g.Add(func() error {
 		//这里是执行函数

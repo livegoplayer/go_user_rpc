@@ -3,11 +3,8 @@ package user
 import (
 	"context"
 	"errors"
-	"reflect"
 
 	"github.com/go-kit/kit/endpoint"
-
-	myLogger "github.com/livegoplayer/go_logger"
 
 	user "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
@@ -278,24 +275,24 @@ func MakeUserEndpoints(svc *UserServiceServer) *UserEndpoints {
 	//	eps.GetUserRoleList = m(eps.GetUserRoleList)
 	//}
 
-	logger := myLogger.GetLogger()
-	commandName := "my_endpoint"
-
-	s := reflect.ValueOf(eps).Elem()
-	typeOfT := s.Type()
-	for i := 0; i < s.NumField(); i++ {
-		name := typeOfT.Field(i).Name
-		f := s.Field(i).Interface().(endpoint.Endpoint)
-		//全局日志中间件
-		loggerEP := loggingMiddleware(logger)(f)
-
-		//全局微服务熔断器中间件
-		breakerMw := HystrixMiddleware(commandName)
-		hystrixEP := breakerMw(loggerEP)
-
-		s.FieldByName(name).Set(reflect.ValueOf(hystrixEP))
-
-	}
+	//logger := myLogger.GetLogger()
+	//commandName := "my_endpoint"
+	//
+	//s := reflect.ValueOf(eps).Elem()
+	//typeOfT := s.Type()
+	//for i := 0; i < s.NumField(); i++ {
+	//	name := typeOfT.Field(i).Name
+	//	f := s.Field(i).Interface().(endpoint.Endpoint)
+	//	//全局日志中间件
+	//	loggerEP := loggingMiddleware(logger)(f)
+	//
+	//	//全局微服务熔断器中间件
+	//	breakerMw := HystrixMiddleware(commandName)
+	//	hystrixEP := breakerMw(loggerEP)
+	//
+	//	s.FieldByName(name).Set(reflect.ValueOf(hystrixEP))
+	//
+	//}
 
 	return eps
 }

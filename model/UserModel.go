@@ -345,6 +345,8 @@ type UserDetail struct {
 func GetUserDetailInfo(uid int32) (userSession *myHelper.UserSession, err error) {
 	db := dbHelper.GetDB()
 
+	db = db.LogMode(false)
+
 	var userDetailList []UserDetail
 	db = db.Table("us_user").Select("us_user.id as uid, us_user.username as username, us_user.add_datetime as add_datetime, us_user.upt_datetime as upt_datetime, c.id as role_id, c.role_name as role_name, e.id as authority_id, e.authority_name as authority_name").Joins("LEFT JOIN us_ret_user_role as a ON a.uid = us_user.id").Joins("LEFT JOIN us_role as c ON a.role_id = c.id").Joins("LEFT JOIN us_ret_role_authority as d ON c.id = d.role_id").Joins("LEFT JOIN us_authority as e ON d.authority_id = e.id").Where(
 		"us_user.id = ?", uid).Find(&userDetailList)

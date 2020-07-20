@@ -39,8 +39,7 @@ func init() {
 
 func getUserSession(uid int32) (session myHelper.UserSession, exist bool) {
 	key := getUserLoginStatusSessionKey(uid)
-	res := sessionHelper.GetRedisKey(key)
-	val := res.Val()
+	val := sessionHelper.GetCacheData(key)
 	if val != "" {
 		exist = true
 		myHelper.JsonDecode(myHelper.StringToBytes(val), session)
@@ -51,7 +50,7 @@ func getUserSession(uid int32) (session myHelper.UserSession, exist bool) {
 
 func setUserSession(uid int32, session *myHelper.UserSession) bool {
 	key := getUserLoginStatusSessionKey(uid)
-	_ = sessionHelper.SetRedisKey(key, myHelper.JsonEncode(session), time.Hour*24)
+	sessionHelper.SetCacheData(key, myHelper.JsonEncode(session), time.Hour*24)
 	return true
 }
 
