@@ -5,10 +5,10 @@ go 1.14
 require (
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
 	github.com/go-kit/kit v0.10.0
-	github.com/go-redis/redis v6.15.8+incompatible
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.4.2
 	github.com/jinzhu/gorm v1.9.15
+	github.com/livegoplayer/go_db_helper v1.0.1
 	github.com/livegoplayer/go_helper v1.0.40
 	github.com/livegoplayer/go_redis_helper v1.0.1
 	github.com/oklog/oklog v0.3.2

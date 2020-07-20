@@ -5,7 +5,7 @@ import (
 
 	myHelper "github.com/livegoplayer/go_helper"
 
-	"github.com/livegoplayer/go_user_rpc/dbHelper"
+	dbHelper "github.com/livegoplayer/go_db_helper"
 )
 
 type operationType int
