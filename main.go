@@ -12,6 +12,7 @@ import (
 
 	redisHelper "github.com/livegoplayer/go_redis_helper"
 
+	"github.com/livegoplayer/go_user_rpc/dbHelper"
 	"github.com/livegoplayer/go_user_rpc/user"
 	userpb "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
@@ -36,6 +37,7 @@ func Run() {
 
 func initUserRpcHandler(g *group.Group) {
 
+	dbHelper.InitDbHelper(&dbHelper.MysqlConfig{Username: "myuser", Password: "myuser", Host: "139.224.132.234", Port: 3306, Dbname: "user"}, true, 100, 20)
 	//报错日志
 	grpcOpts := []grpctransport.ServerOption{
 		//不是处理器，只是一个错误打印器

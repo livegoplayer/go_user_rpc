@@ -8,7 +8,7 @@ import (
 )
 
 //这里存放的是一些封装
-type mysqlConfig struct {
+type MysqlConfig struct {
 	Username string
 	Password string
 	Host     string
@@ -16,14 +16,14 @@ type mysqlConfig struct {
 	Dbname   string
 }
 
-var MysqlConfig *mysqlConfig
+var mysqlConfig *MysqlConfig
 var _db *gorm.DB
 
-func init() {
+func InitDbHelper(mysqlCfg *MysqlConfig, logMode bool, MaxOpenCon int, MaxIdleCon int) {
 	//初始化全局sql连接
 
-	MysqlConfig = &mysqlConfig{"myuser", "myuser", "139.224.132.234", 3306, "user"}
-	mysqlDsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", MysqlConfig.Username, MysqlConfig.Password, MysqlConfig.Host, MysqlConfig.Port, MysqlConfig.Dbname)
+	mysqlConfig = mysqlCfg
+	mysqlDsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", mysqlConfig.Username, mysqlConfig.Password, mysqlConfig.Host, mysqlConfig.Port, mysqlConfig.Dbname)
 	//连接MYSQL
 	db, err := gorm.Open("mysql", mysqlDsn)
 	if err != nil {
@@ -32,11 +32,11 @@ func init() {
 	_db = db
 
 	//打开调试模式
-	db.LogMode(true)
+	db.LogMode(logMode)
 
 	//设置数据库连接池参数
-	_db.DB().SetMaxOpenConns(100) //设置数据库连接池最大连接数
-	_db.DB().SetMaxIdleConns(20)  //连接池最大允许的空闲连接数，如果没有sql任务需要执行的连接数大于20，超过的连接会被连接池关闭。
+	_db.DB().SetMaxOpenConns(MaxOpenCon) //设置数据库连接池最大连接数
+	_db.DB().SetMaxIdleConns(MaxIdleCon) //连接池最大允许的空闲连接数，如果没有sql任务需要执行的连接数大于20，超过的连接会被连接池关闭。
 }
 
 //获取gorm db对象，其他包需要执行数据库查询的时候，只要通过tools.getDB()获取db对象即可。

@@ -6,8 +6,9 @@ import (
 	"time"
 
 	myHelper "github.com/livegoplayer/go_helper"
+	sessionHelper "github.com/livegoplayer/go_redis_helper"
+
 	"github.com/livegoplayer/go_user_rpc/model"
-	sessionHelper "github.com/livegoplayer/go_user_rpc/redisHelper"
 )
 
 //定义一个接口，service包含的方法
