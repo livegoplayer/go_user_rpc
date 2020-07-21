@@ -189,6 +189,18 @@ func (u *UserServiceServer) GetUserList(_ context.Context, getUserListRequest *u
 	return
 }
 
+func (u *UserServiceServer) Logout(_ context.Context, logoutRequest *user.LogoutRequest) (logoutResponse *user.LogoutResponse, err error) {
+	success := UserServiceInstance.Logout(logoutRequest.Uid)
+	logoutResponse = &user.LogoutResponse{}
+
+	logoutData := &user.LogoutData{}
+	logoutData.Success = success
+
+	logoutResponse.Data = logoutData
+
+	return
+}
+
 func utilUserSessionToResponse(session *myHelper.UserSession) *user.UserSessions {
 	responseUserSession := &user.UserSessions{
 		Uid:               int32(session.Uid),

@@ -6,6 +6,8 @@ option go_package = "user/grpc";
 service User{
     //用户登录
     rpc Login(LoginRequest) returns (LoginResponse);
+    //用户注销
+    rpc Logout(LogoutRequest) returns (LogoutResponse);
     //管理员增加用户
     rpc AddUser(AddUserRequest) returns (AddUserResponse);
     //管理员删除用户
@@ -263,6 +265,19 @@ message GetUserRoleListResponse{
     string          msg = 3;
 }
 
+message LogoutRequest{
+    int32 uid = 1;
+}
+
+message LogoutResponse{
+    int32           errorCode = 1;
+    LogoutData      data = 2;
+    string          msg = 3;
+}
+
+message LogoutData{
+    bool success = 1;
+}
 
 
 

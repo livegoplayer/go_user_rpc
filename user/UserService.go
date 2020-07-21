@@ -28,6 +28,7 @@ type UserServiceInterface interface {
 	DelUserRole(uid int32, roleId int32, operationUid int32) bool
 	GetRoleList() map[int32]string
 	GetUserRoleList() map[int32]string
+	Logout(uid int32) bool
 }
 
 type UserService struct{}
@@ -53,6 +54,11 @@ func setUserSession(uid int32, session *myHelper.UserSession) bool {
 	key := getUserLoginStatusSessionKey(uid)
 	sessionHelper.SetCacheData(key, myHelper.JsonEncode(session), time.Hour*24)
 	return true
+}
+
+func clearUserSession(uid int32) {
+	key := getUserLoginStatusSessionKey(uid)
+	sessionHelper.RemoveCacheData(key)
 }
 
 func getUserLoginStatusSessionKey(uid int32) string {
@@ -170,6 +176,11 @@ func (userService *UserService) CheckLoginStatus(token string) (isLogin bool, us
 func (userService *UserService) CheckUserAuthority(uid int32, authorityId int32) (exists bool) {
 	exists, _ = model.CheckUserAuthority(uid, authorityId)
 	return
+}
+
+func (userService *UserService) Logout(uid int32) (success bool) {
+	clearUserSession(uid)
+	return true
 }
 
 func (userService *UserService) GetUserAuthorityList(uid int32) (userAuthorityList map[int32]string) {
