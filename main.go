@@ -12,7 +12,8 @@ import (
 
 	redisHelper "github.com/livegoplayer/go_redis_helper"
 
-	"github.com/livegoplayer/go_user_rpc/dbHelper"
+	dbHelper "github.com/livegoplayer/go_db_helper"
+
 	"github.com/livegoplayer/go_user_rpc/user"
 	userpb "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
