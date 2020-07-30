@@ -1,0 +1,35 @@
+{
+  "app_name" : "user_rpc",
+  "app_host" : "http://www.52db.work:8888",
+  "app_port" : "8888",
+
+  "log" : {
+    "access_log_file_path" : "../log",
+    "access_log_file_name" : "access.log",
+    "app_log_mysql_host": "139.224.132.234",
+    "app_log_mysql_port": "3306",
+    "app_log_mysql_db_name": "user",
+    "app_log_mysql_table_name": "us_app_log",
+    "app_log_mysql_user": "myuser",
+    "app_log_mysql_pass": "myuser"
+  },
+
+  "database": {
+    "username": "myuser",
+    "password": "myuser",
+    "host": "139.224.132.234",
+    "port": 3306,
+    "dbname": "file_store",
+    "log_mode": true,
+    "max_open_connection": 10,
+    "max_idle_connection": 200
+  },
+
+  "redis" : {
+    "host": "139.224.132.234",
+    "port": "6379",
+    "password": "myredis",
+    "db": 0,
+    "prefix": "us_redis_"
+  }
+}
