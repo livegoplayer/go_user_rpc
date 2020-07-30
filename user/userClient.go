@@ -8,7 +8,7 @@ import (
 
 var userClientInstance userpb.UserClient
 
-func initUserClient(appHost string) {
+func InitUserClient(appHost string) {
 	conn, err := grpc.Dial(appHost, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		panic(err.Error())
