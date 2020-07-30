@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-kit/kit/endpoint"
 
-	myLogger "github.com/livegoplayer/go_logger"
+	//myLogger "github.com/livegoplayer/go_logger"
 
 	user "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
