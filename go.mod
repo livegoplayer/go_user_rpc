@@ -8,8 +8,10 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.4.2
 	github.com/livegoplayer/go_db_helper v1.0.1
-	github.com/livegoplayer/go_helper v1.0.40
-	github.com/livegoplayer/go_redis_helper v1.0.1
+	github.com/livegoplayer/go_helper v1.0.41
+	github.com/livegoplayer/go_logger v1.0.12
+	github.com/livegoplayer/go_redis_helper v1.0.2
+	github.com/livegoplayer/go_session v1.0.2
 	github.com/oklog/oklog v0.3.2
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/sirupsen/logrus v1.6.0

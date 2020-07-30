@@ -6,6 +6,8 @@ import (
 
 	"github.com/go-kit/kit/endpoint"
 
+	myLogger "github.com/livegoplayer/go_logger"
+
 	user "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
 
@@ -275,8 +277,8 @@ func MakeUserEndpoints(svc *UserServiceServer) *UserEndpoints {
 	//	eps.GetUserRoleList = m(eps.GetUserRoleList)
 	//}
 
-	//logger := myLogger.GetLogger()
-	//commandName := "my_endpoint"
+	logger := myLogger.GetLogger()
+	commandName := "my_endpoint"
 	//
 	//s := reflect.ValueOf(eps).Elem()
 	//typeOfT := s.Type()

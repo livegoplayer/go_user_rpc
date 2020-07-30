@@ -257,11 +257,14 @@ github.com/lightstep/lightstep-tracer-go v0.18.1/go.mod h1:jlF1pusYV4pidLvZ+XD0U
 github.com/livegoplayer/go_db_helper v1.0.1 h1:UgD+YYoG+mkFx7EwPoyWXXpl084zwvmY+BcsRoF+eLk=
 github.com/livegoplayer/go_db_helper v1.0.1/go.mod h1:7dY2ujBmOvdMBtE9/aNwaGI3QdWGXawo5AWs2rbKzgk=
 github.com/livegoplayer/go_helper v1.0.36/go.mod h1:LGRakEGtvEiNzEl29mNVsr2U0Is9v+x2bvru75WUazk=
-github.com/livegoplayer/go_helper v1.0.40 h1:275lB4HFR4k6A4hserNax56WbKzsenOz32DpxInqzIQ=
-github.com/livegoplayer/go_helper v1.0.40/go.mod h1:mKIhFx8cJRmxw6dBuf+wUVnehvFJurrvDtDhlIML5uA=
+github.com/livegoplayer/go_helper v1.0.41 h1:4eRsY7dc99FgMzI7+ydhtbo2tiiWqvbf4j72DhygnHg=
+github.com/livegoplayer/go_helper v1.0.41/go.mod h1:mKIhFx8cJRmxw6dBuf+wUVnehvFJurrvDtDhlIML5uA=
+github.com/livegoplayer/go_logger v1.0.12 h1:oJF/WQo+ARGuFqrkf26INKjLtZxbJtsDiXgGw9Yo5TM=
 github.com/livegoplayer/go_logger v1.0.12/go.mod h1:w6Cv+hxj6rHeUYEQi6ijKThGs1F6JXAr2Ze3Ei/EsgM=
-github.com/livegoplayer/go_redis_helper v1.0.1 h1:YMlQJDcgWzGtGHzp0Hu4k53OxKBxSzbULECAFdp27j0=
-github.com/livegoplayer/go_redis_helper v1.0.1/go.mod h1:sl3wasjvOSnl8Gpzf1BDl5OBrAylGcMkVzry+GkYZyc=
+github.com/livegoplayer/go_redis_helper v1.0.2 h1:KswVSIjgH6AZp9+oMdPTdaFMefMlJSsdiwagN9BHahc=
+github.com/livegoplayer/go_redis_helper v1.0.2/go.mod h1:JKp80b2ddnxt1NWoxl6QUTkVAFPBo9C0j/oFT6U/FEg=
+github.com/livegoplayer/go_session v1.0.2 h1:6HOOeLxVJSklb12qTOH7DEyyHX4+PeOizGTzUgJyPBI=
+github.com/livegoplayer/go_session v1.0.2/go.mod h1:pr99hPKCAN7J7Ll30A7ow65F7faWCwvtQbWLvmnhD/g=
 github.com/lyft/protoc-gen-validate v0.0.13/go.mod h1:XbGvPuh87YZc5TdIa2/I4pLk0QoUACkjt2znoq26NVQ=
 github.com/magiconair/properties v1.8.1 h1:ZC2Vc7/ZFkGmsVC9KvOjumD+G5lXy2RtTKyzRKO2BQ4=
 github.com/magiconair/properties v1.8.1/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czPbwD3XqdrwzmxQ=
@@ -285,6 +288,8 @@ github.com/mitchellh/mapstructure v1.1.2 h1:fmNYVwqnSfB9mZU6OS2O6GsXM+wcskZDuKQz
 github.com/mitchellh/mapstructure v1.1.2/go.mod h1:FVVH3fgwuzCH5S8UJGiWEs2h04kUh9fWfEaFds41c1Y=
 github.com/mitchellh/mapstructure v1.3.2 h1:mRS76wmkOn3KkKAyXDu42V+6ebnXWIztFSYGN7GeoRg=
 github.com/mitchellh/mapstructure v1.3.2/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
+github.com/mitchellh/mapstructure v1.3.3 h1:SzB1nHZ2Xi+17FP0zVQBHIZqvwRN9408fJO8h+eeNA8=
+github.com/mitchellh/mapstructure v1.3.3/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
 github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
 github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd h1:TRLaZ9cD/w8PVh93nsPXa1VrQ6jlwL5oN8l14QlcNfg=
 github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
@@ -545,6 +550,8 @@ golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20200519105757-fe76b779f299/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae h1:Ih9Yo4hSPImZOpfGuA4bR/ORKTAbhZo2AbWNRCnevdo=
 golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20200728102440-3e129f6d46b1 h1:sIky/MyNRSHTrdxfsiUSS4WIAMvInbeXljJz+jDjeYE=
+golang.org/x/sys v0.0.0-20200728102440-3e129f6d46b1/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.2 h1:tW2bmiBqwgJj/UpqtC8EpXEZVYOwU0yG4iWbprSVAcs=

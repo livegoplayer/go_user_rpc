@@ -8,8 +8,8 @@ import (
 
 var userClientInstance userpb.UserClient
 
-func initUserClient() {
-	conn, err := grpc.Dial("127.0.0.1:8888", grpc.WithInsecure(), grpc.WithBlock())
+func initUserClient(appHost string) {
+	conn, err := grpc.Dial(appHost, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		panic(err.Error())
 	}
@@ -21,8 +21,6 @@ func GetUserClient() userpb.UserClient {
 	if userClientInstance != nil {
 		return userClientInstance
 	}
-
-	initUserClient()
 
 	return GetUserClient()
 }
