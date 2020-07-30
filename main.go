@@ -5,11 +5,14 @@ import (
 	"net"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/transport"
 	grpctransport "github.com/go-kit/kit/transport/grpc"
 	myHelper "github.com/livegoplayer/go_helper"
+	myLogger "github.com/livegoplayer/go_logger"
 	"github.com/oklog/oklog/pkg/group"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	realgrpc "google.golang.org/grpc"
 
@@ -55,9 +58,20 @@ func initUserRpcHandler(g *group.Group) {
 		panic(err.Error())
 	}
 
+	grpcLogConfig := user.GrpcLoggerConfig{AccessFilePath: viper.GetString("log.access_log_file_path"), AccessFileName: viper.GetString("app_name") + "_" + viper.GetString("log.access_log_file_name"), PrintStd: viper.GetBool("log.print_to_std")}
 	//定义中间件
-	endpoints := user.MakeUserEndpoints(&user.UserServiceServer{})
+	endpoints := user.MakeUserEndpoints(&user.UserServiceServer{}, grpcLogConfig)
 	baseServer := realgrpc.NewServer()
+
+	//初始化 app_log， 以后使用mylogger.Info() 打印log
+	//如果是debug模式的话，直接打印到控制台
+	var appLogger *logrus.Logger
+	if gin.IsDebugging() {
+		appLogger = myLogger.GetConsoleLogger()
+	} else {
+		appLogger = myLogger.GetMysqlLogger(viper.GetString("log.app_log_mysql_host"), viper.GetString("log.app_log_mysql_port"), viper.GetString("log.app_log_mysql_db_name"), viper.GetString("log.app_log_mysql_table_name"), viper.GetString("log.app_log_mysql_user"), viper.GetString("log.app_log_mysql_pass"))
+	}
+	myLogger.SetLogger(appLogger)
 
 	redisHelper.InitRedisHelper(viper.GetString("redis.host"), viper.GetString("redis.port"), viper.GetString("redis.password"), viper.GetInt("redis.db"), viper.GetString("redis.prefix"), 2*time.Second)
 

@@ -3,10 +3,9 @@ package user
 import (
 	"context"
 	"errors"
+	"reflect"
 
 	"github.com/go-kit/kit/endpoint"
-
-	//myLogger "github.com/livegoplayer/go_logger"
 
 	user "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
@@ -38,7 +37,8 @@ const (
 
 type UserEndpoints struct {
 	//用户登录
-	Login endpoint.Endpoint
+	Login  endpoint.Endpoint
+	Logout endpoint.Endpoint
 	//管理员增加用户
 	AddUser endpoint.Endpoint
 	//管理员删除用户
@@ -66,7 +66,7 @@ type UserEndpoints struct {
 }
 
 // rpc_handler 这里做一个路由
-func MakeUserEndpoints(svc *UserServiceServer) *UserEndpoints {
+func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig) *UserEndpoints {
 	eps := &UserEndpoints{
 		Login: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.LoginRequest)
@@ -80,6 +80,20 @@ func MakeUserEndpoints(svc *UserServiceServer) *UserEndpoints {
 			}
 
 			response, err = svc.Login(ctx, req)
+			return
+		},
+		GetUserList: func(ctx context.Context, request interface{}) (response interface{}, err error) {
+			req, ok := request.(*user.GetUserListRequest)
+			res := user.GetUserListResponse{}
+			if !ok {
+				res.Msg = "request body form error !"
+				res.ErrorCode = 1
+				response = res
+				err = errors.New(res.Msg)
+				return
+			}
+
+			response, err = svc.GetUserList(ctx, req)
 			return
 		},
 		AddUser: func(ctx context.Context, request interface{}) (response interface{}, err error) {
@@ -236,65 +250,39 @@ func MakeUserEndpoints(svc *UserServiceServer) *UserEndpoints {
 			response, err = svc.GetUserRoleList(ctx, req)
 			return
 		},
+		Logout: func(ctx context.Context, request interface{}) (response interface{}, err error) {
+			req, ok := request.(*user.LogoutRequest)
+			res := user.LogoutResponse{}
+			if !ok {
+				res.Msg = "request body form error !"
+				res.ErrorCode = 1
+				response = res
+				err = errors.New(res.Msg)
+				return
+			}
+
+			response, err = svc.Logout(ctx, req)
+			return
+		},
 	}
 
-	//貌似这种中间件的写法贴别局限性
-	////增加中间件
-	//for _, m := range mdw["Login"] {
-	//	eps.Login = m(eps.Login)
-	//}
-	//for _, m := range mdw["AddUser"] {
-	//	eps.AddUser = m(eps.AddUser)
-	//}
-	//for _, m := range mdw["DelUser"] {
-	//	eps.DelUser = m(eps.DelUser)
-	//}
-	//for _, m := range mdw["CheckLoginStatus"] {
-	//	eps.CheckLoginStatus = m(eps.CheckLoginStatus)
-	//}
-	//for _, m := range mdw["Register"] {
-	//	eps.Register = m(eps.Register)
-	//}
-	//for _, m := range mdw["CheckUserAuthority"] {
-	//	eps.CheckUserAuthority = m(eps.CheckUserAuthority)
-	//}
-	//for _, m := range mdw["GetUserAuthorityList"] {
-	//	eps.GetUserAuthorityList = m(eps.GetUserAuthorityList)
-	//}
-	//for _, m := range mdw["GetAuthorityList"] {
-	//	eps.GetAuthorityList = m(eps.GetAuthorityList)
-	//}
-	//for _, m := range mdw["AddUserRole"] {
-	//	eps.AddUserRole = m(eps.AddUserRole)
-	//}
-	//for _, m := range mdw["DelUserRole"] {
-	//	eps.DelUserRole = m(eps.DelUserRole)
-	//}
-	//for _, m := range mdw["GetRoleList"] {
-	//	eps.GetRoleList = m(eps.GetRoleList)
-	//}
-	//for _, m := range mdw["GetUserRoleList"] {
-	//	eps.GetUserRoleList = m(eps.GetUserRoleList)
-	//}
+	commandName := "my_endpoint"
 
-	//logger := myLogger.GetLogger()
-	//commandName := "my_endpoint"
-	//
-	//s := reflect.ValueOf(eps).Elem()
-	//typeOfT := s.Type()
-	//for i := 0; i < s.NumField(); i++ {
-	//	name := typeOfT.Field(i).Name
-	//	f := s.Field(i).Interface().(endpoint.Endpoint)
-	//	//全局日志中间件
-	//	loggerEP := loggingMiddleware(logger)(f)
-	//
-	//	//全局微服务熔断器中间件
-	//	breakerMw := HystrixMiddleware(commandName)
-	//	hystrixEP := breakerMw(loggerEP)
-	//
-	//	s.FieldByName(name).Set(reflect.ValueOf(hystrixEP))
-	//
-	//}
+	s := reflect.ValueOf(eps).Elem()
+	typeOfT := s.Type()
+	for i := 0; i < s.NumField(); i++ {
+		name := typeOfT.Field(i).Name
+		f := s.Field(i).Interface().(endpoint.Endpoint)
+		//全局日志中间件
+		loggerEP := loggingMiddleware(grpcLoggerConfig)(f)
+
+		//全局微服务熔断器中间件
+		breakerMw := HystrixMiddleware(commandName)
+		hystrixEP := breakerMw(loggerEP)
+
+		s.FieldByName(name).Set(reflect.ValueOf(hystrixEP))
+
+	}
 
 	return eps
 }

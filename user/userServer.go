@@ -238,20 +238,3 @@ func responseToUtilUserSession(session *user.UserSessions) *myHelper.UserSession
 
 	return responseUserSession
 }
-
-////以下是中间件部分
-//type ServiceMiddleware func(UserServiceServer) UserServiceServer
-//
-//// loggingMiddleware Make a new type
-//// that contains Service interface and logger instance
-//type loggingMiddleware struct {
-//	UserServiceServer
-//	logger logrus.Logger
-//}
-//
-//// LoggingMiddleware make logging middleware
-//func LoggingMiddleware(logger logrus.Logger) ServiceMiddleware {
-//	return func(next UserServiceServer) UserServiceServer {
-//		return loggingMiddleware{next, logger}
-//	}
-//}

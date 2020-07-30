@@ -11,10 +11,10 @@ require (
 	github.com/livegoplayer/go_helper v1.0.41
 	github.com/livegoplayer/go_logger v1.0.12
 	github.com/livegoplayer/go_redis_helper v1.0.2
-	github.com/livegoplayer/go_session v1.0.2
 	github.com/oklog/oklog v0.3.2
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/sirupsen/logrus v1.6.0
+	github.com/spf13/viper v1.7.0
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
 	google.golang.org/genproto v0.0.0-20200715011427-11fb19a81f2c // indirect
 	google.golang.org/grpc v1.30.0

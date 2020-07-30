@@ -3,108 +3,46 @@ package user
 import (
 	"context"
 
-	"github.com/go-kit/kit/transport/grpc"
+	"github.com/go-kit/kit/endpoint"
 	grpc_transport "github.com/go-kit/kit/transport/grpc"
+
+	user "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
 
 //使用tcp协议做的grpc
 type userGrpcService struct {
-	UserServiceServer
-	login                grpc.Handler
-	checkUserStatus      grpc.Handler
-	register             grpc.Handler
-	addUser              grpc.Handler
-	delUser              grpc.Handler
-	getUserList          grpc.Handler
-	checkUserAuthority   grpc.Handler
-	getUserAuthorityList grpc.Handler
-	getAuthorityList     grpc.Handler
-	addUserRole          grpc.Handler
-	delUserRole          grpc.Handler
-	getUserRoleList      grpc.Handler
-	getRoleList          grpc.Handler
+	login                endpoint.Endpoint
+	logout               endpoint.Endpoint
+	checkUserStatus      endpoint.Endpoint
+	register             endpoint.Endpoint
+	addUser              endpoint.Endpoint
+	delUser              endpoint.Endpoint
+	getUserList          endpoint.Endpoint
+	checkUserAuthority   endpoint.Endpoint
+	getUserAuthorityList endpoint.Endpoint
+	getAuthorityList     endpoint.Endpoint
+	addUserRole          endpoint.Endpoint
+	delUserRole          endpoint.Endpoint
+	getUserRoleList      endpoint.Endpoint
+	getRoleList          endpoint.Endpoint
 }
 
 func MakeGRPCHandler(eps UserEndpoints, opts ...grpc_transport.ServerOption) *userGrpcService {
 	return &userGrpcService{
-		login: grpc.NewServer(
-			eps.Login,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		checkUserStatus: grpc.NewServer(
-			eps.CheckLoginStatus,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		register: grpc.NewServer(
-			eps.Register,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		addUser: grpc.NewServer(
-			eps.AddUser,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		delUser: grpc.NewServer(
-			eps.DelUser,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		getUserList: grpc.NewServer(
-			eps.GetUserList,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		checkUserAuthority: grpc.NewServer(
-			eps.CheckUserAuthority,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		getUserAuthorityList: grpc.NewServer(
-			eps.GetUserAuthorityList,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		getAuthorityList: grpc.NewServer(
-			eps.GetAuthorityList,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		addUserRole: grpc.NewServer(
-			eps.AddUserRole,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		delUserRole: grpc.NewServer(
-			eps.DelUserRole,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		getUserRoleList: grpc.NewServer(
-			eps.GetUserRoleList,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
-		getRoleList: grpc.NewServer(
-			eps.GetRoleList,
-			decodeGetRequest,
-			encodeRpcResponse,
-			opts...,
-		),
+		login:                eps.Login,
+		checkUserStatus:      eps.CheckLoginStatus,
+		register:             eps.Register,
+		addUser:              eps.AddUser,
+		delUser:              eps.DelUser,
+		getUserList:          eps.GetUserList,
+		checkUserAuthority:   eps.CheckUserAuthority,
+		getUserAuthorityList: eps.GetUserAuthorityList,
+		getAuthorityList:     eps.GetAuthorityList,
+		addUserRole:          eps.AddUserRole,
+		delUserRole:          eps.DelUserRole,
+		getUserRoleList:      eps.GetUserRoleList,
+		getRoleList:          eps.GetRoleList,
+		logout:               eps.Logout,
 	}
 }
 
@@ -115,4 +53,103 @@ func decodeGetRequest(_ context.Context, r interface{}) (interface{}, error) {
 
 func encodeRpcResponse(_ context.Context, r interface{}) (interface{}, error) {
 	return r, nil
+}
+
+//以下实现关于UserServer 相关接口
+//以下函数是给endpoints调用的，最后会被安装到对应的成员变量上，所以一定要是grpc.Handler 类型的
+func (u *userGrpcService) Login(ctx context.Context, request *user.LoginRequest) (loginResponse *user.LoginResponse, err error) {
+	response, err := u.login(ctx, request)
+	loginResponse = response.(*user.LoginResponse)
+
+	return
+}
+
+func (u *userGrpcService) CheckUserStatus(ctx context.Context, request *user.CheckUserStatusRequest) (checkUserStatusResponse *user.CheckUserStatusResponse, err error) {
+	response, err := u.checkUserStatus(ctx, request)
+	checkUserStatusResponse = response.(*user.CheckUserStatusResponse)
+
+	return
+}
+
+func (u *userGrpcService) Register(ctx context.Context, request *user.RegisterRequest) (registerResponse *user.RegisterResponse, err error) {
+	response, err := u.register(ctx, request)
+	registerResponse = response.(*user.RegisterResponse)
+
+	return
+}
+
+func (u *userGrpcService) AddUser(ctx context.Context, request *user.AddUserRequest) (addUserResponse *user.AddUserResponse, err error) {
+	response, err := u.addUser(ctx, request)
+	addUserResponse = response.(*user.AddUserResponse)
+
+	return
+}
+
+func (u *userGrpcService) DelUser(ctx context.Context, request *user.DelUserRequest) (delUserResponse *user.DelUserResponse, err error) {
+	response, err := u.delUser(ctx, request)
+	delUserResponse = response.(*user.DelUserResponse)
+
+	return
+}
+
+func (u *userGrpcService) CheckUserAuthority(ctx context.Context, request *user.CheckUserAuthorityRequest) (checkUserAuthorityResponse *user.CheckUserAuthorityResponse, err error) {
+	response, err := u.checkUserAuthority(ctx, request)
+	checkUserAuthorityResponse = response.(*user.CheckUserAuthorityResponse)
+
+	return
+}
+func (u *userGrpcService) GetUserAuthorityList(ctx context.Context, request *user.GetUserAuthorityListRequest) (getUserAuthorityListResponse *user.GetUserAuthorityListResponse, err error) {
+	response, err := u.getUserAuthorityList(ctx, request)
+	getUserAuthorityListResponse = response.(*user.GetUserAuthorityListResponse)
+
+	return
+}
+
+func (u *userGrpcService) GetAuthorityList(ctx context.Context, request *user.GetAuthorityListRequest) (getAuthorityListResponse *user.GetAuthorityListResponse, err error) {
+	response, err := u.getAuthorityList(ctx, request)
+	getAuthorityListResponse = response.(*user.GetAuthorityListResponse)
+
+	return
+}
+
+func (u *userGrpcService) AddUserRole(ctx context.Context, request *user.AddUserRoleRequest) (addUserRoleResponse *user.AddUserRoleResponse, err error) {
+	response, err := u.addUserRole(ctx, request)
+	addUserRoleResponse = response.(*user.AddUserRoleResponse)
+
+	return
+}
+
+func (u *userGrpcService) DelUserRole(ctx context.Context, request *user.DelUserRoleRequest) (delUserRoleResponse *user.DelUserRoleResponse, err error) {
+	response, err := u.delUserRole(ctx, request)
+	delUserRoleResponse = response.(*user.DelUserRoleResponse)
+
+	return
+}
+
+func (u *userGrpcService) GetUserRoleList(ctx context.Context, request *user.GetUserRoleListRequest) (getUserRoleListResponse *user.GetUserRoleListResponse, err error) {
+	response, err := u.getUserRoleList(ctx, request)
+	getUserRoleListResponse = response.(*user.GetUserRoleListResponse)
+
+	return
+}
+
+func (u *userGrpcService) GetRoleList(ctx context.Context, request *user.GetRoleListRequest) (getRoleListResponse *user.GetRoleListResponse, err error) {
+	response, err := u.getRoleList(ctx, request)
+	getRoleListResponse = response.(*user.GetRoleListResponse)
+
+	return
+}
+
+func (u *userGrpcService) GetUserList(ctx context.Context, request *user.GetUserListRequest) (getUserListResponse *user.GetUserListResponse, err error) {
+	response, err := u.getUserList(ctx, request)
+	getUserListResponse = response.(*user.GetUserListResponse)
+
+	return
+}
+
+func (u *userGrpcService) Logout(ctx context.Context, request *user.LogoutRequest) (logoutResponse *user.LogoutResponse, err error) {
+	response, err := u.logout(ctx, request)
+	logoutResponse = response.(*user.LogoutResponse)
+
+	return
 }
