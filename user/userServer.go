@@ -16,13 +16,15 @@ type UserServiceServer struct {
 //以下函数是给endpoints调用的，最后会被安装到对应的成员变量上，所以一定要是grpc.Handler 类型的
 func (u *UserServiceServer) Login(_ context.Context, request *user.LoginRequest) (loginResponse *user.LoginResponse, err error) {
 	loginResponse = &user.LoginResponse{}
+	loginData := &user.LoginData{}
 	uid, userSession, token, err := UserServiceInstance.Login(request.GetUserName(), request.GetPassword())
 	if err != nil {
 		loginResponse.Msg = err.Error()
 		loginResponse.ErrorCode = 1
+		loginResponse.Data = loginData
+		err = nil
 		return
 	}
-	loginData := &user.LoginData{}
 	loginData.Uid = uid
 	loginData.UserSession = utilUserSessionToResponse(userSession)
 	loginData.Token = token
@@ -35,15 +37,17 @@ func (u *UserServiceServer) Login(_ context.Context, request *user.LoginRequest)
 func (u *UserServiceServer) CheckUserStatus(_ context.Context, checkUserStatusRequest *user.CheckUserStatusRequest) (checkUserStatusResponse *user.CheckUserStatusResponse, err error) {
 	checkUserStatusResponse = &user.CheckUserStatusResponse{}
 	isLogin, userSession, tokenStr, err := UserServiceInstance.CheckLoginStatus(checkUserStatusRequest.GetToken())
+	checkUserStatusData := &user.CheckUserStatusData{}
+
 	if err != nil {
 		checkUserStatusResponse.Msg = err.Error()
 		checkUserStatusResponse.ErrorCode = 1
+		checkUserStatusResponse.Data = checkUserStatusData
 		return
 	}
 
 	mySession := utilUserSessionToResponse(&userSession)
 
-	checkUserStatusData := &user.CheckUserStatusData{}
 	checkUserStatusData.IsLogin = isLogin
 	checkUserStatusData.UserSession = mySession
 	checkUserStatusData.Token = tokenStr
@@ -55,13 +59,14 @@ func (u *UserServiceServer) CheckUserStatus(_ context.Context, checkUserStatusRe
 
 func (u *UserServiceServer) Register(_ context.Context, request *user.RegisterRequest) (registerResponse *user.RegisterResponse, err error) {
 	registerResponse = &user.RegisterResponse{}
+	registerData := &user.RegisterData{}
 	uid, err := UserServiceInstance.Register(request.GetUsername(), request.GetPassword())
 	if err != nil {
 		registerResponse.Msg = err.Error()
 		registerResponse.ErrorCode = 1
+		registerResponse.Data = registerData
 		return
 	}
-	registerData := &user.RegisterData{}
 	registerData.Uid = uid
 
 	registerResponse.Data = registerData
@@ -71,13 +76,15 @@ func (u *UserServiceServer) Register(_ context.Context, request *user.RegisterRe
 
 func (u *UserServiceServer) AddUser(_ context.Context, request *user.AddUserRequest) (addUserResponse *user.AddUserResponse, err error) {
 	addUserResponse = &user.AddUserResponse{}
+	addUserData := &user.AddUserData{}
+
 	uid, err := UserServiceInstance.AddUser(request.GetUserName(), request.GetPassword(), request.GetOperationUid())
 	if err != nil {
 		addUserResponse.Msg = err.Error()
 		addUserResponse.ErrorCode = 1
+		addUserResponse.Data = addUserData
 		return
 	}
-	addUserData := &user.AddUserData{}
 	addUserData.Uid = uid
 
 	addUserResponse.Data = addUserData
@@ -86,13 +93,14 @@ func (u *UserServiceServer) AddUser(_ context.Context, request *user.AddUserRequ
 
 func (u *UserServiceServer) DelUser(_ context.Context, request *user.DelUserRequest) (delUserResponse *user.DelUserResponse, err error) {
 	delUserResponse = &user.DelUserResponse{}
+	delUserData := &user.DelUserData{}
 	success, err := UserServiceInstance.DelUser(request.GetUid(), request.GetOperationUid())
 	if err != nil {
 		delUserResponse.Msg = err.Error()
 		delUserResponse.ErrorCode = 1
+		delUserResponse.Data = delUserData
 		return
 	}
-	delUserData := &user.DelUserData{}
 	delUserData.Success = success
 
 	delUserResponse.Data = delUserData
