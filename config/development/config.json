@@ -1,6 +1,6 @@
 {
   "app_name" : "user_rpc",
-  "app_host" : "http://testlocal.52db.work:8888",
+  "app_host" : "http://testlocal.52db.club:8888",
   "app_port" : "8888",
 
   "log" : {
