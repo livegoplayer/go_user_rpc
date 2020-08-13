@@ -20,7 +20,7 @@
     "password": "myuser",
     "host": "139.224.132.234",
     "port": 3306,
-    "dbname": "file_store",
+    "dbname": "user",
     "log_mode": true,
     "max_open_connection": 10,
     "max_idle_connection": 200
