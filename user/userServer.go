@@ -43,6 +43,7 @@ func (u *UserServiceServer) CheckUserStatus(_ context.Context, checkUserStatusRe
 		checkUserStatusResponse.Msg = err.Error()
 		checkUserStatusResponse.ErrorCode = 1
 		checkUserStatusResponse.Data = checkUserStatusData
+		err = nil
 		return
 	}
 
@@ -65,6 +66,7 @@ func (u *UserServiceServer) Register(_ context.Context, request *user.RegisterRe
 		registerResponse.Msg = err.Error()
 		registerResponse.ErrorCode = 1
 		registerResponse.Data = registerData
+		err = nil
 		return
 	}
 	registerData.Uid = uid
@@ -83,6 +85,7 @@ func (u *UserServiceServer) AddUser(_ context.Context, request *user.AddUserRequ
 		addUserResponse.Msg = err.Error()
 		addUserResponse.ErrorCode = 1
 		addUserResponse.Data = addUserData
+		err = nil
 		return
 	}
 	addUserData.Uid = uid
@@ -99,6 +102,7 @@ func (u *UserServiceServer) DelUser(_ context.Context, request *user.DelUserRequ
 		delUserResponse.Msg = err.Error()
 		delUserResponse.ErrorCode = 1
 		delUserResponse.Data = delUserData
+		err = nil
 		return
 	}
 	delUserData.Success = success

@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/go-kit/kit/endpoint"
-	grpc_transport "github.com/go-kit/kit/transport/grpc"
 
 	user "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
@@ -27,7 +26,7 @@ type userGrpcService struct {
 	getRoleList          endpoint.Endpoint
 }
 
-func MakeGRPCHandler(eps UserEndpoints, opts ...grpc_transport.ServerOption) *userGrpcService {
+func MakeGRPCHandler(eps UserEndpoints) *userGrpcService {
 	return &userGrpcService{
 		login:                eps.Login,
 		checkUserStatus:      eps.CheckLoginStatus,

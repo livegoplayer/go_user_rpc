@@ -7,8 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/transport"
-	grpctransport "github.com/go-kit/kit/transport/grpc"
 	myHelper "github.com/livegoplayer/go_helper"
 	myLogger "github.com/livegoplayer/go_logger"
 	"github.com/oklog/oklog/pkg/group"
@@ -47,11 +45,11 @@ func initUserRpcHandler(g *group.Group) {
 	myHelper.LoadEnv()
 	dbHelper.InitDbHelper(&dbHelper.MysqlConfig{Username: viper.GetString("database.username"), Password: viper.GetString("database.password"), Host: viper.GetString("database.host"), Port: int32(viper.GetInt("database.port")), Dbname: viper.GetString("database.dbname")}, viper.GetBool("database.log_mode"), viper.GetInt("database.max_open_connection"), viper.GetInt("database.max_idle_connection"))
 
-	//报错日志
-	grpcOpts := []grpctransport.ServerOption{
-		//不是处理器，只是一个错误打印器
-		grpctransport.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
-	}
+	////报错日志
+	//grpcOpts := []grpctransport.ServerOption{
+	//	//不是处理器，只是一个错误打印器
+	//	grpctransport.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
+	//}
 
 	grpcListener, err := net.Listen("tcp", ":"+viper.GetString("app_port"))
 	if err != nil {
@@ -77,7 +75,7 @@ func initUserRpcHandler(g *group.Group) {
 
 	g.Add(func() error {
 		//这里是执行函数
-		userpb.RegisterUserServer(baseServer, user.MakeGRPCHandler(*endpoints, grpcOpts...))
+		userpb.RegisterUserServer(baseServer, user.MakeGRPCHandler(*endpoints))
 		fmt.Printf("start..")
 		return baseServer.Serve(grpcListener)
 	}, func(err error) {
