@@ -70,7 +70,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 	eps := &UserEndpoints{
 		Login: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.LoginRequest)
-			res := user.LoginResponse{}
+			res := &user.LoginResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -84,7 +84,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		GetUserList: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.GetUserListRequest)
-			res := user.GetUserListResponse{}
+			res := &user.GetUserListResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -98,7 +98,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		AddUser: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.AddUserRequest)
-			res := user.AddUserResponse{}
+			res := &user.AddUserResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -112,7 +112,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		DelUser: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.DelUserRequest)
-			res := user.DelUserResponse{}
+			res := &user.DelUserResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -126,7 +126,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		CheckLoginStatus: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.CheckUserStatusRequest)
-			res := user.CheckUserStatusResponse{}
+			res := &user.CheckUserStatusResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -140,7 +140,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		Register: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.RegisterRequest)
-			res := user.RegisterResponse{}
+			res := &user.RegisterResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -154,7 +154,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		CheckUserAuthority: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.CheckUserAuthorityRequest)
-			res := user.CheckUserAuthorityResponse{}
+			res := &user.CheckUserAuthorityResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -168,7 +168,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		GetUserAuthorityList: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.GetUserAuthorityListRequest)
-			res := user.GetUserAuthorityListResponse{}
+			res := &user.GetUserAuthorityListResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -182,7 +182,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		GetAuthorityList: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.GetAuthorityListRequest)
-			res := user.GetAuthorityListResponse{}
+			res := &user.GetAuthorityListResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -196,7 +196,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		AddUserRole: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.AddUserRoleRequest)
-			res := user.AddUserRoleResponse{}
+			res := &user.AddUserRoleResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -210,7 +210,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		DelUserRole: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.DelUserRoleRequest)
-			res := user.DelUserRoleResponse{}
+			res := &user.DelUserRoleResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -224,7 +224,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		GetRoleList: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.GetRoleListRequest)
-			res := user.GetRoleListResponse{}
+			res := &user.GetRoleListResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -238,7 +238,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		GetUserRoleList: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.GetUserRoleListRequest)
-			res := user.GetUserRoleListResponse{}
+			res := &user.GetUserRoleListResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
@@ -252,7 +252,7 @@ func MakeUserEndpoints(svc *UserServiceServer, grpcLoggerConfig GrpcLoggerConfig
 		},
 		Logout: func(ctx context.Context, request interface{}) (response interface{}, err error) {
 			req, ok := request.(*user.LogoutRequest)
-			res := user.LogoutResponse{}
+			res := &user.LogoutResponse{}
 			if !ok {
 				res.Msg = "request body form error !"
 				res.ErrorCode = 1
