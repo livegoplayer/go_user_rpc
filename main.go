@@ -82,6 +82,7 @@ func initUserRpcHandler(g *group.Group) {
 		userpb.RegisterHealthServer(baseServer, &user.HealthImpl{})
 		if register != nil {
 			register.Register()
+			fmt.Printf("service register success !")
 		}
 		fmt.Printf("start..")
 		return baseServer.Serve(grpcListener)
