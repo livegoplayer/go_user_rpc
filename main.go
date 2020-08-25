@@ -15,6 +15,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	realgrpc "google.golang.org/grpc"
+	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 
 	dbHelper "github.com/livegoplayer/go_db_helper"
@@ -79,8 +80,8 @@ func initUserRpcHandler(g *group.Group) {
 	g.Add(func() error {
 		//这里是执行函数
 		userpb.RegisterUserServer(baseServer, user.MakeGRPCHandler(*endpoints))
-		//附加的健康检查服务
-		grpc_health_v1.RegisterHealthServer(baseServer, &user.HealthImpl{})
+		//附加的健康检查服务health
+		grpc_health_v1.RegisterHealthServer(baseServer, &health.Server{})
 		if register != nil {
 			register.Register()
 			fmt.Printf("service register success !")
