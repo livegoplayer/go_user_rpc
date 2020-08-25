@@ -8,6 +8,7 @@ require (
 	github.com/go-kit/kit v0.10.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.4.2
+	github.com/hashicorp/consul/api v1.3.0
 	github.com/livegoplayer/go_db_helper v1.0.1
 	github.com/livegoplayer/go_helper v1.0.41
 	github.com/livegoplayer/go_logger v1.0.12

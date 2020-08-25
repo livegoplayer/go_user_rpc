@@ -15,6 +15,19 @@
     "app_log_mysql_pass": "myuser"
   },
 
+  "consul" :{
+    "open": true,
+    "consul_address": "139.224.132.234",
+    "service_name": "user_rpc",
+    "service_ip": "139.224.132.234",
+    "tags": ["unique"],
+    "service_port": 8888,
+    "consul_server_addr": "139.224.132.234:8300",
+    "token": "xxtl",
+    "scheme": "tcp",
+    "dataCenter": "dc1"
+  },
+
   "database": {
     "username": "myuser",
     "password": "myuser",
