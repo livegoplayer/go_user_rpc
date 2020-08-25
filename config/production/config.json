@@ -18,7 +18,7 @@
   "consul" :{
     "open": true,
     "consul_address": "139.224.132.234",
-    "service_name": "/services/health",
+    "service_name": "/services/user",
     "service_ip": "139.224.132.234",
     "tags": ["unique"],
     "service_port": 8888,
