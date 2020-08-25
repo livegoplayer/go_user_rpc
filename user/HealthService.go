@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	"google.golang.org/grpc/health/grpc_health_v1"
+	grpc_health_v1 "github.com/livegoplayer/go_user_rpc/user/grpc"
 )
 
 // HealthImpl grpc 健康检查

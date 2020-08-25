@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/sd"
+	dbHelper "github.com/livegoplayer/go_db_helper"
 	myHelper "github.com/livegoplayer/go_helper"
 	myLogger "github.com/livegoplayer/go_logger"
 	redisHelper "github.com/livegoplayer/go_redis_helper"
@@ -15,10 +16,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	realgrpc "google.golang.org/grpc"
-	"google.golang.org/grpc/health"
-	"google.golang.org/grpc/health/grpc_health_v1"
-
-	dbHelper "github.com/livegoplayer/go_db_helper"
 
 	"github.com/livegoplayer/go_user_rpc/user"
 	userpb "github.com/livegoplayer/go_user_rpc/user/grpc"
@@ -81,7 +78,7 @@ func initUserRpcHandler(g *group.Group) {
 		//这里是执行函数
 		userpb.RegisterUserServer(baseServer, user.MakeGRPCHandler(*endpoints))
 		//附加的健康检查服务health
-		grpc_health_v1.RegisterHealthServer(baseServer, &health.Server{})
+		userpb.RegisterHealthServer(baseServer, &user.HealthImpl{})
 		if register != nil {
 			register.Register()
 			fmt.Printf("service register success !")
