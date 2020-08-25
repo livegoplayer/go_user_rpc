@@ -22,9 +22,9 @@
     "service_ip": "139.224.132.234",
     "tags": ["unique"],
     "service_port": 8888,
-    "consul_server_addr": "139.224.132.234:8300",
+    "consul_server_addr": "139.224.132.234:8500",
     "token": "xxtl",
-    "scheme": "tcp",
+    "scheme": "http",
     "dataCenter": "dc1"
   },
 
