@@ -72,7 +72,7 @@ func initUserRpcHandler(g *group.Group) {
 	//如果开启了服务治理的话
 	var register sd.Registrar
 	if viper.GetBool("consul.open") {
-		consulReg := user.NewConsulRegister(viper.GetString("consul.consul_address"), viper.GetString("consul.service_name"), viper.GetString("consul.service_port"), viper.GetInt("consul.service_ip"), viper.GetStringSlice("consul.tags"))
+		consulReg := user.NewConsulRegister(viper.GetString("consul.consul_address"), viper.GetString("consul.service_name"), viper.GetString("consul.service_ip"), viper.GetInt("consul.service_port"), viper.GetStringSlice("consul.tags"))
 		consuelServerConfig := user.NewServerConfig(viper.GetString("consul.consul_server_addr"), viper.GetString("consul.token"), viper.GetString("consul.scheme"), viper.GetString("consul.dataCenter"))
 		register = consulReg.NewConsulGRPCRegister(consuelServerConfig)
 	}
