@@ -22,9 +22,6 @@ RUN apt-get -qq update && \
   wget \
   apt-transport-https lsb-release ca-certificates
 
-# 端口号配置
-EXPOSE 8888
-
 # 常用工具 Install some basic tools needed for deployment
 RUN apt-get -qq update && \
   apt-get -yqq install \
