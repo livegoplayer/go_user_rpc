@@ -59,3 +59,6 @@ RUN apt-get -qq update && \
   dpkg-reconfigure --frontend=noninteractive locales && \
   update-locale LANG=$LOCALE && \
   apt-get -q autoclean && rm -rf /var/lib/apt/lists/*
+
+#go env
+ENV GOPROXY=https://goproxy.io

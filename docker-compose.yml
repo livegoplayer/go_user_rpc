@@ -13,6 +13,6 @@ services:
          # 日志存放路径，需要同级目录创建本目录
          - ../logs:/apps/logs
       working_dir: /apps/go_user_rpc
-      command: go run main
+      command: go run ./main
 
 
