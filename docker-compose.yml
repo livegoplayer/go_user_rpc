@@ -4,6 +4,9 @@ services:
     go_server_rpc:
       build: ./
       container_name: go_user_rpc
+      environment:
+         SERVICE_NAME: go_user_rpc
+         ERVICE_TAGS: go_user_rpc,rpc,8080
       extra_hosts:
          - "www.52db.club:172.19.139.129"
       ports:
