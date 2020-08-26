@@ -62,3 +62,4 @@ RUN apt-get -qq update && \
 
 #go env
 ENV GOPROXY=https://goproxy.io
+ENV GO111MODULE=on
