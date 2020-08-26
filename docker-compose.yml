@@ -5,7 +5,7 @@ services:
       build: ./
       container_name: go_user_rpc
       extra_hosts:
-         - "www.52db.club:127.0.0.1"
+         - "www.52db.club:172.19.139.129"
       ports:
          - "8888:8888"
       volumes:
@@ -13,6 +13,6 @@ services:
          # 日志存放路径，需要同级目录创建本目录
          - ../logs:/apps/logs
       working_dir: /apps/go_user_rpc
-      command: ./main
+      command: sleep 3600
 
 
