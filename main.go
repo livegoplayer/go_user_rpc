@@ -60,7 +60,11 @@ func initUserRpcHandler(g *group.Group) {
 	if gin.IsDebugging() {
 		appLogger = myLogger.GetConsoleLogger()
 	} else {
-		appLogger = myLogger.GetMysqlLogger(viper.GetString("log.app_log_mysql_host"), viper.GetString("log.app_log_mysql_port"), viper.GetString("log.app_log_mysql_db_name"), viper.GetString("log.app_log_mysql_table_name"), viper.GetString("log.app_log_mysql_user"), viper.GetString("log.app_log_mysql_pass"))
+		if viper.GetBool("log.log_with_rabbitmq") {
+			appLogger = myLogger.GetRabbitMqLogger(viper.GetString("log.rabbimq.url"), viper.GetString("log.rabbimq.routingKey"), viper.GetString("log.rabbimq.exchange"), myLogger.GO_USER_RPC)
+		} else {
+			appLogger = myLogger.GetMysqlLogger(viper.GetString("log.app_log_mysql_host"), viper.GetString("log.app_log_mysql_port"), viper.GetString("log.app_log_mysql_db_name"), viper.GetString("log.app_log_mysql_table_name"), viper.GetString("log.app_log_mysql_user"), viper.GetString("log.app_log_mysql_pass"))
+		}
 	}
 	myLogger.SetLogger(appLogger)
 
