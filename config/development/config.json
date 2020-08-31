@@ -13,7 +13,7 @@
     "app_log_mysql_table_name": "us_app_log",
     "app_log_mysql_user": "myuser",
     "app_log_mysql_pass": "myuser",
-    "log_with_rabbitmq": true,
+    "log_with_rabbitmq": false,
     "rabbimq":{
       "url": "amqp://guest:guest@139.224.132.234:5670/",
       "routingKey": "log_go_user",
