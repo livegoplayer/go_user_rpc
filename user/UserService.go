@@ -154,15 +154,12 @@ func (userService *UserService) CheckLoginStatus(token string) (isLogin bool, us
 	userSession = claims.UserSession
 	if err != nil {
 		//如果token过期了
-		if err.Error() == "jwt过期" || err.Error() == "host错误" {
-			//检查session是否过期
-			userSession, exsit := getUserSession(userSession.Uid)
-			if exsit {
-				// 重新根据当前的session生成token
-				// 生成新的token
-				isLogin = true
-				tokenStr, err = myHelper.CreateToken(&userSession)
-			}
+		//检查session是否过期
+		_, exsit := getUserSession(userSession.Uid)
+		if exsit {
+			isLogin = true
+		} else {
+			userSession = myHelper.UserSession{}
 		}
 
 		return
