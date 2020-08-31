@@ -9,7 +9,7 @@ import (
 
 	"github.com/go-kit/kit/endpoint"
 	myHelper "github.com/livegoplayer/go_helper"
-	logger "github.com/livegoplayer/go_logger"
+	logger "github.com/livegoplayer/go_logger/logger"
 )
 
 //全局中间件日志组件

@@ -10,7 +10,7 @@ import (
 	"github.com/go-kit/kit/sd"
 	dbHelper "github.com/livegoplayer/go_db_helper"
 	myHelper "github.com/livegoplayer/go_helper"
-	myLogger "github.com/livegoplayer/go_logger"
+	myLogger "github.com/livegoplayer/go_logger/logger"
 	redisHelper "github.com/livegoplayer/go_redis_helper"
 	"github.com/oklog/oklog/pkg/group"
 	"github.com/sirupsen/logrus"
