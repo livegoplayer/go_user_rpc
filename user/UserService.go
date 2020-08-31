@@ -153,19 +153,17 @@ func (userService *UserService) CheckLoginStatus(token string) (isLogin bool, us
 	tokenStr = token
 	userSession = claims.UserSession
 	if err != nil {
-		//如果token过期了
-		//检查session是否过期
-		_, exsit := getUserSession(userSession.Uid)
-		if exsit {
-			isLogin = true
-		} else {
-			userSession = myHelper.UserSession{}
-		}
-
+		userSession = myHelper.UserSession{}
 		return
 	}
 
-	isLogin = true
+	//检查session
+	_, exsit := getUserSession(userSession.Uid)
+	if exsit {
+		isLogin = true
+	} else {
+		userSession = myHelper.UserSession{}
+	}
 
 	return
 }
