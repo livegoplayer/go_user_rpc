@@ -8,7 +8,7 @@
     "access_log_file_name" : "access.log",
     "print_to_std" : true,
     "app_log_mysql_host": "139.224.132.234",
-    "app_log_mysql_port": "3306",
+    "app_log_mysql_port": "30306",
     "app_log_mysql_db_name": "user",
     "app_log_mysql_table_name": "us_app_log",
     "app_log_mysql_user": "myuser",
@@ -47,7 +47,7 @@
 
   "redis" : {
     "host": "139.224.132.234",
-    "port": "6379",
+    "port": "32379",
     "password": "myredis",
     "db": 0,
     "prefix": "us_redis_"
