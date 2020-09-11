@@ -61,12 +61,12 @@ RUN apt-get -qq update && \
 ENV GOPROXY=https://goproxy.io
 ENV GO111MODULE=on
 
-RUN mkdir -p /apps/logs
+#RUN mkdir -p /apps/logs
 
-#复制工作目录，使得即使不映射文件将也能工作
-COPY ../apps/go_user_rpc /apps
+##复制工作目录，使得即使不映射文件将也能工作
+#COPY ../apps/go_user_rpc /apps
 
-WORKDIR /apps/go_user_rpc
-
-ENTRYPOINT ["/bin/bash"]
-CMD ["./main"]
+#WORKDIR /apps/go_user_rpc
+#
+#ENTRYPOINT ["/bin/bash"]
+#CMD ["./main"]
