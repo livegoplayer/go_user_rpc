@@ -16,6 +16,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	realgrpc "google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 
 	"github.com/livegoplayer/go_user_rpc/user"
 	userpb "github.com/livegoplayer/go_user_rpc/user/grpc"
@@ -87,6 +88,8 @@ func initUserRpcHandler(g *group.Group) {
 			register.Register()
 			fmt.Printf("service register success !")
 		}
+		// 注册reflection服务 ，可以使用 grpcurl -plaintext localhost:8888 list 测试
+		reflection.Register(baseServer)
 		fmt.Printf("start..")
 		return baseServer.Serve(grpcListener)
 	}, func(err error) {
