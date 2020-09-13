@@ -16,7 +16,7 @@
     "log_with_rabbitmq": true,
     "rabbimq":{
       "url": "amqp://guest:guest@139.224.132.234:31001/",
-      "routingKey": "log_go_user",
+      "routingKey": "log_go_user_rpc",
       "exchange": "log"
     }
   },
