@@ -15,7 +15,7 @@
     "app_log_mysql_pass": "myuser",
     "log_with_rabbitmq": true,
     "rabbimq":{
-      "url": "amqp://guest:guest@139.224.132.234:5670/",
+      "url": "amqp://guest:guest@139.224.132.234:31001/",
       "routingKey": "log_go_user",
       "exchange": "log"
     }
