@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: go-user-rpc-imroc-io
+  namespace: go-user-rpc
+spec:
+  secretName: go-user-rpc-imroc-io-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - go.user.rpc.52db.club
