@@ -1,7 +1,9 @@
 syntax = "proto3";
+package user_grpc;
 
-package user;
-option go_package = "user/grpc";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+option go_package = "user/user_grpc";
 
 service User{
     //用户登录
@@ -36,55 +38,55 @@ service User{
 
 //用户session信息数组
 message UserSessions {
-	int32                 uid = 1;
+	int64                 uid = 1;
 	string              username = 2;
-	map<int32, string>    userRoleList = 3;
-	map<int32, string>    userAuthorityList = 4;
+	map<int64, string>    userRoleList = 3;
+	map<int64, string>    userAuthorityList = 4;
 	string              addDatetime = 5;
 	string              updateDatetime = 6;
 }
 
 //login
 message LoginRequest {
-    string          userName = 1;
-    string          password = 2;
+    string          userName = 1 [(validator.field) = {string_not_empty: 0}];
+    string          password = 2 [(validator.field) = {string_not_empty: 0}];
 }
 
 message LoginData{
-    int32            uid = 1;
+    int64            uid = 1;
     string          token = 2;
     UserSessions    userSession = 3;
     string          error = 4;
 }
 
 message LoginResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     LoginData       data = 2;
     string          msg = 3;
 }
 
 //addUser
 message AddUserRequest {
-    string          userName = 1;
-    string          password = 2;
-    int32          operationUid = 3;
+    string          userName = 1 [(validator.field) = {string_not_empty: 0}];
+    string          password = 2 [(validator.field) = {string_not_empty: 0}];
+    int64           operationUid = 3;
 }
 
 message AddUserData{
-    int32           uid = 1;
+    int64           uid = 1;
     string          error = 2;
 }
 
 message AddUserResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     AddUserData       data = 2;
     string          msg = 3;
 }
 
 //deluser
 message DelUserRequest{
-    int32             uid = 1;
-    int32             operationUid = 3;
+    int64             uid = 1 [(validator.field) = {int_gt: 0}];
+    int64             operationUid = 3;
 }
 
 message DelUserData{
@@ -93,29 +95,29 @@ message DelUserData{
 }
 
 message DelUserResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     DelUserData       data = 2;
     string          msg = 3;
 }
 
 message GetUserListRequest{
-    int32 page=1;
-    int32 size=2;
+    int64 page=1 [(validator.field) = {int_gt: 0}];
+    int64 size=2 [(validator.field) = {int_gt: 0}];
 }
 
 message GetUserListResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     GetUserListData data = 2;
     string          msg = 3;
 }
 
 message GetUserListData{
     repeated UserInfo userList= 1;
-    int32 total=2;
+    int64 total=2;
 }
 
 message UserInfo{
-    int32 id = 1;
+    int64 id = 1;
     string username = 2;
     string addDataTime = 3;
     string uptDatetime = 4;
@@ -123,7 +125,7 @@ message UserInfo{
 
 //检查用户登录状态
 message CheckUserStatusRequest {
-    string          token = 1;
+    string          token = 1 [(validator.field) = {string_not_empty: 0}];
 }
 
 message CheckUserStatusData{
@@ -134,7 +136,7 @@ message CheckUserStatusData{
 }
 
 message CheckUserStatusResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     CheckUserStatusData       data = 2;
     string          msg = 3;
 }
@@ -142,25 +144,25 @@ message CheckUserStatusResponse{
 
 //注册
 message RegisterRequest {
-    string          username = 1;
-    string          password = 2;
+    string          username = 1 [(validator.field) = {string_not_empty: 0}];
+    string          password = 2 [(validator.field) = {string_not_empty: 0}];
 }
 
 message RegisterData{
-    int32             uid = 1;
+    int64             uid = 1;
     string          error = 2;
 }
 
 message RegisterResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     RegisterData       data = 2;
     string          msg = 3;
 }
 
 //检查用户操作权限
 message CheckUserAuthorityRequest {
-    int32             uid= 1;
-    int32             authorityId = 2;
+    int64             uid= 1 [(validator.field) = {int_gt: 0}];
+    int64             authorityId = 2 [(validator.field) = {int_gt: 0}];
 }
 
 message CheckUserAuthorityData{
@@ -168,22 +170,22 @@ message CheckUserAuthorityData{
 }
 
 message CheckUserAuthorityResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     CheckUserAuthorityData       data = 2;
     string          msg = 3;
 }
 
 //获取用户操作权限列表
 message GetUserAuthorityListRequest{
-    int32             uid = 1;
+    int64             uid = 1 [(validator.field) = {int_gt: 0}];
 }
 
 message GetUserAuthorityListData{
-    map<int32, string> userAuthorityList = 1;
+    map<int64, string> userAuthorityList = 1;
 }
 
 message GetUserAuthorityListResponse{
-    int32           errorCode= 1;
+    int64           errorCode= 1;
     GetUserAuthorityListData       data = 2;
     string          msg = 3;
 }
@@ -193,20 +195,20 @@ message GetAuthorityListRequest{
 }
 
 message GetAuthorityListData{
-    map<int32, string> userAuthorityList = 1;
+    map<int64, string> userAuthorityList = 1;
 }
 
 message GetAuthorityListResponse{
-    int32           errorCode= 1;
+    int64           errorCode= 1;
     GetAuthorityListData       data = 2;
     string          msg = 3;
 }
 
 //增加用户权限
 message AddUserRoleRequest{
-    int32             uid = 1;
-    int32             roleId = 2;
-    int32             operationUid =3;
+    int64             uid = 1 [(validator.field) = {int_gt: 0}];
+    int64             roleId = 2 [(validator.field) = {int_gt: 0}];
+    int64             operationUid =3;
 }
 
 message AddUserRoleData{
@@ -214,16 +216,16 @@ message AddUserRoleData{
 }
 
 message AddUserRoleResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     AddUserRoleData       data = 2;
     string          msg = 3;
 }
 
 //删除用户权限
 message DelUserRoleRequest{
-    int32             uid = 1;
-    int32             roleId = 2;
-    int32             operationUid = 3;
+    int64             uid = 1 [(validator.field) = {int_gt: 0}];
+    int64             roleId = 2 [(validator.field) = {int_gt: 0}];
+    int64             operationUid = 3;
 }
 
 message DelUserRoleData{
@@ -231,7 +233,7 @@ message DelUserRoleData{
 }
 
 message DelUserRoleResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     DelUserRoleData       data = 2;
     string          msg = 3;
 }
@@ -241,36 +243,36 @@ message GetRoleListRequest{
 }
 
 message GetRoleListData{
-    map<int32, string> userRoleList =1;
+    map<int64, string> userRoleList =1;
 }
 
 message GetRoleListResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     GetRoleListData       data = 2;
     string          msg = 3;
 }
 
 //获取用户角色列表
 message GetUserRoleListRequest{
-    int32              uid =1;
+    int64              uid =1 [(validator.field) = {int_gt: 0}];
 }
 
 message GetUserRoleListData{
-    map<int32, string> userRoleList =1;
+    map<int64, string> userRoleList =1;
 }
 
 message GetUserRoleListResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     GetUserRoleListData       data = 2;
     string          msg = 3;
 }
 
 message LogoutRequest{
-    int32 uid = 1;
+    int64 uid = 1 [(validator.field) = {int_gt: 0}];
 }
 
 message LogoutResponse{
-    int32           errorCode = 1;
+    int64           errorCode = 1;
     LogoutData      data = 2;
     string          msg = 3;
 }

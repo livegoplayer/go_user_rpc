@@ -3,46 +3,49 @@
   "app_host" : "http://www.52db.club:8888",
   "app_port" : "8888",
 
-  "log" : {
-    "access_log_file_path" : "../log",
-    "access_log_file_name" : "access.log",
-    "print_to_std" : false,
-    "app_log_mysql_host": "139.224.132.234",
-    "app_log_mysql_port": "30306",
-    "app_log_mysql_db_name": "user",
-    "app_log_mysql_table_name": "us_app_log",
-    "app_log_mysql_user": "myuser",
-    "app_log_mysql_pass": "myuser",
-    "log_with_rabbitmq": true,
-    "rabbimq":{
+  "log": {
+    "access_log_file_path": "../access_log/file_store",
+    "log_type": "file",
+    "file": {
+      "path": "../fs_app_log",
+      "clean_time_hour": 30,
+      "split_time_hour": 1
+    },
+    "mysql": {
+      "username": "myuser",
+      "password": "myuser",
+      "host": "1.116.95.153",
+      "port": 3306,
+      "dbname": "log",
+      "table_name": "fs_app_log"
+    },
+    "rabbitmq":{
       "url": "amqp://guest:guest@139.224.132.234:31001/",
-      "routingKey": "log_go_user_rpc",
-      "exchange": "log"
+      "routingKey": "log_go_user",
+      "exchange": "log",
+      "app_type": 1
     }
   },
 
-  "consul" :{
-    "open": false,
-    "consul_address": "139.224.132.234",
-    "service_name": "Health",
-    "service_ip": "139.224.132.234",
-    "tags": ["unique"],
-    "service_port": 8888,
-    "consul_server_addr": "139.224.132.234:8500",
-    "token": "xxtl",
-    "scheme": "http",
-    "dataCenter": "dc1"
-  },
-
   "database": {
-    "username": "myuser",
-    "password": "myuser",
-    "host": "139.224.132.234",
-    "port": 30306,
-    "dbname": "user",
-    "log_mode": true,
-    "max_open_connection": 10,
-    "max_idle_connection": 200
+    "default_db": {
+      "name":"user"
+    },
+    "user_master": {
+      "username": "myuser",
+      "password": "myuser",
+      "prefix": "us_",
+      "host": "1.116.95.153",
+      "port": 3306,
+      "net":  "tcp",
+      "allow_native_passwords": true,
+      "collation" : "",
+      "dbname": "user",
+      "log_mode": true,
+      "max_open_con": 10,
+      "max_idle_con": 200,
+      "is_write": true
+    }
   },
 
   "redis" : {

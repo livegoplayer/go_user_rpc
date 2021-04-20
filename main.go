@@ -2,24 +2,19 @@ package main
 
 import (
 	"fmt"
-	"net"
-	"time"
-
-	"github.com/gin-gonic/gin"
-	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/sd"
-	dbHelper "github.com/livegoplayer/go_db_helper"
-	myHelper "github.com/livegoplayer/go_helper"
-	myLogger "github.com/livegoplayer/go_logger/logger"
-	redisHelper "github.com/livegoplayer/go_redis_helper"
+	"github.com/livegoplayer/go_user_rpc/config"
+	"net"
+
+	"github.com/go-kit/kit/log"
+
 	"github.com/oklog/oklog/pkg/group"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	realgrpc "google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
 	"github.com/livegoplayer/go_user_rpc/user"
-	userpb "github.com/livegoplayer/go_user_rpc/user/grpc"
+	userpb "github.com/livegoplayer/go_user_rpc/user/user_grpc"
 )
 
 const rateBucketNum = 20
@@ -42,8 +37,7 @@ func Run() {
 
 func initUserRpcHandler(g *group.Group) {
 
-	myHelper.LoadEnv()
-	dbHelper.InitDbHelper(&dbHelper.MysqlConfig{Username: viper.GetString("database.username"), Password: viper.GetString("database.password"), Host: viper.GetString("database.host"), Port: int32(viper.GetInt("database.port")), Dbname: viper.GetString("database.dbname")}, viper.GetBool("database.log_mode"), viper.GetInt("database.max_open_connection"), viper.GetInt("database.max_idle_connection"))
+	config.InitDb()
 
 	grpcListener, err := net.Listen("tcp", ":"+viper.GetString("app_port"))
 	if err != nil {
@@ -52,42 +46,15 @@ func initUserRpcHandler(g *group.Group) {
 
 	grpcLogConfig := user.GrpcLoggerConfig{AccessFilePath: viper.GetString("log.access_log_file_path"), AccessFileName: viper.GetString("app_name") + "_" + viper.GetString("log.access_log_file_name"), PrintStd: viper.GetBool("log.print_to_std")}
 	//定义中间件
-	endpoints := user.MakeUserEndpoints(&user.UserServiceServer{}, grpcLogConfig)
 	baseServer := realgrpc.NewServer()
 
-	//初始化 app_log， 以后使用mylogger.Info() 打印log
-	//如果是debug模式的话，直接打印到控制台
-	var appLogger *logrus.Logger
-	if gin.IsDebugging() {
-		appLogger = myLogger.GetConsoleLogger()
-	} else {
-		if viper.GetBool("log.log_with_rabbitmq") {
-			appLogger = myLogger.GetRabbitMqLogger(viper.GetString("log.rabbimq.url"), viper.GetString("log.rabbimq.routingKey"), viper.GetString("log.rabbimq.exchange"), myLogger.GO_USER_RPC)
-		} else {
-			appLogger = myLogger.GetMysqlLogger(viper.GetString("log.app_log_mysql_host"), viper.GetString("log.app_log_mysql_port"), viper.GetString("log.app_log_mysql_db_name"), viper.GetString("log.app_log_mysql_table_name"), viper.GetString("log.app_log_mysql_user"), viper.GetString("log.app_log_mysql_pass"))
-		}
-	}
-	myLogger.SetLogger(appLogger)
+	config.InitLog()
+	config.InitRedis()
 
-	redisHelper.InitRedisHelper(viper.GetString("redis.host"), viper.GetString("redis.port"), viper.GetString("redis.password"), viper.GetInt("redis.db"), viper.GetString("redis.prefix"), 2*time.Second)
-
-	//如果开启了服务治理的话
 	var register sd.Registrar
-	if viper.GetBool("consul.open") {
-		consulReg := user.NewConsulRegister(viper.GetString("consul.consul_address"), viper.GetString("consul.service_name"), viper.GetString("consul.service_ip"), viper.GetInt("consul.service_port"), viper.GetStringSlice("consul.tags"))
-		consuelServerConfig := user.NewServerConfig(viper.GetString("consul.consul_server_addr"), viper.GetString("consul.token"), viper.GetString("consul.scheme"), viper.GetString("consul.dataCenter"))
-		register = consulReg.NewConsulGRPCRegister(consuelServerConfig)
-	}
-
 	g.Add(func() error {
 		//这里是执行函数
-		userpb.RegisterUserServer(baseServer, user.MakeGRPCHandler(*endpoints))
-		//附加的健康检查服务health
-		userpb.RegisterHealthServer(baseServer, &user.HealthImpl{})
-		if register != nil {
-			register.Register()
-			fmt.Printf("service register success !")
-		}
+		userpb.RegisterUserServer(baseServer, &user.UserService{})
 		// 注册reflection服务 ，可以使用 grpcurl -plaintext localhost:8888 list 测试
 		reflection.Register(baseServer)
 		fmt.Printf("start..")
