@@ -4,10 +4,10 @@
   "app_port" : "8888",
 
   "log": {
-    "access_log_file_path": "../access_log/file_store",
+    "access_log_file_path": "../access_log/go_user_rpc",
     "log_type": "file",
     "file": {
-      "path": "../fs_app_log",
+      "path": "../us_app_log",
       "clean_time_hour": 30,
       "split_time_hour": 1
     },
@@ -17,7 +17,7 @@
       "host": "1.116.95.153",
       "port": 3306,
       "dbname": "log",
-      "table_name": "fs_app_log"
+      "table_name": "us_app_log"
     },
     "rabbitmq":{
       "url": "amqp://guest:guest@139.224.132.234:31001/",
@@ -49,8 +49,8 @@
   },
 
   "redis" : {
-    "host": "139.224.132.234",
-    "port": "32379",
+    "host": "1.116.95.153",
+    "port": "6379",
     "password": "myredis",
     "db": 0,
     "prefix": "us_redis_"

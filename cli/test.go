@@ -8,5 +8,6 @@ import (
 func main() {
 
 	config.LoadEnv()
+	myconfig.InitLog()
 	myconfig.InitDb()
 }

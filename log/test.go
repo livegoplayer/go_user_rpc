@@ -2,8 +2,6 @@ package grpc_logrus
 
 import (
 	"context"
-	myWriter "github.com/livegoplayer/go_logger/logger/writer"
-	"github.com/spf13/viper"
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware"
@@ -72,33 +70,6 @@ func Example_initializationWithDurationFieldOverride() {
 			grpc_logrus.StreamServerInterceptor(logrusEntry, opts...),
 		),
 	)
-}
-
-func GetGrpcAccessLoggerOptions() []grpc.ServerOption {
-	logrusLogger = logrus.New()
-	logrusLogger.Out = myWriter.GetFileWriter(viper.GetString("log.access_log_file_path"), logrus.InfoLevel, 30*24*time.Hour, 24*time.Hour)
-	logrusLogger.Formatter = &logrus.JSONFormatter{}
-	logrusLogger.Level = logrus.TraceLevel
-	// Logrus entry is used, allowing pre-definition of certain fields by the user.
-	logrusEntry := logrus.NewEntry(logrusLogger)
-	// Shared options for the logger, with a custom gRPC code to log level function.
-	opts := []grpc_logrus.Option{
-		grpc_logrus.WithLevels(customFunc),
-	}
-	// Make sure that log statements internal to gRPC library are logged using the logrus Logger as well.
-	grpc_logrus.ReplaceGrpcLogger(logrusEntry)
-	// Create a server, make sure we put the grpc_ctxtags context before everything else.
-	list := []grpc.ServerOption{
-		grpc_middleware.WithUnaryServerChain(
-			grpc_ctxtags.UnaryServerInterceptor(grpc_ctxtags.WithFieldExtractor(grpc_ctxtags.CodeGenRequestFieldExtractor)),
-			grpc_logrus.UnaryServerInterceptor(logrusEntry, opts...),
-		),
-		grpc_middleware.WithStreamServerChain(
-			grpc_ctxtags.StreamServerInterceptor(grpc_ctxtags.WithFieldExtractor(grpc_ctxtags.CodeGenRequestFieldExtractor)),
-			grpc_logrus.StreamServerInterceptor(logrusEntry, opts...),
-		),
-	}
-	return list
 }
 
 // Simple unary handler that adds custom fields to the requests's context. These will be used for all log statements.

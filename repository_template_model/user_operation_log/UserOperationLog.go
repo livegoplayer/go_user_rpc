@@ -11,7 +11,7 @@ type UserOperationLog struct {
 	Uid         int64  `gorm:"column:uid" json:"uid"`                   // 被操作者uid
 	Message     string `gorm:"column:message" json:"message"`           // 日志记录
 	OperatorUid int64  `gorm:"column:operator_uid" json:"operator_uid"` // 操作者uid
-	AddDatetime string `gorm:"column:add_datetime" json:"add_datetime"` // 操作时间
+	AddDatetime string `gorm:"-" json:"add_datetime"`                   // 操作时间
 }
 
 func (UserOperationLog) TableName() string {

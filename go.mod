@@ -1,17 +1,16 @@
 module github.com/livegoplayer/go_user_rpc
 
-go 1.14
+go 1.16
 
 require (
 	github.com/gin-gonic/gin v1.7.1
-	github.com/go-kit/kit v0.10.0
-	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.2
-	github.com/livegoplayer/go_db_helper v1.2.49
-	github.com/livegoplayer/go_helper v1.2.13
-	github.com/livegoplayer/go_logger v1.2.7
+	github.com/livegoplayer/go_db_helper v1.2.57
+	github.com/livegoplayer/go_helper v1.2.14
+	github.com/livegoplayer/go_logger v1.2.13
+	github.com/livegoplayer/go_rpc_helper v1.0.1
 	github.com/livegoplayer/go_redis_helper v1.0.3
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect

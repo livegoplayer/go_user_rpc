@@ -7,8 +7,8 @@ const PREFIX = "us_"
 //
 type RetRoleAuthority struct {
 	Id          int64 `gorm:"column:id;PRIMARY_KEY" json:"id"`                                  //
-	RoleId      int64 `gorm:"column:role_id;id_index_0_UNIQUE;id_index_2_MULTI" json:"role_id"` // 角色id
-	AuthorityId int64 `gorm:"column:authority_id;id_index_0_UNIQUE" json:"authority_id"`        // 权限id
+	RoleId      int64 `gorm:"column:role_id;id_index_1_UNIQUE;id_index_2_MULTI" json:"role_id"` // 角色id
+	AuthorityId int64 `gorm:"column:authority_id;id_index_1_UNIQUE" json:"authority_id"`        // 权限id
 }
 
 func (RetRoleAuthority) TableName() string {

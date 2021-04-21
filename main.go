@@ -3,14 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/livegoplayer/go_user_rpc/config"
-	grpc_logrus "github.com/livegoplayer/go_user_rpc/log"
-
-	"github.com/oklog/oklog/pkg/group"
-	realgrpc "google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
-
 	"github.com/livegoplayer/go_user_rpc/user"
 	userpb "github.com/livegoplayer/go_user_rpc/user/user_grpc"
+	"github.com/oklog/oklog/pkg/group"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -32,8 +28,7 @@ func initUserRpcHandler(g *group.Group) {
 
 	grpcListener := config.GetListener()
 
-	//定义中间件
-	baseServer := realgrpc.NewServer(grpc_logrus.GetGrpcAccessLoggerOptions()...)
+	baseServer := config.GetAndInitUserRpc()
 
 	config.InitRedis()
 
