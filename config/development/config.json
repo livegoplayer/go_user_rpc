@@ -1,13 +1,13 @@
 {
   "app_name" : "user_rpc",
-  "app_host" : "http://testlocal.52db.club:8888",
+  "app_host" : "http://127.0.0.1:8888",
   "app_port" : "8888",
 
   "log": {
-    "access_log_file_path": "../access_log/user_rpc",
+    "access_log_file_path": "../access_log/go_user_rpc",
     "log_type": "file",
     "file": {
-      "path": "../us_app_log",
+      "path": "../us_rpc_log",
       "clean_time_hour": 30,
       "split_time_hour": 1
     },
@@ -17,7 +17,7 @@
       "host": "1.116.95.153",
       "port": 3306,
       "dbname": "log",
-      "table_name": "fs_app_log"
+      "table_name": "us_app_log"
     },
     "rabbitmq":{
       "url": "amqp://guest:guest@139.224.132.234:31001/",
