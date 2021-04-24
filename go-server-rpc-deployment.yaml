@@ -1,7 +1,28 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: go-user-rpc
+  labels:
+    istio-injection: enabled
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: go-user-rpc-imroc-io
+  namespace: go-user-rpc
+spec:
+  secretName: go-user-rpc-imroc-io-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - go.user.rpc.k8s.show
+---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: app-sc
+  namespace: go-user-rpc
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
 provisioner: kubernetes.io/no-provisioner
@@ -10,6 +31,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: app-p-volume
+  namespace: go-user-rpc
   labels:
     type: app
 spec:
@@ -20,12 +42,13 @@ spec:
     - ReadWriteMany
   nfs:
     path: /apps
-    server: 139.224.132.234
+    server: localhost.kvm-1
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: app-pvc-claim
+  namespace: go-user-rpc
 spec:
   storageClassName: app-sc
   accessModes:
@@ -44,6 +67,7 @@ metadata:
   labels:
     io.kompose.service: go-server-rpc
   name: go-server-rpc
+  namespace: go-user-rpc
 spec:
   replicas: 1
   selector:
@@ -102,6 +126,7 @@ metadata:
   labels:
     io.kompose.service: go-server-rpc
   name: go-server-rpc
+  namespace: go-user-rpc
 spec:
   type: NodePort
   ports:
@@ -112,7 +137,6 @@ spec:
   selector:
     io.kompose.service: go-server-rpc
 ---
-
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -121,6 +145,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+  namespace: go-user-rpc
 spec:
   rules:
   - host: go.user.rpc.52db.club
@@ -134,5 +159,29 @@ spec:
    - secretName: go-user-rpc-imroc-io-tls
      hosts:
        - go.user.rpc.52db.club
-
-
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: acme-gateway
+  namespace: go-user-rpc
+  labels:
+    app: ingressgateway
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+      - "go.user.rpc.52db.club"
+      port:
+        number: 8888
+        name: go-server-rpc
+        protocol: TCP
+      tls:
+        mode: SIMPLE
+        credentialName: "xip-cert"
+---
