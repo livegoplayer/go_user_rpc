@@ -116,72 +116,42 @@ spec:
           claimName: app-pvc-claim
 status: {}
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.21.0 (992df58d8)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: go-server-rpc
-  name: go-server-rpc
-  namespace: go-user-rpc
-spec:
-  type: NodePort
-  ports:
-  - name: "8888"
-    port: 8888
-    targetPort: 8888
-    nodePort: 32000
-  selector:
-    io.kompose.service: go-server-rpc
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: go-user-rpc-ingress
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-  namespace: go-user-rpc
-spec:
-  rules:
-  - host: go.user.rpc.52db.club
-    http:
-      paths:
-      - backend:
-          serviceName: go-server-rpc
-          servicePort: 8888
-        path: /
-  tls:
-   - secretName: go-user-rpc-imroc-io-tls
-     hosts:
-       - go.user.rpc.52db.club
----
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: acme-gateway
   namespace: go-user-rpc
   labels:
-    app: ingressgateway
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    app: go-server-rpc
+    io.kompose.service: go-server-rpc
 spec:
   selector:
-    istio: ingressgateway
+    app: go-server-rpc
+    io.kompose.service: go-server-rpc
   servers:
     - hosts:
-      - "go.user.rpc.52db.club"
+      - go.user.rpc.k8s.show
       port:
         number: 8888
         name: go-server-rpc
+        targetPort: 8888
         protocol: TCP
       tls:
         mode: SIMPLE
-        credentialName: "xip-cert"
+        credentialName: go-user-rpc-imroc-io-tls
 ---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo-mongo
+spec:
+  hosts:
+    - go.user.rpc.k8s.show
+  tcp:
+    - match:
+        - port: 8888
+      route:
+        - destination:
+            host: go.user.rpc.k8s.show
+            port:
+              number: 8888
