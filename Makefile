@@ -42,5 +42,8 @@ models:
 	make model_query
 	make collect
 
+exec:
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GOCMD) build main.go --app-path "`pwd`"
+
 
 
