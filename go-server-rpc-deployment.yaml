@@ -136,6 +136,9 @@ spec:
         name: go-server-rpc
         targetPort: 8888
         protocol: TCP
+      tls:
+        mode: SIMPLE
+        credentialName: go-user-rpc-imroc-io-tls
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
@@ -144,9 +147,6 @@ metadata:
 spec:
   host: go.user.rpc.k8s.show
   trafficPolicy:
-    tls:
-      mode: SIMPLE
-      credentialName: go-user-rpc-imroc-io-tls
     loadBalancer:
       simple: ROUND_ROBIN
 ---
