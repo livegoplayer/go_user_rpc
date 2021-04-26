@@ -65,14 +65,14 @@ metadata:
     kompose.version: 1.21.0 (992df58d8)
   creationTimestamp: null
   labels:
-    io.kompose.service: go-server-rpc
-  name: go-server-rpc
+    io.kompose.service: go-user-rpc
+  name: go-user-rpc
   namespace: go-user-rpc
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: go-server-rpc
+      io.kompose.service: go-user-rpc
   strategy:
     type: Recreate
   template:
@@ -82,7 +82,7 @@ spec:
         kompose.version: 1.21.0 (992df58d8)
       creationTimestamp: null
       labels:
-        io.kompose.service: go-server-rpc
+        io.kompose.service: go-user-rpc
     spec:
       containers:
       - args: ["./main"]
@@ -100,21 +100,41 @@ spec:
         volumeMounts:
         - mountPath: /apps/go_user_rpc
           subPath: go_user_rpc
-          name: go-server-rpc-pvc
+          name: go-user-rpc-pvc
         - mountPath: /apps/log
           subPath: log
-          name: go-server-rpc-pvc
+          name: go-user-rpc-pvc
         - mountPath: /apps/go_user
           subPath: go_user
-          name: go-server-rpc-pvc
+          name: go-user-rpc-pvc
         workingDir: /apps/go_user_rpc
       restartPolicy: Always
       serviceAccountName: ""
       volumes:
-      - name: go-server-rpc-pvc
+      - name: go-user-rpc-pvc
         persistentVolumeClaim:
           claimName: app-pvc-claim
 status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: go-user-rpc
+  name: go-user-rpc
+spec:
+  type: NodePort
+  ports:
+    - name: "8888"
+      port: 8888
+      targetPort: 8888
+#      nodePort: 32000
+  selector:
+    io.kompose.service: go-user-rpc
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -122,18 +142,18 @@ metadata:
   name:  go-user-rpc-gw
   namespace: go-user-rpc
   labels:
-    app: go-server-rpc
-    io.kompose.service: go-server-rpc
+    app: go-user-rpc
+    io.kompose.service: go-user-rpc
 spec:
   selector:
-    app: go-server-rpc
-    io.kompose.service: go-server-rpc
+    app: go-user-rpc
+    io.kompose.service: go-user-rpc
   servers:
     - hosts:
       - go.user.rpc.k8s.show
       port:
         number: 8888
-        name: go-server-rpc
+        name: go-user-rpc
         targetPort: 8888
         protocol: TCP
 ---
@@ -142,7 +162,7 @@ kind: DestinationRule
 metadata:
   name: go-user-rpc-dr
 spec:
-  host: go.user.rpc.k8s.show
+  host: go-user-rpc.go-user-rpc.svc.cluster.local
   trafficPolicy:
     loadBalancer:
       simple: ROUND_ROBIN
@@ -159,6 +179,6 @@ spec:
         - port: 8888
       route:
         - destination:
-            host: go.user.rpc.k8s.show
+            host: go-user-rpc.go-user-rpc.svc.cluster.local
             port:
               number: 8888
