@@ -123,6 +123,7 @@ metadata:
     kompose.cmd: kompose convert
     kompose.version: 1.21.0 (992df58d8)
   creationTimestamp: null
+  namespace: go-user-rpc
   labels:
     io.kompose.service: go-user-rpc
   name: go-user-rpc
