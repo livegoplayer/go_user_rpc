@@ -161,6 +161,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: go-user-rpc-dr
+  namespace: go-user-rpc
 spec:
   host: go-user-rpc.go-user-rpc.svc.cluster.local
   trafficPolicy:
@@ -171,6 +172,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: go-user-rpc-vs
+  namespace: go-user-rpc
 spec:
   hosts:
     - go.user.rpc.k8s.show
