@@ -152,9 +152,8 @@ spec:
     - hosts:
       - go.user.rpc.k8s.show
       port:
-        number: 8888
+        number: 80
         name: go-user-rpc
-        targetPort: 8888
         protocol: TCP
 ---
 apiVersion: networking.istio.io/v1alpha3
