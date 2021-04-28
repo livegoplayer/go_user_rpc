@@ -178,8 +178,7 @@ spec:
   gateways:
     - go-user-rpc-gw
   tcp:
-    - match:
-        - port: 8888
+    - match: null
       route:
         - destination:
             host: go-user-rpc.go-user-rpc.svc.cluster.local
