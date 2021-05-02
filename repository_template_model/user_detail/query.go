@@ -16,7 +16,7 @@ func GetUserAuthority(uid int64) []UserDetail {
 		LeftJoin(ret_user_role.RetUserRole{}.TableName()+" as a", "a.uid = us_user.id").
 		LeftJoin(role.Role{}.TableName()+" as c", "a.role_id = c.id").
 		LeftJoin(ret_role_authority.RetRoleAuthority{}.TableName()+" as d", "c.id = d.role_id").
-		LeftJoin(authority.Authority{}.TableName()+" as e", "d.authority_id = e.id").Where(clos.Id, uid).
+		LeftJoin(authority.Authority{}.TableName()+" as e", "d.authority_id = e.id").Where(user.User{}.TableName()+"."+clos.Id, uid).
 		Get()
 
 	return UserDetails
