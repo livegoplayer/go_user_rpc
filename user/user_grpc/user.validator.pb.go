@@ -22,6 +22,12 @@ func (this *UserSessions) Validate() error {
 	return nil
 }
 func (this *LoginRequest) Validate() error {
+	if this.UserName == "" {
+		return github_com_mwitkow_go_proto_validators.FieldError("UserName", fmt.Errorf(`value '%v' must not be an empty string`, this.UserName))
+	}
+	if this.Password == "" {
+		return github_com_mwitkow_go_proto_validators.FieldError("Password", fmt.Errorf(`value '%v' must not be an empty string`, this.Password))
+	}
 	return nil
 }
 func (this *LoginData) Validate() error {
@@ -41,6 +47,12 @@ func (this *LoginResponse) Validate() error {
 	return nil
 }
 func (this *AddUserRequest) Validate() error {
+	if this.UserName == "" {
+		return github_com_mwitkow_go_proto_validators.FieldError("UserName", fmt.Errorf(`value '%v' must not be an empty string`, this.UserName))
+	}
+	if this.Password == "" {
+		return github_com_mwitkow_go_proto_validators.FieldError("Password", fmt.Errorf(`value '%v' must not be an empty string`, this.Password))
+	}
 	return nil
 }
 func (this *AddUserData) Validate() error {
@@ -102,6 +114,9 @@ func (this *UserInfo) Validate() error {
 	return nil
 }
 func (this *CheckUserStatusRequest) Validate() error {
+	if this.Token == "" {
+		return github_com_mwitkow_go_proto_validators.FieldError("Token", fmt.Errorf(`value '%v' must not be an empty string`, this.Token))
+	}
 	return nil
 }
 func (this *CheckUserStatusData) Validate() error {
@@ -121,6 +136,12 @@ func (this *CheckUserStatusResponse) Validate() error {
 	return nil
 }
 func (this *RegisterRequest) Validate() error {
+	if this.Username == "" {
+		return github_com_mwitkow_go_proto_validators.FieldError("Username", fmt.Errorf(`value '%v' must not be an empty string`, this.Username))
+	}
+	if this.Password == "" {
+		return github_com_mwitkow_go_proto_validators.FieldError("Password", fmt.Errorf(`value '%v' must not be an empty string`, this.Password))
+	}
 	return nil
 }
 func (this *RegisterData) Validate() error {

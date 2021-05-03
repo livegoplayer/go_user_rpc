@@ -55,8 +55,8 @@ func Register(userName string, password string) (uid int64, err error) {
 }
 
 const (
-	COMMON_USER   int64 = 1
-	ADMINISTRATOR int64 = iota
+	COMMON_USER int64 = iota + 1
+	ADMINISTRATOR
 )
 
 //管理员添加用户逻辑

@@ -48,8 +48,8 @@ message UserSessions {
 
 //login
 message LoginRequest {
-    string          userName = 1 [(validator.field) = {string_not_empty: 0}];
-    string          password = 2 [(validator.field) = {string_not_empty: 0}];
+    string          userName = 1 [(validator.field) = {string_not_empty: true}];
+    string          password = 2 [(validator.field) = {string_not_empty: true}];
 }
 
 message LoginData{
@@ -67,8 +67,8 @@ message LoginResponse{
 
 //addUser
 message AddUserRequest {
-    string          userName = 1 [(validator.field) = {string_not_empty: 0}];
-    string          password = 2 [(validator.field) = {string_not_empty: 0}];
+    string          userName = 1 [(validator.field) = {string_not_empty: true}];
+    string          password = 2 [(validator.field) = {string_not_empty: true}];
     int64           operationUid = 3;
 }
 
@@ -125,7 +125,7 @@ message UserInfo{
 
 //检查用户登录状态
 message CheckUserStatusRequest {
-    string          token = 1 [(validator.field) = {string_not_empty: 0}];
+    string          token = 1 [(validator.field) = {string_not_empty: true}];
 }
 
 message CheckUserStatusData{
@@ -144,8 +144,8 @@ message CheckUserStatusResponse{
 
 //注册
 message RegisterRequest {
-    string          username = 1 [(validator.field) = {string_not_empty: 0}];
-    string          password = 2 [(validator.field) = {string_not_empty: 0}];
+    string          username = 1 [(validator.field) = {string_not_empty: true}];
+    string          password = 2 [(validator.field) = {string_not_empty: true}];
 }
 
 message RegisterData{
