@@ -182,7 +182,7 @@ func GetUserRoleList(uid int64) (userRoleList map[int64]string) {
 	roles := ret_user_role.FetchByUid(uid)
 	userRoleList = make(map[int64]string)
 	for _, rs := range roles {
-		r := role.GetOneById(rs.Id)
+		r := role.GetOneById(rs.RoleId)
 		if r == nil {
 			continue
 		}
