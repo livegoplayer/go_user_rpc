@@ -8,10 +8,10 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.2
 	github.com/livegoplayer/go_db_helper v1.2.57
-	github.com/livegoplayer/go_helper v1.2.14
+	github.com/livegoplayer/go_helper v1.2.18
 	github.com/livegoplayer/go_logger v1.2.13
-	github.com/livegoplayer/go_rpc_helper v1.0.1
 	github.com/livegoplayer/go_redis_helper v1.0.3
+	github.com/livegoplayer/go_rpc_helper v1.0.1
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/mwitkow/go-proto-validators v0.3.2

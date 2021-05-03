@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/livegoplayer/go_helper/config"
 	myconfig "github.com/livegoplayer/go_user_rpc/config"
-	"github.com/livegoplayer/go_user_rpc/repository_template_model/user_detail"
+	"github.com/livegoplayer/go_user_rpc/user"
 )
 
 func main() {
@@ -11,6 +11,7 @@ func main() {
 	config.LoadEnv()
 	myconfig.InitLog()
 	myconfig.InitDb()
+	myconfig.InitRedis()
 
-	user_detail.GetUserAuthority(26)
+	user.CheckUserStatus("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjI2LCJ1c2VybmFtZSI6InhqeXBsYXllciIsInVzZXJfcm9sZV9saXN0Ijp7IjEiOiJjb21tb25fdXNlciJ9LCJ1c2VyX2F1dGhvcml0eV9saXN0Ijp7IjEiOiJnZXRfdXNlcl9saXN0IiwiMTAiOiJlZGl0X3VzZXJfYXV0aG9yaXR5IiwiMTEiOiJhZGRfdXNlcl9hdXRob3JpdHkiLCIxMiI6ImRlbGV0ZV91c2VyX2F1dGhvcml0eSIsIjIiOiJlZGl0X3VzZXIiLCIzIjoiYWRkX3VzZXIiLCI0IjoiZGVsZXRlX3VzZXIiLCI1IjoiZ2V0X3VzZXJfcm9sZXMiLCI2IjoiZWRpdF91c2VyX3JvbGVzIiwiNyI6ImFkZF91c2VyX3JvbGVzIiwiOCI6ImRlbGV0ZV91c2VyX3JvbGVzIiwiOSI6ImdldF91c2VyX2F1dGhvcml0eSJ9LCJhZGRfZGF0ZXRpbWUiOiIyMDIxLTA1LTAzIDA0OjAzOjQ5Ljg3MiIsInVwZGF0ZV9kYXRldGltZSI6IjIwMjEtMDUtMDMgMDQ6MDM6NDkuODcyIiwiZXhwIjoxNjIwMTA3NjgyLCJpYXQiOjE2MjAwMjEyODJ9.7YUaqJhHACeGmLfJulP-7VYGc1g4PXR7cVzeEBnkl-Y")
 }
