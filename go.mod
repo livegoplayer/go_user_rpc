@@ -3,6 +3,7 @@ module github.com/livegoplayer/go_user_rpc
 go 1.16
 
 require (
+	github.com/favadi/protoc-go-inject-tag v1.1.0 // indirect
 	github.com/gin-gonic/gin v1.7.1
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2

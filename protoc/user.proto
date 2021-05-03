@@ -48,7 +48,9 @@ message UserSessions {
 
 //login
 message LoginRequest {
+    //@inject_tag: bson:"userName" form:"userName"
     string          userName = 1 [(validator.field) = {string_not_empty: true}];
+    //@inject_tag: bson:"password" form:"password"
     string          password = 2 [(validator.field) = {string_not_empty: true}];
 }
 
@@ -67,8 +69,11 @@ message LoginResponse{
 
 //addUser
 message AddUserRequest {
+    //@inject_tag: bson:"userName" form:"userName"
     string          userName = 1 [(validator.field) = {string_not_empty: true}];
+    //@inject_tag: bson:"password" form:"password"
     string          password = 2 [(validator.field) = {string_not_empty: true}];
+    //@inject_tag: bson:"operationUid" form:"operationUid"
     int64           operationUid = 3;
 }
 
@@ -85,7 +90,9 @@ message AddUserResponse{
 
 //deluser
 message DelUserRequest{
+    //@inject_tag: bson:"uid" form:"uid"
     int64             uid = 1 [(validator.field) = {int_gt: 0}];
+    //@inject_tag: bson:"operationUid" form:"operationUid"
     int64             operationUid = 3;
 }
 
@@ -101,7 +108,9 @@ message DelUserResponse{
 }
 
 message GetUserListRequest{
+    //@inject_tag: bson:"page" form:"page"
     int64 page=1 [(validator.field) = {int_gt: 0}];
+    //@inject_tag: bson:"size" form:"size"
     int64 size=2 [(validator.field) = {int_gt: 0}];
 }
 
@@ -125,6 +134,7 @@ message UserInfo{
 
 //检查用户登录状态
 message CheckUserStatusRequest {
+    //@inject_tag: bson:"token" form:"token"
     string          token = 1 [(validator.field) = {string_not_empty: true}];
 }
 
@@ -144,7 +154,9 @@ message CheckUserStatusResponse{
 
 //注册
 message RegisterRequest {
+    //@inject_tag: bson:"username" form:"username"
     string          username = 1 [(validator.field) = {string_not_empty: true}];
+    //@inject_tag: bson:"password" form:"password"
     string          password = 2 [(validator.field) = {string_not_empty: true}];
 }
 
@@ -161,7 +173,9 @@ message RegisterResponse{
 
 //检查用户操作权限
 message CheckUserAuthorityRequest {
+    //@inject_tag: bson:"uid" form:"uid"
     int64             uid= 1 [(validator.field) = {int_gt: 0}];
+    //@inject_tag: bson:"authorityId" form:"authorityId"
     int64             authorityId = 2 [(validator.field) = {int_gt: 0}];
 }
 
@@ -177,6 +191,7 @@ message CheckUserAuthorityResponse{
 
 //获取用户操作权限列表
 message GetUserAuthorityListRequest{
+    //@inject_tag: bson:"uid" form:"uid"
     int64             uid = 1 [(validator.field) = {int_gt: 0}];
 }
 
@@ -206,8 +221,11 @@ message GetAuthorityListResponse{
 
 //增加用户权限
 message AddUserRoleRequest{
+    //@inject_tag: bson:"uid" form:"uid"
     int64             uid = 1 [(validator.field) = {int_gt: 0}];
+    //@inject_tag: bson:"roleId" form:"roleId"
     int64             roleId = 2 [(validator.field) = {int_gt: 0}];
+    //@inject_tag: bson:"operationUid" form:"operationUid"
     int64             operationUid =3;
 }
 
@@ -223,8 +241,11 @@ message AddUserRoleResponse{
 
 //删除用户权限
 message DelUserRoleRequest{
+    //@inject_tag: bson:"uid" form:"uid"
     int64             uid = 1 [(validator.field) = {int_gt: 0}];
+    //@inject_tag: bson:"roleId" form:"roleId"
     int64             roleId = 2 [(validator.field) = {int_gt: 0}];
+    //@inject_tag: bson:"operationUid" form:"operationUid"
     int64             operationUid = 3;
 }
 
@@ -254,6 +275,7 @@ message GetRoleListResponse{
 
 //获取用户角色列表
 message GetUserRoleListRequest{
+    //@inject_tag: bson:"uid" form:"uid"
     int64              uid =1 [(validator.field) = {int_gt: 0}];
 }
 
@@ -268,6 +290,7 @@ message GetUserRoleListResponse{
 }
 
 message LogoutRequest{
+    //@inject_tag: bson:"uid" form:"uid"
     int64 uid = 1 [(validator.field) = {int_gt: 0}];
 }
 

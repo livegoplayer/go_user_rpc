@@ -119,8 +119,10 @@ type LoginRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserName string `protobuf:"bytes,1,opt,name=userName,proto3" json:"userName,omitempty"`
-	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	//@inject_tag: bson:"userName" form:"userName"
+	UserName string `protobuf:"bytes,1,opt,name=userName,proto3" json:"userName,omitempty" bson:"userName" form:"userName"`
+	//@inject_tag: bson:"password" form:"password"
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty" bson:"password" form:"password"`
 }
 
 func (x *LoginRequest) Reset() {
@@ -309,9 +311,12 @@ type AddUserRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserName     string `protobuf:"bytes,1,opt,name=userName,proto3" json:"userName,omitempty"`
-	Password     string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	OperationUid int64  `protobuf:"varint,3,opt,name=operationUid,proto3" json:"operationUid,omitempty"`
+	//@inject_tag: bson:"userName" form:"userName"
+	UserName string `protobuf:"bytes,1,opt,name=userName,proto3" json:"userName,omitempty" bson:"userName" form:"userName"`
+	//@inject_tag: bson:"password" form:"password"
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty" bson:"password" form:"password"`
+	//@inject_tag: bson:"operationUid" form:"operationUid"
+	OperationUid int64 `protobuf:"varint,3,opt,name=operationUid,proto3" json:"operationUid,omitempty" bson:"operationUid" form:"operationUid"`
 }
 
 func (x *AddUserRequest) Reset() {
@@ -491,8 +496,10 @@ type DelUserRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uid          int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
-	OperationUid int64 `protobuf:"varint,3,opt,name=operationUid,proto3" json:"operationUid,omitempty"`
+	//@inject_tag: bson:"uid" form:"uid"
+	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty" bson:"uid" form:"uid"`
+	//@inject_tag: bson:"operationUid" form:"operationUid"
+	OperationUid int64 `protobuf:"varint,3,opt,name=operationUid,proto3" json:"operationUid,omitempty" bson:"operationUid" form:"operationUid"`
 }
 
 func (x *DelUserRequest) Reset() {
@@ -664,8 +671,10 @@ type GetUserListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Page int64 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
-	Size int64 `protobuf:"varint,2,opt,name=size,proto3" json:"size,omitempty"`
+	//@inject_tag: bson:"page" form:"page"
+	Page int64 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty" bson:"page" form:"page"`
+	//@inject_tag: bson:"size" form:"size"
+	Size int64 `protobuf:"varint,2,opt,name=size,proto3" json:"size,omitempty" bson:"size" form:"size"`
 }
 
 func (x *GetUserListRequest) Reset() {
@@ -909,7 +918,8 @@ type CheckUserStatusRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	//@inject_tag: bson:"token" form:"token"
+	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty" bson:"token" form:"token"`
 }
 
 func (x *CheckUserStatusRequest) Reset() {
@@ -1091,8 +1101,10 @@ type RegisterRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	//@inject_tag: bson:"username" form:"username"
+	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty" bson:"username" form:"username"`
+	//@inject_tag: bson:"password" form:"password"
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty" bson:"password" form:"password"`
 }
 
 func (x *RegisterRequest) Reset() {
@@ -1265,8 +1277,10 @@ type CheckUserAuthorityRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uid         int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
-	AuthorityId int64 `protobuf:"varint,2,opt,name=authorityId,proto3" json:"authorityId,omitempty"`
+	//@inject_tag: bson:"uid" form:"uid"
+	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty" bson:"uid" form:"uid"`
+	//@inject_tag: bson:"authorityId" form:"authorityId"
+	AuthorityId int64 `protobuf:"varint,2,opt,name=authorityId,proto3" json:"authorityId,omitempty" bson:"authorityId" form:"authorityId"`
 }
 
 func (x *CheckUserAuthorityRequest) Reset() {
@@ -1431,7 +1445,8 @@ type GetUserAuthorityListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	//@inject_tag: bson:"uid" form:"uid"
+	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty" bson:"uid" form:"uid"`
 }
 
 func (x *GetUserAuthorityListRequest) Reset() {
@@ -1738,9 +1753,12 @@ type AddUserRoleRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uid          int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
-	RoleId       int64 `protobuf:"varint,2,opt,name=roleId,proto3" json:"roleId,omitempty"`
-	OperationUid int64 `protobuf:"varint,3,opt,name=operationUid,proto3" json:"operationUid,omitempty"`
+	//@inject_tag: bson:"uid" form:"uid"
+	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty" bson:"uid" form:"uid"`
+	//@inject_tag: bson:"roleId" form:"roleId"
+	RoleId int64 `protobuf:"varint,2,opt,name=roleId,proto3" json:"roleId,omitempty" bson:"roleId" form:"roleId"`
+	//@inject_tag: bson:"operationUid" form:"operationUid"
+	OperationUid int64 `protobuf:"varint,3,opt,name=operationUid,proto3" json:"operationUid,omitempty" bson:"operationUid" form:"operationUid"`
 }
 
 func (x *AddUserRoleRequest) Reset() {
@@ -1912,9 +1930,12 @@ type DelUserRoleRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uid          int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
-	RoleId       int64 `protobuf:"varint,2,opt,name=roleId,proto3" json:"roleId,omitempty"`
-	OperationUid int64 `protobuf:"varint,3,opt,name=operationUid,proto3" json:"operationUid,omitempty"`
+	//@inject_tag: bson:"uid" form:"uid"
+	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty" bson:"uid" form:"uid"`
+	//@inject_tag: bson:"roleId" form:"roleId"
+	RoleId int64 `protobuf:"varint,2,opt,name=roleId,proto3" json:"roleId,omitempty" bson:"roleId" form:"roleId"`
+	//@inject_tag: bson:"operationUid" form:"operationUid"
+	OperationUid int64 `protobuf:"varint,3,opt,name=operationUid,proto3" json:"operationUid,omitempty" bson:"operationUid" form:"operationUid"`
 }
 
 func (x *DelUserRoleRequest) Reset() {
@@ -2235,7 +2256,8 @@ type GetUserRoleListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	//@inject_tag: bson:"uid" form:"uid"
+	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty" bson:"uid" form:"uid"`
 }
 
 func (x *GetUserRoleListRequest) Reset() {
@@ -2392,7 +2414,8 @@ type LogoutRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	//@inject_tag: bson:"uid" form:"uid"
+	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty" bson:"uid" form:"uid"`
 }
 
 func (x *LogoutRequest) Reset() {

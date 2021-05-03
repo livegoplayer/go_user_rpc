@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"github.com/livegoplayer/go_helper/config"
 	myconfig "github.com/livegoplayer/go_user_rpc/config"
 	"github.com/livegoplayer/go_user_rpc/user"
+	"github.com/livegoplayer/go_user_rpc/user/user_grpc"
 )
 
 func main() {
@@ -13,6 +15,7 @@ func main() {
 	myconfig.InitDb()
 	myconfig.InitRedis()
 
-	userRoleList := user.GetUserRoleList(26)
-	print(userRoleList)
+	service := user.UserService{}
+	res, _ := service.GetUserRoleList(context.Background(), &user_grpc.GetUserRoleListRequest{Uid: 26})
+	print(res)
 }
