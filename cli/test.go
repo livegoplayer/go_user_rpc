@@ -13,5 +13,6 @@ func main() {
 	myconfig.InitDb()
 	myconfig.InitRedis()
 
-	user.GetUserRoleList(26)
+	userRoleList := user.GetUserRoleList(26)
+	print(userRoleList)
 }
