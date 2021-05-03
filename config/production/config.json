@@ -7,7 +7,7 @@
     "access_log_file_path": "../access_log/go_user_rpc",
     "log_type": "file",
     "file": {
-      "path": "../app_log/us_rpc_log",
+      "path": "../us_rpc_log",
       "clean_time_hour": 30,
       "split_time_hour": 1
     },
