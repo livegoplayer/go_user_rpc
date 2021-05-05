@@ -16,7 +16,7 @@ spec:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-    - go.user.rpc.k8s.show
+    - go-user-rpc.k8s.show
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -150,7 +150,7 @@ spec:
     istio: ingressgateway # use istio default controller
   servers:
     - hosts:
-      - go.user.rpc.k8s.show
+      - go-user-rpc.k8s.show
       port:
         number: 80
         name: go-user-rpc
@@ -174,7 +174,7 @@ metadata:
   namespace: go-user-rpc
 spec:
   hosts:
-    - go.user.rpc.k8s.show
+    - go-user-rpc.k8s.show
   gateways:
     - go-user-rpc-gw
   tcp:
