@@ -101,12 +101,15 @@ spec:
         - mountPath: /apps/go_user_rpc
           subPath: go_user_rpc
           name: go-user-rpc-pvc
-        - mountPath: /apps/log
-          subPath: log
+        - mountPath: /apps/access_log
+          subPath: access_log
           name: go-user-rpc-pvc
         - mountPath: /apps/go_user
           subPath: go_user
           name: go-user-rpc-pvc
+        - mountPath: /apps/us_rpc_log
+          subPath: us_rpc_log
+          name: go-user-pvc
         workingDir: /apps/go_user_rpc
       restartPolicy: Always
       serviceAccountName: ""
