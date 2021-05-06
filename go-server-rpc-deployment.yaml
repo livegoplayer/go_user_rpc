@@ -109,7 +109,7 @@ spec:
           name: go-user-rpc-pvc
         - mountPath: /apps/us_rpc_log
           subPath: us_rpc_log
-          name: go-user-pvc
+          name: go-user-rpc-pvc
         workingDir: /apps/go_user_rpc
       restartPolicy: Always
       serviceAccountName: ""
